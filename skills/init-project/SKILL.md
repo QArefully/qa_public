@@ -66,9 +66,9 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference this initializer in generated files.
 
-Maintenance rule for selected instruction filename:
+Add following maintenance rule. Replace `{instruction-file}` with `AGENTS.md` or `CLAUDE.md` for selected setup:
 
-`When a code change invalidates guidance or adds/removes a durable boundary, hazard, or source of truth, update the nearest applicable instruction file in the same change. Otherwise leave instruction files unchanged. Code and executable config remain authoritative.`
+`When a code change invalidates guidance or adds/removes a durable boundary, hazard, or source of truth, update nearest applicable {instruction-file} in same change. Otherwise leave instruction files unchanged. When facts in {instruction-file} contradict code, executable config, tests, maintained docs, or other repository evidence, warn user before relying on disputed guidance and identify conflict. Code and executable config remain authoritative.`
 
 ## Verify
 
