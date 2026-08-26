@@ -66,9 +66,9 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference this initializer in generated files.
 
-Add following maintenance rule. Replace `{instruction-file}` with `AGENTS.md` or `CLAUDE.md` for selected setup:
+Add following rule to each generated instruction file:
 
-`Update nearest {instruction-file} only when code invalidates guidance or changes durable boundaries, hazards, or sources of truth. Conflict with repository evidence -> warn user, identify conflict, follow code and executable config.`
+`Update this file only when code invalidates guidance or changes durable boundaries, hazards, or sources of truth. Any AGENTS.md or CLAUDE.md conflict with code or other repository evidence -> flag user with "WARNING".`
 
 ## Verify
 
