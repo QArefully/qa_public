@@ -31,7 +31,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 - Light -> dispatch 2-3 subagents total for initial read-only scans. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only. Do not modify nested instruction files.
 - Full -> dispatch only subagents needed for initial read-only scans of meaningful independent boundaries, maximum 10 total. Prefer one non-overlapping domain per subagent. Fewer than 10 is expected when evidence does not justify more.
-- Both modes -> main agent performs shallow root scan, chooses boundaries, gives each subagent exact scope and evidence request, then owns cross-domain synthesis and initial writes. Reuse one scan subagent for final deduplication; do not add another subagent beyond selected mode limit.
+- Both modes -> main agent performs shallow root scan, chooses boundaries, gives each subagent exact scope and evidence request, then owns cross-domain synthesis and initial writes. Nested instruction files created or updated -> reuse one scan subagent for final deduplication. Root-only run -> no reviewer or deduplication. Do not add another subagent beyond selected mode limit.
 
 ## Workflow
 
@@ -49,17 +49,16 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
    Installer adds the LLM-writing skill, context script, and Claude hook. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
 6. AGENTS.md + Claude alternative with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
-7. After instruction drafts, assign final deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
-   - Light -> delete exact and semantic duplication within root instruction file. Do not edit nested files.
-   - Full -> compare all root and nested primary instruction files for exact and semantic duplication, including repetition within one file.
-   - Full -> keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
-   - Full -> delete duplicate copies elsewhere without weakening scope, exceptions, or meaning.
+7. No nested primary instruction file created or updated -> skip reviewer and deduplication. Otherwise assign final deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
+   - Compare all root and nested primary instruction files for exact and semantic duplication, including repetition within one file.
+   - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
+   - Delete duplicate copies elsewhere without weakening scope, exceptions, or meaning.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
 
 ## Generated content
 
 - Minimal: every line must change agent behavior or avoid meaningful rediscovery.
-- Prefer where and why: authoritative paths, ownership, rationale, durable invariants, hazards, and surprising constraints. Link to detailed docs; do not copy them.
+- Prefer where and why: authoritative paths, ownership, rationale, durable invariants, hazards, and surprising constraints. Reference detailed docs with plain repository-relative paths; never use Markdown links or copy doc content.
 - Avoid volatile implementation prose, inventories, exhaustive environment lists, generic coding advice, and host-provided agent or skill-routing rules.
 - Root file -> global context. Full mode nested files -> subtree-only deltas; never repeat inherited rules.
 - Destructive commands -> state impact and required authorization.
@@ -77,7 +76,9 @@ Add following rule to each generated instruction file:
 - Only AGENTS.md -> confirm no `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` file changed.
 - Only CLAUDE.md -> confirm no `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` file changed.
 - Light -> confirm no nested instruction file changed.
-- Confirm deduplication subagent completed. Review its diff for lost scope or meaning.
+- Nested primary instruction files created or updated -> confirm deduplication subagent completed; review diff for lost scope or meaning.
+- No nested primary instruction file created or updated -> confirm no reviewer or deduplication subagent ran.
+- Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Review generated instructions for unsupported claims, volatile detail, and excess length.
 - Review diff. Run application tests only if changes extend beyond agent-context files.
 - Report changed files, chosen boundaries, validation, evidence gaps, and that the initializer directory may be deleted after success.

@@ -15,6 +15,7 @@ Apply only to `.md` or `.mdc` files whose primary reader is an AI agent. Never a
 - Linear: preconditions first, details after; say each fact once.
 - Compact: prefer bullets, `key: value`, and `A -> B -> C` relations.
 - Flat: maximum two list levels where practical.
+- `AGENTS.md` and `CLAUDE.md`: plain repository-relative paths; no Markdown links.
 - No Mermaid, tables, decorative separators, structural emoji, or ASCII art.
 - Examples only when needed to remove ambiguity.
 

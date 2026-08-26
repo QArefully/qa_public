@@ -11,7 +11,7 @@ Start shallow. Find:
 - exact install, run, build, check, and test commands
 - dependency direction, state authority, and source-of-truth locations
 - destructive actions, generated boundaries, external effects, and common traps
-- documentation to link instead of repeat
+- documentation paths to reference instead of repeat
 
 Use supporting paths. Expand only where evidence changes agent decisions.
 
