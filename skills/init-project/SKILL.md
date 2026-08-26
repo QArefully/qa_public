@@ -32,7 +32,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 - Light -> dispatch 2-3 subagents total for initial read-only scans. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only. Do not modify nested instruction files.
 - Full -> dispatch only subagents needed for initial read-only scans of meaningful independent boundaries, maximum 10 total. Prefer one non-overlapping domain per subagent. Fewer than 10 is expected when evidence does not justify more.
-- Both modes -> main agent performs shallow root scan, chooses boundaries, gives each subagent exact scope and evidence request, then owns cross-domain synthesis and initial writes. Nested instruction files created or updated -> reuse one scan subagent for final deduplication. Root-only run -> no reviewer or deduplication. Do not add another subagent beyond selected mode limit.
+- Both modes -> main agent performs shallow root scan, chooses boundaries, gives each subagent exact scope and evidence request, then owns cross-domain synthesis and initial writes. After every run, reuse one completed scan subagent for final review and deduplication, including root-only runs. Review does not increase selected mode subagent total.
 
 ## Workflow
 
@@ -50,11 +50,12 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
    Installer adds context script and Claude hook. Never copy bundled LLM-writing skill into repository. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
 6. AGENTS.md + Claude alternative with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
-7. No nested primary instruction file created or updated -> skip reviewer and deduplication. Otherwise assign final deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
+7. After initial writes, assign final review and deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
    - Read `<skill-directory>/assets/llm-oriented-markdowns/SKILL.md` before editing; follow it for all edits.
-   - Compare all root and nested primary instruction files for exact and semantic duplication, including repetition within one file.
+   - Enforce every bundled writing and formatting rule in each owned file, including terse prose, linear structure, compact formatting, flat lists, and prohibited constructs.
+   - Compare owned files with all applicable root and nested primary instruction files for exact and semantic duplication. Single-file runs still require full within-file deduplication.
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
-   - Delete duplicate copies elsewhere without weakening scope, exceptions, or meaning.
+   - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
 
 ## Generated content
@@ -78,8 +79,8 @@ Add following rule to each generated instruction file:
 - Only AGENTS.md -> confirm no `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` file changed.
 - Only CLAUDE.md -> confirm no `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` file changed.
 - Light -> confirm no nested instruction file changed.
-- Nested primary instruction files created or updated -> confirm deduplication subagent completed; review diff for lost scope or meaning.
-- No nested primary instruction file created or updated -> confirm no reviewer or deduplication subagent ran.
+- Confirm final review and deduplication subagent completed, including root-only runs.
+- Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
 - Confirm bundled LLM-writing skill was not copied into repository.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
