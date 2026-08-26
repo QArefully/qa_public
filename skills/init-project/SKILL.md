@@ -67,10 +67,11 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
+- Add `## Pitfalls` to each generated instruction file. Capture verified, non-obvious failure modes and proven workarounds within that file's scope; never invent entries to fill section.
 
 Add following rule to each generated instruction file:
 
-`Update this file only when code invalidates guidance or changes durable boundaries, hazards, or sources of truth. Any AGENTS.md or CLAUDE.md conflict with code or other repository evidence -> flag user with "WARNING".`
+`Update this file when code invalidates guidance; durable boundaries, hazards, or sources of truth change; or work reveals reusable lessons, pitfall workarounds, or user instructions. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".`
 
 ## Verify
 
@@ -84,6 +85,7 @@ Add following rule to each generated instruction file:
 - Confirm bundled LLM-writing skill was not copied into repository.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
+- Confirm each generated instruction file contains `## Pitfalls` and only evidence-backed entries.
 - Review generated instructions for unsupported claims, volatile detail, and excess length.
 - Review diff. Run application tests only if changes extend beyond agent-context files.
 - Report changed files, chosen boundaries, validation, evidence gaps, and that the initializer directory may be deleted after success.
