@@ -1,6 +1,7 @@
 ---
 name: init-project
 description: Initialize or refresh concise AGENTS.md, CLAUDE.md, or AGENTS.md with Claude Code context injection. Use for repository agent-instruction setup or regeneration.
+disable-model-invocation: true
 ---
 
 # Initialize Project Agent Context
@@ -63,7 +64,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Root file -> global context. Full mode nested files -> subtree-only deltas; never repeat inherited rules.
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
-- Do not reference this initializer in generated files.
+- Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
 
 Add following rule to each generated instruction file:
 
@@ -79,6 +80,7 @@ Add following rule to each generated instruction file:
 - Nested primary instruction files created or updated -> confirm deduplication subagent completed; review diff for lost scope or meaning.
 - No nested primary instruction file created or updated -> confirm no reviewer or deduplication subagent ran.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
+- Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
 - Review generated instructions for unsupported claims, volatile detail, and excess length.
 - Review diff. Run application tests only if changes extend beyond agent-context files.
 - Report changed files, chosen boundaries, validation, evidence gaps, and that the initializer directory may be deleted after success.
