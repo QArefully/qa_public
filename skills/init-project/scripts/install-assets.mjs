@@ -102,10 +102,6 @@ if (!existsSync(repositoryRoot) || !statSync(repositoryRoot).isDirectory()) {
 
 const managed = [
   planManagedCopy(
-    join(SKILL_ROOT, 'assets', 'llm-oriented-markdowns', 'SKILL.md'),
-    join(repositoryRoot, '.agents', 'skills', 'llm-oriented-markdowns', 'SKILL.md'),
-  ),
-  planManagedCopy(
     join(SKILL_ROOT, 'assets', 'claude', 'agent-context.mjs'),
     join(repositoryRoot, 'scripts', 'agent-context.mjs'),
   ),

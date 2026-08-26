@@ -48,9 +48,10 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
    `node "<skill-directory>/scripts/install-assets.mjs" --repo "<repository-root>"`
 
-   Installer adds the LLM-writing skill, context script, and Claude hook. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
+   Installer adds context script and Claude hook. Never copy bundled LLM-writing skill into repository. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
 6. AGENTS.md + Claude alternative with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
 7. No nested primary instruction file created or updated -> skip reviewer and deduplication. Otherwise assign final deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
+   - Read `<skill-directory>/assets/llm-oriented-markdowns/SKILL.md` before editing; follow it for all edits.
    - Compare all root and nested primary instruction files for exact and semantic duplication, including repetition within one file.
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies elsewhere without weakening scope, exceptions, or meaning.
@@ -79,6 +80,7 @@ Add following rule to each generated instruction file:
 - Light -> confirm no nested instruction file changed.
 - Nested primary instruction files created or updated -> confirm deduplication subagent completed; review diff for lost scope or meaning.
 - No nested primary instruction file created or updated -> confirm no reviewer or deduplication subagent ran.
+- Confirm bundled LLM-writing skill was not copied into repository.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
 - Review generated instructions for unsupported claims, volatile detail, and excess length.
