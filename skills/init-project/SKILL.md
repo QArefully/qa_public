@@ -68,7 +68,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 Add following maintenance rule. Replace `{instruction-file}` with `AGENTS.md` or `CLAUDE.md` for selected setup:
 
-`When a code change invalidates guidance or adds/removes a durable boundary, hazard, or source of truth, update nearest applicable {instruction-file} in same change. Otherwise leave instruction files unchanged. When facts in {instruction-file} contradict code, executable config, tests, maintained docs, or other repository evidence, warn user before relying on disputed guidance and identify conflict. Code and executable config remain authoritative.`
+`Update nearest {instruction-file} only when code invalidates guidance or changes durable boundaries, hazards, or sources of truth. Conflict with repository evidence -> warn user, identify conflict, follow code and executable config.`
 
 ## Verify
 
