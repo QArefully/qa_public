@@ -1,24 +1,27 @@
----
-name: llm-oriented-markdowns
-description: Write compact Markdown instructions for AI consumption. Use for AGENTS.md, CLAUDE.md, skills, prompts, and agent rules; never for human docs or chat.
----
+# LLM-oriented agent instructions
 
-# LLM-oriented Markdown
-
-Apply only to `.md` or `.mdc` files whose primary reader is an AI agent. Never apply to user chat or human docs such as `README.md`, changelogs, contributor guides, articles, or tutorials. Unclear audience -> ask.
+Apply only when init-project writes or edits AI-oriented repository instruction files such as `AGENTS.md` and `CLAUDE.md`. Never apply to user chat or human docs such as `README.md`, changelogs, contributor guides, articles, or tutorials. Unclear audience -> ask.
 
 ## Writing rules
 
-- Terse: remove articles, filler, pleasantries, hedging, repeated preambles.
-- Direct: fragments allowed; short words preferred; technical terms exact.
-- Exact: preserve code blocks, commands, identifiers, paths, versions, and error text.
-- Linear: preconditions first, details after; say each fact once.
-- Compact: prefer bullets, `key: value`, and `A -> B -> C` relations.
-- Flat: maximum two list levels where practical.
-- `AGENTS.md` and `CLAUDE.md`: plain repository-relative paths; no Markdown links.
-- No Mermaid, tables, decorative separators, structural emoji, or ASCII art.
-- Examples only when needed to remove ambiguity.
+- Terse: remove articles, filler, pleasantries, hedging, and repeated preambles.
+- Direct: fragments allowed; prefer short words; keep technical terms exact.
+- Exact: preserve fenced code, shell commands, and config snippets verbatim. Quote identifiers, error text, URLs, paths, and versions exactly.
+- Linear: put preconditions before dependent rules; avoid forward references; say each fact once.
+- Definitions first: add example only when needed to remove ambiguity.
+
+## Structure
+
+- Prefer compact bullets, `key: value`, and `A -> B -> C` relations.
+- Use inline code for identifiers. Use plain repository-relative paths in `AGENTS.md` and `CLAUDE.md`; never use Markdown links.
+- Limit lists to two levels where practical. Use two-space indentation and arrow chains instead of deep nesting.
+- No Mermaid, pipe or ASCII tables, horizontal rules, decorative separators, structural emoji, or ASCII art.
 
 ## Editing rules
 
-Read full file before editing. Find existing rule before adding one. Merge overlap, remove repetition, and keep one authoritative statement per concept. Contradiction -> stop and ask which rule wins; never silently preserve both.
+- Read full target file and all applicable root and nested agent instruction files before editing.
+- Find existing guidance before adding content. Never restate same rule in different words.
+- Merge overlap into one authoritative section. Keep repository-wide guidance at root and subtree-only guidance in nearest nested file.
+- Trim existing redundancy in owned files, including duplication unrelated to immediate addition.
+- For new files, keep one concept per section and avoid repeating it elsewhere.
+- Contradiction -> stop and ask which rule wins; never silently preserve both.
