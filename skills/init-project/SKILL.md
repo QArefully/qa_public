@@ -19,7 +19,7 @@ First response -> ask following questions, then stop:
 
 `Before I scan repository:`
 
-`1. Which setup do you want: AGENTS.md + Claude alternative, only AGENTS.md, or only CLAUDE.md?`
+`1. Which setup do you want: A: AGENTS.md + Claude hook (harness-agnostic setup), B: only AGENTS.md, or C: only CLAUDE.md?`
 
 `2. Which run do you want: Light (2-3 subagents, root instruction file only) or Full (up to 10 subagents, root plus useful nested instruction files)?`
 
