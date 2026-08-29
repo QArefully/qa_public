@@ -1,12 +1,12 @@
 ---
 name: init-project
-description: Initialize or refresh concise AGENTS.md, CLAUDE.md, or AGENTS.md with Claude Code context injection. Use for repository agent-instruction setup or regeneration.
+description: Initialize or refresh concise AGENTS.md and/or CLAUDE.md
 disable-model-invocation: true
 ---
 
 # Initialize Project Agent Context
 
-Create compact repository context that remains useful after initializer removal.
+Create harness-agnostic repository context files with maintenance instructions. 
 
 ## Start
 
