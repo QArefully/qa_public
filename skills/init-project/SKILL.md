@@ -29,7 +29,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 ## Setups
 
-- AGENTS.md + Claude hook -> `AGENTS.md` is source of truth. Generate root and mode-selected nested `AGENTS.md` files. Install SessionStart hook that injects AGENTS context into Claude Code. Full mode also creates sibling `CLAUDE.md` pointers for nested `AGENTS.md` files. Do not create root `CLAUDE.md`; hook injects root context. Also injects skills descriptions from `.agents/skills/` to Claude's context
+- AGENTS.md + Claude hook -> `AGENTS.md` is source of truth. Generate root and mode-selected nested `AGENTS.md` files. Install SessionStart hook that injects AGENTS context into Claude Code. Full mode also creates sibling `CLAUDE.md` pointers for nested `AGENTS.md` files. Do not create root `CLAUDE.md`; hook injects root context. Also injects skills descriptions from `.agents/skills/` to Claude's context.
 - Only AGENTS.md -> generate root and mode-selected nested `AGENTS.md` files. Do not create, update, or delete `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` files.
 - Only CLAUDE.md -> generate root and mode-selected nested `CLAUDE.md` files. Do not create, update, or delete `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` files.
 
