@@ -11,7 +11,7 @@ Create harness-agnostic repository context files with maintenance instructions.
 ## Scope
 
 - Copying this skill to another repository -> copy entire `skills/init-project/` directory, including all `assets/`, `references/`, and `scripts/` files. Exclude nothing.
-- Running this skill -> do not copy bundled `assets/llm-oriented-markdowns/` outside skill directory.
+- Running this skill -> use bundled `assets/llm-oriented-markdowns/llm-oriented-markdowns.md` only within this workflow; do not copy it outside skill directory.
 
 ## Start
 
@@ -41,7 +41,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 ## Workflow
 
-1. Resolve repository root. Read [repository analysis](references/repository-analysis.md) and bundled [LLM-oriented Markdown rules](assets/llm-oriented-markdowns/SKILL.md).
+1. Resolve repository root. Read [repository analysis](references/repository-analysis.md) and bundled [LLM-oriented Markdown rules](assets/llm-oriented-markdowns/llm-oriented-markdowns.md).
 2. Inspect manifests, executable config, tests, CI, maintained docs, existing agent instructions, and shallow repository structure. Code and executable config win conflicts; report unresolved intent conflicts.
 3. Identify core boundaries where local context changes implementation choices. Dispatch read-only subagents per selected mode. Avoid overlapping scans and ask each subagent for terse, evidence-backed findings only.
 4. Write instructions matching selected setup and mode. Merge valuable existing rules in selected files.
@@ -53,15 +53,16 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
    `node "<skill-directory>/scripts/install-assets.mjs" --repo "<repository-root>"`
 
-   Installer adds context script and Claude hook. Do not copy bundled LLM-writing skill outside skill directory. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
+   Installer adds context script and Claude hook. Do not copy bundled LLM-writing rules outside skill directory. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
 6. AGENTS.md + Claude alternative with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
 7. After initial writes, assign final review and deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
-   - Read `<skill-directory>/assets/llm-oriented-markdowns/SKILL.md` before editing; follow it for all edits.
+   - Read `<skill-directory>/assets/llm-oriented-markdowns/llm-oriented-markdowns.md` before editing; follow it for all edits.
    - Enforce every bundled writing and formatting rule in each owned file, including terse prose, linear structure, compact formatting, flat lists, and prohibited constructs.
    - Compare owned files with all applicable root and nested primary instruction files for exact and semantic duplication. Single-file runs still require full within-file deduplication.
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
+8. Before finalizing, test draft against a typical cross-layer change. If an agent would need to rediscover a required layer, helper, import convention, transaction mechanism, or validation step, add missing rule or exemplar path.
 
 ## Generated content
 
@@ -87,7 +88,7 @@ Add following rule to each generated instruction file:
 - Light -> confirm no nested instruction file changed.
 - Confirm final review and deduplication subagent completed, including root-only runs.
 - Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
-- Confirm bundled LLM-writing skill was not copied outside skill directory.
+- Confirm bundled LLM-writing rules were not copied outside skill directory.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
 - Confirm each generated instruction file contains `## Pitfalls` and only evidence-backed entries.
