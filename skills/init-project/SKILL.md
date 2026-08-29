@@ -29,7 +29,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 ## Setups
 
-- AGENTS.md + Claude alternative -> `AGENTS.md` is source of truth. Generate root and mode-selected nested `AGENTS.md` files. Install SessionStart hook that injects AGENTS context into Claude Code. Full mode also creates sibling `CLAUDE.md` pointers for nested `AGENTS.md` files. Do not create root `CLAUDE.md`; hook injects root context.
+- AGENTS.md + Claude hook -> `AGENTS.md` is source of truth. Generate root and mode-selected nested `AGENTS.md` files. Install SessionStart hook that injects AGENTS context into Claude Code. Full mode also creates sibling `CLAUDE.md` pointers for nested `AGENTS.md` files. Do not create root `CLAUDE.md`; hook injects root context.
 - Only AGENTS.md -> generate root and mode-selected nested `AGENTS.md` files. Do not create, update, or delete `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` files.
 - Only CLAUDE.md -> generate root and mode-selected nested `CLAUDE.md` files. Do not create, update, or delete `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` files.
 
@@ -49,12 +49,12 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - CLAUDE-only setup -> write `CLAUDE.md`.
    - Light -> root only.
    - Full -> root plus only useful nested files.
-5. AGENTS.md + Claude alternative only -> install durable support:
+5. AGENTS.md + Claude hook only -> install durable support:
 
    `node "<skill-directory>/scripts/install-assets.mjs" --repo "<repository-root>"`
 
    Installer adds context script and Claude hook. Do not copy bundled LLM-writing rules outside skill directory. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
-6. AGENTS.md + Claude alternative with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
+6. AGENTS.md + Claude hook with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
 7. After initial writes, assign final review and deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
    - Read `<skill-directory>/assets/llm-oriented-markdowns/llm-oriented-markdowns.md` before editing; follow it for all edits.
    - Enforce every bundled writing and formatting rule in each owned file, including terse prose, linear structure, compact formatting, flat lists, and prohibited constructs.
@@ -81,8 +81,8 @@ Add following rule to each generated instruction file:
 
 ## Verify
 
-- AGENTS.md + Claude alternative -> run `node <repository-root>/scripts/agent-context.mjs` from root and one nested directory; confirm one effective SessionStart hook.
-- AGENTS.md + Claude alternative with Full mode -> confirm sibling pointers for generated or updated nested `AGENTS.md` files.
+- AGENTS.md + Claude hook -> run `node <repository-root>/scripts/agent-context.mjs` from root and one nested directory; confirm one effective SessionStart hook.
+- AGENTS.md + Claude hook with Full mode -> confirm sibling pointers for generated or updated nested `AGENTS.md` files.
 - Only AGENTS.md -> confirm no `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` file changed.
 - Only CLAUDE.md -> confirm no `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` file changed.
 - Light -> confirm no nested instruction file changed.
