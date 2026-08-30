@@ -12,6 +12,9 @@ Start shallow. Find:
 - dependency direction, state authority, and source-of-truth locations
 - destructive actions, generated boundaries, external effects, and common traps
 - documentation paths to reference instead of repeat
+- one representative change through each main application boundary
+- non-obvious required patterns: layer order, shared helpers, transaction handling, import syntax, public error handling, and validation flow
+- 1-3 maintained exemplar paths when they prevent likely mistakes
 
 Use supporting paths. Expand only where evidence changes agent decisions.
 
@@ -27,6 +30,9 @@ Keep:
 - durable domain or safety invariants
 - fastest relevant validation and unusual test prerequisites
 - plausible wrong turns not obvious from nearby code
+- implementation rules enforced by code or tests that agents could easily bypass
+- exact helper or entry-point paths when using the wrong path would break a boundary
+- a small number of exemplar paths for common changes
 
 Drop:
 

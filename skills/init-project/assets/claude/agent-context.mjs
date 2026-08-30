@@ -71,6 +71,7 @@ function collectSkills() {
         console.error(`warning: cannot read ${path}: ${error.message}`);
         return [];
       }
+      if (fields['disable-model-invocation'] === 'true') return [];
       if (!fields.description) {
         console.error(`warning: ${path} declares no description; skipped`);
         return [];
@@ -79,7 +80,6 @@ function collectSkills() {
         name: fields.name || directory,
         path,
         description: fields.description,
-        explicit: fields['disable-model-invocation'] === 'true',
       }];
     });
 }
@@ -133,10 +133,9 @@ try {
       '',
       'Task matches a skill -> MUST read that SKILL.md in full before writing code, then',
       'follow it. Do not improvise an approach a skill already covers.',
-      '(explicit) -> invoke only when user names it.',
       '',
       ...skills.map((skill) =>
-        `- ${skill.name}${skill.explicit ? ' (explicit)' : ''} -> ${skill.path}\n  ${skill.description}`),
+        `- ${skill.name} -> ${skill.path}\n  ${skill.description}`),
     );
   } else {
     console.error(`warning: no described skills found under ${SKILLS_DIR}`);
