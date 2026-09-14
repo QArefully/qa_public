@@ -2,7 +2,7 @@
 
 ## Scan
 
-Evidence order: executable config/code -> tests/CI -> maintained docs -> existing instructions -> user context.
+Current behavior evidence: executable config/code -> tests/CI -> maintained docs -> existing instructions. User context supplies intent and constraints; surface conflicts.
 
 Start shallow. Find:
 
@@ -20,7 +20,7 @@ Use supporting paths. Expand only where evidence changes agent decisions.
 
 ## Select content
 
-Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
+Except runtime requirements and exact commands, prefer where and why over current implementation detail.
 
 Keep:
 
@@ -31,8 +31,8 @@ Keep:
 - fastest relevant validation and unusual test prerequisites
 - plausible wrong turns not obvious from nearby code
 - implementation rules enforced by code or tests that agents could easily bypass
-- exact helper or entry-point paths when using the wrong path would break a boundary
-- a small number of exemplar paths for common changes
+- exact helper or entry-point paths where wrong path breaks boundary
+- few exemplar paths for common changes
 
 Drop:
 
@@ -48,4 +48,4 @@ Root sections as useful: repository map, runtime, commands, architecture/domain,
 
 Add `## Testing` only where test structure or setup changes agent decisions. Cover relevant layers/frameworks, file or config locations, harnesses/fixtures/providers, prerequisites, and E2E ownership. Keep runnable commands only in `## Commands`; do not repeat them under Testing.
 
-Nested files contain only local architecture, local commands, local testing, and local hazards. Create one only when the subtree has distinct decisions or risks.
+User-suggested nested directories -> return local architecture, commands, testing, and hazards. No local findings -> report evidence gap. Main agent selects content; never propose additional nested files.
