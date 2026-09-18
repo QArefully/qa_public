@@ -75,9 +75,16 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
 - Add `## Pitfalls` to each generated instruction file. Capture verified, non-obvious failure modes and proven workarounds within that file's scope; never invent entries to fill section.
 
-Add following rule to each generated instruction file:
+Add following rules to each generated instruction file:
 
-`Update this file when code invalidates guidance; durable boundaries, hazards, or sources of truth change; or work reveals reusable lessons, pitfall workarounds, or user instructions. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".`
+"
+ # Maintenance
+ Update this file or closest nested AGENTS.md/CLAUDE.md when code invalidates guidance; durable boundaries, hazards, or sources of truth change; or work reveals reusable lessons, pitfall workarounds, or user instructions. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
+
+
+# AI Documentation and Code Comments
+Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language, for future AI agents. Facts only, minimal language. No history, dates, just core info. Don't re-tell code, say only what can't be derived from code - architecture, decisions, cross-cutting concerns. Default is no comment at all. Leave comments and edit AI docs only if needed. No duplication between code comments or any AI docs. Information lives in one place only. 
+"
 
 ## Verify
 
