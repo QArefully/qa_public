@@ -41,6 +41,19 @@ Drop:
 - duplicated parent guidance or human documentation
 - unsupported claims
 
+## Commands
+
+Root `## Commands` -> max 10 lines. Group related commands on one line per purpose instead of one command per line:
+
+- setup/run: install, dev/run, seed
+- checks: typecheck, lint, format, custom static guards
+- tests: per-layer or per-kind test commands
+- gates: aggregate scripts with what each runs
+- scoped runs: one pattern line (workspace, package, single test) with example instead of per-target commands
+- destructive: own line; impact and required authorization
+
+Keep every command agents routinely run; drop only one-off, internal, or CI-only scripts. Short purpose notes inline in parentheses. Subtree-only commands -> nested file in Full mode.
+
 ## Flows
 
 Doc-worthy flow -> investigator reports at least one complexity signal, and agent changing flow would otherwise trace multiple files or boundaries to find required hops. Otherwise omit.

@@ -63,6 +63,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
    - Compress flow wording without dropping hops, ownership, invariants, or change sets.
+   - Fit root `## Commands` in max 10 lines by grouping related commands per line by purpose (setup/run, checks, tests, gates, scoped-run pattern, destructive with impact). Do not drop commands agents routinely run.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
 8. Before finalizing, test draft against a typical cross-layer change. If an agent would need to rediscover a required layer, helper, import convention, transaction mechanism, validation step, or flow hop, add missing rule, flow, or exemplar path.
 
@@ -103,6 +104,7 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm each generated instruction file contains `## Pitfalls` and only evidence-backed entries.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
 - Confirm each `## Flows` entry is investigator-backed, meets doc-worthy threshold, lives in nearest file containing every hop, appears once, and references existing paths.
+- Confirm root `## Commands` has max 10 lines.
 - Review generated instructions for unsupported claims, volatile detail, and excess length.
 - Review diff. Run application tests only if changes extend beyond agent-context files.
 - Report changed files, chosen boundaries, documented and skipped flows, validation, evidence gaps, and that the initializer directory may be deleted after success.
