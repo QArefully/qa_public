@@ -19,7 +19,7 @@ Read-only investigator for one repository scope. Goal: understand in depth how r
 - Locate: validation, auth/permissions, transactions/locking, error mapping, retries/idempotency, caching, async handoffs, ordering assumptions.
 - Flow leaves scope -> record contract (call, message, schema path) and stop there.
 - Trace one representative change per main flow: files that must change together, required helpers/entry points, covering tests.
-- Use tests and fixtures as flow evidence: covered layers, expected states, harness setup.
+- Use tests and fixtures as flow evidence: covered layers, actual assertions, expected states, harness setup.
 - Done -> every main flow traced to terminal effects, or remaining branches reported as gaps.
 
 ## Complexity signals
@@ -33,19 +33,16 @@ Read-only investigator for one repository scope. Goal: understand in depth how r
 
 ## Output
 
-Terse. Repository-relative paths. Evidence path per claim. Facts only; no wording proposals for instruction files.
+Rank consequential navigation/hazards; repository-relative evidence path per claim. Deep investigation need not produce long docs. Omit routine hops and wording proposals.
 
-Per main flow:
-- name; trigger -> entry path
-- hop chain: `A (path) -> B (path) -> C (path)`
-- ownership: validation, auth, transactions, state writes, side effects
-- invariants, ordering, failure/retry behavior, hazards
-- change set: co-changing files, required helpers, covering tests
-- complexity signals present, or `none`
-- outbound contracts leaving scope
+Per consequential flow:
+- trigger -> entry and rule/state owner paths
+- non-obvious hazard, consequence, and source; complex logic requiring focused exploration
+- hidden hops, ordering, co-change/helper dependencies, or outbound contract only where needed to explain hazard
 
 Scope-wide:
 - commands, test prerequisites, generated/runtime files, destructive actions
 - non-obvious patterns: layer order, import convention, error handling
+- Non-obvious calculations, async ordering, test setup -> authority + fixture/assertion/control seam and what each proves. Check actual assertions; distinguish mocks from persistence. Omit worked values, scenario recipes, generic advice.
 - 1-3 maintained exemplar paths for common changes
 - gaps: untraced branches, skipped variants, unresolved intent conflicts

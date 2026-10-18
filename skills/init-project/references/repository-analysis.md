@@ -24,12 +24,12 @@ Keep:
 - boundary purpose and allowed dependency direction
 - authoritative definitions and extension points
 - ownership of validation, state, permissions, and side effects
-- doc-worthy flows per `## Flows`
+- hidden flow ownership or ordering per `## Flows`
 - durable domain or safety invariants
 - fastest relevant validation and unusual test prerequisites
 - plausible wrong turns not obvious from nearby code
-- implementation rules enforced by code or tests that agents could easily bypass: layer order, shared helpers, transaction handling, import syntax, public error handling, validation flow
-- exact helper or entry-point paths when using the wrong path would break a boundary
+- complex calculations, state, or async behavior -> entry/authority path + exploration warning
+- easy-to-bypass boundaries -> required helpers, layer order, transaction scope, validation/error paths, import conventions
 - 1-3 maintained exemplar paths for common changes
 
 Drop:
@@ -39,7 +39,10 @@ Drop:
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
 - duplicated parent guidance or human documentation
+- worked arithmetic, fixture values, test scenarios, ticket/rubric checklists, and coverage claims inferred from filenames
 - unsupported claims
+
+Keep investigation detail outside instructions. Test guidance -> fixture/assertion/response-control pointer + what it proves; distinguish mocks from persistence. Reuse existing guidance; omit generic checklists.
 
 ## Commands
 
@@ -52,28 +55,20 @@ Root `## Commands` -> max 10 lines. Group related commands on one line per purpo
 - scoped runs: one pattern line (workspace, package, single test) with example instead of per-target commands
 - destructive: own line; impact and required authorization
 
-Keep every command agents routinely run; drop only one-off, internal, or CI-only scripts. Short purpose notes inline in parentheses. Subtree-only commands -> nested file in Full mode.
+Keep every command agents routinely run; drop only one-off, internal, or CI-only scripts. Short purpose notes inline in parentheses. Commands live only in root; nested files never get `## Commands`. Subtree-specific runs -> covered by root scoped-run pattern.
 
 ## Flows
 
-Doc-worthy flow -> investigator reports at least one complexity signal, and agent changing flow would otherwise trace multiple files or boundaries to find required hops. Otherwise omit.
+Complexity signal prompts investigation, not documentation. Keep flow only when hidden ownership, ordering, or coupling creates consequential wrong turn. Prefer entry/authority pointer + warning; ordinary multi-file traversal alone does not justify flow section.
 
-Placement -> `## Flows` in nearest selected instruction file whose subtree contains every hop. Light -> root. Full -> create nested file when none exists at that level. One flow lives in one file; never split or repeat it.
+Placement -> `## Flows` in nested instruction file of domain owning flow's core rules and state writes; never root. Hops outside that subtree -> repository-relative paths. Full -> create nested file at domain root when none exists. Light -> no flows section; distill flow findings into root boundaries, invariants, pitfalls. One flow lives in one file; never split or repeat it.
 
-Per flow:
-
-- name; trigger -> entry path
-- hop chain: `A (path) -> B (path) -> C (path)`, marking async and process/service boundaries
-- where validation, auth, transactions, state writes, and side effects happen
-- invariants, ordering, failure/retry behavior agents could break
-- change set: files that must change together, required helpers
-
-Durable granularity: module/file hops and responsibilities. No line numbers, function bodies, or transient config values.
+Per flow -> trigger/entry path, rule/state owner, consequential hazard. Add shortest hop chain, boundary, or co-change/helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values.
 
 ## Shape
 
-Root sections as useful: repository map, runtime, commands, architecture/domain, flows, testing, agent hints, maintenance.
+Root sections as useful: repository map, runtime, commands, architecture/domain, testing, agent hints, maintenance. Never flows.
 
 Add `## Testing` only where test structure or setup changes agent decisions. Cover relevant layers/frameworks, file or config locations, harnesses/fixtures/providers, prerequisites, and E2E ownership. Keep runnable commands only in `## Commands`; do not repeat them under Testing.
 
-Nested files contain only local architecture, local flows, local commands, local testing, and local hazards. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
+Nested files contain only local architecture, local flows, local testing, and local hazards; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.

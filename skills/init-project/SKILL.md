@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Initialize Project Agent Context
 
-Create harness-agnostic repository context files with maintenance instructions. 
+Create minimal harness-agnostic navigation and warnings; leave detailed explanations in source.
 
 ## Scope
 
@@ -35,8 +35,8 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 ## Modes
 
-- Light -> dispatch 2-3 subagents total for initial read-only scans. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only; doc-worthy flows go to root. Do not modify nested instruction files.
-- Full -> dispatch only subagents needed for initial read-only scans of meaningful independent boundaries, maximum 10 total. Prefer one non-overlapping domain per subagent. Fewer than 10 is expected when evidence does not justify more. Nested files may exist solely to hold subtree-local flows.
+- Light -> dispatch 2-3 subagents total for initial read-only scans. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only. Do not modify nested instruction files. No `## Flows`; flow findings inform root boundaries, invariants, pitfalls only.
+- Full -> dispatch only subagents needed for initial read-only scans of meaningful independent boundaries, maximum 10 total. Prefer one non-overlapping domain per subagent. Fewer than 10 is expected when evidence does not justify more. Nested files may exist solely to hold domain flows.
 - Both modes -> main agent performs shallow root scan and chooses boundaries; subagents trace application flow in depth within assigned scope. Main agent owns cross-domain synthesis, including flows spanning scopes, and initial writes. After every run, reuse one completed scan subagent for final review and deduplication, including root-only runs. Review does not increase selected mode subagent total.
 
 ## Workflow
@@ -49,7 +49,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - CLAUDE-only setup -> write `CLAUDE.md`.
    - Light -> root only.
    - Full -> root plus only useful nested files.
-   - Flows -> apply threshold, placement, and format from repository analysis `## Flows`; below threshold -> omit.
+   - Flows -> apply threshold, placement, and format from repository analysis `## Flows`; below threshold -> omit. Root never gets `## Flows`.
 5. AGENTS.md + Claude hook only -> install durable support:
 
    `node "<skill-directory>/scripts/install-assets.mjs" --repo "<repository-root>"`
@@ -62,21 +62,21 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - Compare owned files with all applicable root and nested primary instruction files for exact and semantic duplication. Single-file runs still require full within-file deduplication.
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
-   - Compress flow wording without dropping hops, ownership, invariants, or change sets.
+   - Replace flow narration with source pointer + consequential hazard; retain hop chains only where hidden ownership or ordering needs explanation.
    - Fit root `## Commands` in max 10 lines by grouping related commands per line by purpose (setup/run, checks, tests, gates, scoped-run pattern, destructive with impact). Do not drop commands agents routinely run.
+   - Remove any `## Commands` section or runnable commands from nested files; root scoped-run pattern covers subtree targets.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
-8. Before finalizing, test draft against a typical cross-layer change. If an agent would need to rediscover a required layer, helper, import convention, transaction mechanism, validation step, or flow hop, add missing rule, flow, or exemplar path.
+8. Probe typical change and read-only investigation: can agent find behavioral authority, required helpers, fixture/assertion examples, and timing controls? Fill consequential gaps with smallest source pointer or warning. Delete guidance whose removal changes no investigation or implementation decision.
 
 ## Generated content
 
-- Minimal: every line must change agent behavior or avoid meaningful rediscovery.
-- Prefer where and why: authoritative paths, ownership, rationale, durable invariants, hazards, and surprising constraints. Reference detailed docs with plain repository-relative paths; never use Markdown links or copy doc content.
+- Default omit. Keep source pointer + reason to inspect; complex logic needs entry point, authority, and non-obvious risk, not copied walkthrough. Reference detailed docs with plain repository-relative paths; never use Markdown links or copy doc content.
 - Avoid volatile implementation prose (line numbers, function bodies, transient values), inventories, exhaustive environment lists, generic coding advice, and host-provided agent or skill-routing rules.
 - Root file -> global context. Full mode nested files -> subtree-only deltas; never repeat inherited rules.
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
-- Add `## Pitfalls` to each generated instruction file. Capture verified, non-obvious failure modes and proven workarounds within that file's scope; never invent entries to fill section.
+- `## Pitfalls` only when verified local failure modes justify section; omit empty sections and speculative traps.
 
 Add following rules to root instruction file only; never to nested files:
 
@@ -101,10 +101,12 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm bundled LLM-writing rules were not copied outside skill directory.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
-- Confirm each generated instruction file contains `## Pitfalls` and only evidence-backed entries.
+- Confirm pitfalls are evidence-backed; remove empty or low-value sections.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
-- Confirm each `## Flows` entry is investigator-backed, meets doc-worthy threshold, lives in nearest file containing every hop, appears once, and references existing paths.
+- Confirm each `## Flows` entry is investigator-backed, meets doc-worthy threshold, lives in owning domain nested file, appears once, and references existing paths.
+- Confirm root instruction file has no `## Flows`.
 - Confirm root `## Commands` has max 10 lines.
-- Review generated instructions for unsupported claims, volatile detail, and excess length.
+- Confirm nested instruction files have no `## Commands`.
+- Review generated instructions for unsupported claims, volatile detail, and excess length. Verify strong claims against implementation and meaningful exceptions.
 - Review diff. Run application tests only if changes extend beyond agent-context files.
 - Report changed files, chosen boundaries, documented and skipped flows, validation, evidence gaps, and that the initializer directory may be deleted after success.
