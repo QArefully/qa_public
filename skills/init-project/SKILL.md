@@ -23,9 +23,11 @@ First response -> ask following questions, then stop:
 
 `2. Which run do you want: Light (2-3 subagents, root instruction file only) or Full (up to 10 subagents, root plus useful nested instruction files)? Both trace application flow in depth.`
 
-`3. Any project context, history, constraints, or known traps that would help agents understand it? Reply "skip" if none.`
+`3. Which model should scan subagents use? Name a model available in this harness, or reply "inherit" to use my current model.`
 
-Do not inspect repository or spawn subagents until user selects file and mode. Preserve both choices for entire run.
+`4. Any project context, history, constraints, or known traps that would help agents understand it? Reply "skip" if none.`
+
+Do not inspect repository or spawn subagents until user selects file, mode, and scan model. Preserve all three choices for entire run. Named model unavailable in harness -> tell user, ask again; never silently substitute.
 
 ## Files
 
@@ -43,8 +45,8 @@ Do not inspect repository or spawn subagents until user selects file and mode. P
 
 1. Resolve repository root. Read [repository analysis](references/repository-analysis.md) and bundled [LLM-oriented Markdown rules](assets/llm-oriented-markdowns/llm-oriented-markdowns.md).
 2. Inspect manifests, executable config, tests, CI, maintained docs, existing agent instructions, flow entry points, and shallow repository structure. Code and executable config win conflicts. Report doc/code and intent conflicts to user in final report; never record them in generated files.
-3. Identify core boundaries where local context or flow changes implementation choices. Read [flow investigation brief](references/flow-investigation.md); it defines subagent method, complexity signals, and output. Dispatch read-only subagents per selected mode, each with full brief, exact non-overlapping scope, repository root, and user context. Merge findings and join flows crossing scopes.
-4. Before writing, assess whether findings explain consequential behavior. Conflicting reports, unresolved cross-domain behavior, unclear invariants/failure handling, or weak evidence -> resolve locally or dispatch targeted second-round investigation. Prefer reusing completed subagents; new agents stay within selected mode limits. Give each follow-up one question, existing findings, bounded scope (may cross initial domains), and evidence needed to resolve it. Complexity alone does not require another round. Resolve material gaps or report limits explicitly; never turn uncertainty into documented fact.
+3. Identify core boundaries where local context or flow changes implementation choices. Read [flow investigation brief](references/flow-investigation.md); it defines subagent method, complexity signals, and output. Dispatch read-only subagents per selected mode on selected scan model ("inherit" -> no model override), each with full brief, exact non-overlapping scope, repository root, and user context. Merge findings and join flows crossing scopes.
+4. Before writing, assess whether findings explain consequential behavior. Conflicting reports, unresolved cross-domain behavior, unclear invariants/failure handling, or weak evidence -> resolve locally or dispatch targeted second-round investigation. Prefer reusing completed subagents; new agents stay within selected mode limits and use selected scan model. Give each follow-up one question, existing findings, bounded scope (may cross initial domains), and evidence needed to resolve it. Complexity alone does not require another round. Resolve material gaps or report limits explicitly; never turn uncertainty into documented fact.
 5. Write selected primary instruction files per selected mode. Merge valuable existing rules in selected files.
    - Light -> root only.
    - Full -> root plus only useful nested files.
@@ -85,6 +87,7 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - AGENTS.md -> confirm no `CLAUDE.md` or `.claude/` file changed.
 - CLAUDE.md -> confirm no `AGENTS.md` or `.agents/` file changed.
 - Light -> confirm no nested instruction file changed.
+- Confirm all scan subagents used selected scan model.
 - Confirm fresh reviewer completed deduplication, including root-only runs.
 - Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
 - Confirm bundled LLM-writing rules were not copied outside skill directory.
