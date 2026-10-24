@@ -13,7 +13,7 @@ Main agent root scan -> shallow; enough to choose boundaries and brief investiga
 - destructive actions, generated boundaries, external effects, and common traps
 - documentation paths to reference instead of repeat
 
-Investigator scans -> deep flow tracing per references/flow-investigation.md. Main agent merges findings, joins flows crossing scopes via reported contracts, and reads code to close gaps.
+Investigator scans -> deep flow tracing per references/flow-investigation.md. Main agent merges findings and joins flows crossing scopes via reported contracts; follow-up investigation per SKILL.md workflow.
 
 ## Select content
 
@@ -22,13 +22,14 @@ Except for runtime requirements and exact commands, prefer where and why over cu
 Keep:
 
 - boundary purpose and allowed dependency direction
+- consequential architectural decisions and nonstandard structure -> behavior, constraints, and supported rationale; unknown rationale -> mark unknown, retain verified architecture
 - authoritative definitions and extension points
 - ownership of validation, state, permissions, and side effects
 - hidden flow ownership or ordering per `## Flows`
 - durable domain or safety invariants
 - fastest relevant validation and unusual test prerequisites
-- plausible wrong turns not obvious from nearby code
-- complex calculations, state, or async behavior -> entry/authority path + exploration warning
+- verified non-obvious failure modes -> implementation, test, or observed incident evidence; omit speculative traps
+- complex domains, calculations, state, or async behavior -> what complicates safe changes, entry/authority path, and coupling or ordering to inspect; test pointers where useful
 - easy-to-bypass boundaries -> required helpers, layer order, transaction scope, validation/error paths, import conventions
 - 1-3 maintained exemplar paths for common changes
 
@@ -72,3 +73,5 @@ Root sections as useful: repository map, runtime, commands, architecture/domain,
 Add `## Testing` only where test structure or setup changes agent decisions. Cover relevant layers/frameworks, file or config locations, harnesses/fixtures/providers, prerequisites, and E2E ownership. Keep runnable commands only in `## Commands`; do not repeat them under Testing.
 
 Nested files contain only local architecture, local flows, local testing, and local hazards; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
+
+Full -> root may point to owning nested instructions when consequential complex domain would otherwise be easy to miss; keep explanation only in owning file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.

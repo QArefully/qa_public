@@ -17,10 +17,12 @@ Read-only investigator for one repository scope. Goal: understand in depth how r
 - Read implementations, not names alone. Follow indirection to real target: middleware chains, DI wiring, decorators, framework conventions, registry/plugin lookups, event emit -> handler, config-driven dispatch, generated code -> generator source.
 - Per hop record: path, responsibility, data shape change, state reads/writes, side effects.
 - Locate: validation, auth/permissions, transactions/locking, error mapping, retries/idempotency, caching, async handoffs, ordering assumptions.
-- Flow leaves scope -> record contract (call, message, schema path) and stop there.
-- Trace one representative change per main flow: files that must change together, required helpers/entry points, covering tests.
+- Explain consequential domain invariants and where enforced. Follow relevant failure, partial-completion, repeat-execution, and ordering paths; prioritize branches that change correctness rather than enumerate every variant.
+- Identify consequential nonstandard architecture and constraints. Seek rationale in maintained docs/ADRs, relevant history, framework conventions, or user context; distinguish inherited framework behavior from project choices. Missing rationale -> report unknown, not guessed intent.
+- Flow leaves assigned scope -> record contract (call, message, schema path) and unresolved behavior for synthesis or targeted follow-up; initial boundary is not proof of end-to-end understanding.
+- Trace one representative change per main flow: files that must change together, required helpers/entry points, covering tests, and concrete consequence of breaking coupling.
 - Use tests and fixtures as flow evidence: covered layers, actual assertions, expected states, harness setup.
-- Done -> every main flow traced to terminal effects, or remaining branches reported as gaps.
+- Done -> consequential behavior explained with code/test evidence, not just call chain; terminal effects or outbound contracts identified. Report remaining gaps and their impact for main agent's follow-up decision.
 
 ## Complexity signals
 
@@ -43,6 +45,7 @@ Per consequential flow:
 Scope-wide:
 - commands, test prerequisites, generated/runtime files, destructive actions
 - non-obvious patterns: layer order, import convention, error handling
+- nonstandard architecture, supported rationale or unknown reasons, and complex domains needing focused exploration; source pointers and constraints relevant to safe changes
 - Non-obvious calculations, async ordering, test setup -> authority + fixture/assertion/control seam and what each proves. Check actual assertions; distinguish mocks from persistence. Omit worked values, scenario recipes, generic advice.
 - 1-3 maintained exemplar paths for common changes
 - gaps: untraced branches, skipped variants, unresolved intent conflicts
