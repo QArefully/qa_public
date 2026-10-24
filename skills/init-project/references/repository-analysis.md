@@ -4,7 +4,7 @@
 
 Evidence order: executable config/code -> tests/CI -> maintained docs -> existing instructions -> user context.
 
-Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts. Large files -> skim (search, outline, partial reads), no full dumps; deep reading belongs to scouts. Existing instruction files and manifests -> read fully. Cover:
+Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts. Search/outline first; read relevant ranges in large manifests, config, tests, and docs rather than full dumps. Existing instruction files -> read fully. Deep flow reading belongs to scouts. Shared foundation repeatedly needed -> optional compact digest in run folder or early platform/package scout; digest remains leads, each claim needs source evidence. Cover:
 
 - main applications, services, packages, infrastructure, and test harnesses
 - runtime and package-manager requirements
@@ -17,9 +17,10 @@ Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts.
 
 Orchestrator evidence rule, applied before placement:
 
-- documentable -> checker confirmed/corrected (corrected statement replaces original), or high-confidence scout claim not sent to checker
+- documentable -> checker confirmed/corrected (corrected statement replaces original), or high-confidence scout claim not requiring independent check
 - refuted -> never document
-- unresolved, unchecked low-confidence, or checker-listed new hazard (= low) -> orchestrator verifies locally or re-checks; security/money -> re-check via checker, not local; still open -> report as gap, never document
+- independent checker required -> low-confidence, absence/exclusivity, security/money claims, and existing-instruction facts not scout-verified; applies to late additions too
+- unresolved or checker-listed new hazard (= low) -> verify or re-check under same rule; still open -> report as gap, never document
 - existing instruction files -> factual claims = leads under same rule; user/process directives (workflow, authorization, style) exempt, kept, placed per `## Placement`
 
 Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
@@ -47,7 +48,7 @@ Drop:
 - duplicated parent guidance or human documentation
 - worked numeric examples (non-obvious rule as one statement + authority path stays), fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings, and coverage claims inferred from filenames
 
-Keep investigation detail outside instructions. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
+Keep investigation detail outside instructions. Scout/checker output -> guidance-worthy facts and consequential gaps, not general bug audit or test-absence inventory. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
 
 ## Placement
 
@@ -96,4 +97,4 @@ Root sections as useful: runtime, commands, architecture per `## Architecture`, 
 
 Nested files contain only local architecture, flows, testing, and pitfalls; no commands. Create one when subtree owns doc-worthy flow, or has distinct decisions, invariants, or risks not evident from its entry point. Small file fine; size alone never folds content into parent.
 
-Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.
+Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files, except mandatory root Maintenance rule's generic update instruction. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.

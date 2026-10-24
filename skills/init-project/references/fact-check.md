@@ -1,6 +1,6 @@
 # Fact-check brief
 
-Orchestrator -> give checker this brief, plus repository root, run folder path, assigned verdict file path, scope, and claims: scout claims as note path + claim IDs; other claims (e.g. existing-instruction facts) inline with orchestrator-assigned ID (e.g. `E1`), statement, evidence path, confidence. Checker does not inherit skill or conversation.
+Orchestrator -> give checker this brief, plus repository root, run folder path, assigned verdict file path, scope, and exact intended statements/conditions. Scout claim unchanged -> note path + claim ID; narrowed/reworded claim -> include intended statement and source IDs. Other claims (e.g. existing-instruction facts) -> inline ID (e.g. `E1`), statement, evidence path, confidence. Group overlapping claims by shared authority; identify all IDs each shared check must cover. Checker does not inherit skill or conversation.
 
 ## Role
 
@@ -12,8 +12,9 @@ Verifier. Goal: catch wrong or overbroad scout or existing-instruction claims be
 
 ## Method
 
-- Evidence path and search basis = starting points, not proof. `.init-project/` notes = claim source, not evidence.
+- Evidence path and search basis = starting points, not proof. Run-folder artifacts, wherever stored, = claim source, not evidence. Verify independently of scout conclusions.
 - Read implementation behind each claim; names, comments, docs, or tests alone do not confirm.
+- Check shared proposition once per authority; reuse result for covered IDs only when scope/conditions match. Distinct conditions -> separate check. Narrowed claim -> verify intended wording, not discarded broader assertion.
 - Absence/exclusivity claims ("never", "only", "all", "no X") -> search for counterexamples beyond given paths and scout search basis: other callers, entry points, config, generated code.
 - Check meaningful exceptions: conditional branches, flags, error/retry paths, alternate callers that narrow claim.
 - Spend effort where wrong claim costs most.
@@ -21,7 +22,7 @@ Verifier. Goal: catch wrong or overbroad scout or existing-instruction claims be
 
 ## Verdicts
 
-Per claim in verdict file -> claim ref (note path + ID; inline claim -> its ID) + one verdict:
+Per independently checked claim or shared proposition -> covered claim refs (note path + IDs; inline claim -> ID), checked statement/scope if reworded, and one verdict:
 - confirmed -> evidence path
 - corrected -> correct statement + evidence
 - refuted -> counter-evidence
