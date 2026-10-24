@@ -35,7 +35,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 
 ## Modes
 
-- Light -> use 2-3 scan subagents total across investigation rounds. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only. Do not modify nested instruction files. No `## Flows`; flow findings inform root boundaries, invariants, pitfalls only.
+- Light -> use 2-3 scan subagents total across investigation rounds. Split repository into broad main domains. Merge small or supporting areas into nearest main domain; do not create separate scans for minor boundaries. Create or update selected root instruction file only. Do not modify nested instruction files. No `## Flows`; flow findings inform root architecture, invariants, pitfalls only.
 - Full -> use only scan subagents needed for meaningful independent boundaries, maximum 10 total across investigation rounds. Prefer one non-overlapping domain per initial scan subagent. Fewer than 10 is expected when evidence does not justify more. Nested files may exist solely to hold domain flows.
 - Both modes -> respect lower user or host agent limits. Main agent performs shallow root scan, chooses boundaries, owns cross-domain synthesis and initial writes. Subagents trace application flow in depth within assigned scope. After every run, reuse one completed scan subagent for final review and deduplication, including root-only runs. Review does not increase selected mode subagent total.
 
@@ -64,7 +64,8 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
    - Replace flow narration with source pointer + consequential hazard; retain hop chains only where hidden ownership or ordering needs explanation.
-   - Fit root `## Commands` in max 10 lines by grouping related commands per line by purpose (setup/run, checks, tests, gates, scoped-run pattern, destructive with impact). Do not drop commands agents routinely run.
+   - Fit root `## Commands` in max 5 lines per repository analysis `## Commands`; delete non-essential commands.
+   - Hold root `## Architecture` to repository analysis `## Architecture` scope; move single-domain detail to owning nested file, delete excluded content.
    - Remove any `## Commands` section or runnable commands from nested files; root scoped-run pattern covers subtree targets.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
 9. Probe typical change and read-only investigation: can agent find behavioral authority, required helpers, fixture/assertion examples, and timing controls? Fill consequential gaps with smallest source pointer or warning. Delete guidance whose removal changes no investigation or implementation decision.
@@ -108,7 +109,8 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
 - Confirm each `## Flows` entry is investigator-backed, meets doc-worthy threshold, lives in owning domain nested file, appears once, and references existing paths.
 - Confirm root instruction file has no `## Flows`.
-- Confirm root `## Commands` has max 10 lines.
+- Confirm root `## Commands` has max 5 lines, essential commands only.
+- Confirm root has `## Architecture` within repository analysis scope and no separate boundaries/overview/repository-map section.
 - Confirm nested instruction files have no `## Commands`.
 - Review generated instructions for unsupported claims, volatile detail, and excess length. Verify strong claims against implementation and meaningful exceptions.
 - Review diff. Run application tests only if changes extend beyond agent-context files.

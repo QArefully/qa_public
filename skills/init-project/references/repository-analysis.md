@@ -47,28 +47,38 @@ Keep investigation detail outside instructions. Test guidance -> fixture/asserti
 
 ## Commands
 
-Root `## Commands` -> max 10 lines. Group related commands on one line per purpose instead of one command per line:
+Root `## Commands` -> max 5 lines, essential only: what agent needs to set up, run, and validate typical change. One line per purpose, related commands grouped:
 
 - setup/run: install, dev/run, seed
-- checks: typecheck, lint, format, custom static guards
-- tests: per-layer or per-kind test commands
+- checks: typecheck, lint, format check, custom static guards
+- tests: main test command + one scoped-run pattern with example (workspace, package, single test)
 - gates: aggregate scripts with what each runs
-- scoped runs: one pattern line (workspace, package, single test) with example instead of per-target commands
-- destructive: own line; impact and required authorization
+- destructive: impact and required authorization
 
-Keep every command agents routinely run; drop only one-off, internal, or CI-only scripts. Short purpose notes inline in parentheses. Commands live only in root; nested files never get `## Commands`. Subtree-specific runs -> covered by root scoped-run pattern.
+Drop interactive/UI modes, tooling self-tests and profilers, repo-wide auto-fix rewriters, build chains already run by install or gates, per-layer/per-target variants derivable from aggregate or scoped pattern, one-off and CI-only scripts. Short purpose notes inline in parentheses. Commands live only in root; nested files never get `## Commands`.
+
+## Architecture
+
+Root `## Architecture` -> repository-wide structure no single subtree shows; replaces boundary, overview, repository-map sections. Contents:
+
+- ownership: which app/package owns which concern; allowed dependency direction + enforcing config
+- sources of truth: where canonical logic, configuration, schemas live
+- cross-boundary decisions and nonstandard solutions -> constraint + supported rationale; unknown rationale -> mark unknown
+- hidden cross-boundary dependencies: couplings, build/resolution or ordering effects invisible on casual read
+
+Exclude request/layer walkthroughs, wiring or add-a-feature recipes, process/port/env/file inventories, conventions visible in neighbouring code. Single-domain detail -> owning nested file (Full) or separate root domain guidance (Light). Keep bullet only when it changes navigation or implementation decision.
 
 ## Flows
 
 Complexity signal prompts investigation, not documentation. Keep flow only when hidden ownership, ordering, or coupling creates consequential wrong turn. Prefer entry/authority pointer + warning; ordinary multi-file traversal alone does not justify flow section.
 
-Placement -> `## Flows` in nested instruction file of domain owning flow's core rules and state writes; never root. Hops outside that subtree -> repository-relative paths. Full -> create nested file at domain root when none exists. Light -> no flows section; distill flow findings into root boundaries, invariants, pitfalls. One flow lives in one file; never split or repeat it.
+Placement -> `## Flows` in nested instruction file of domain owning flow's core rules and state writes; never root. Hops outside that subtree -> repository-relative paths. Full -> create nested file at domain root when none exists. Light -> no flows section; distill flow findings into root architecture, invariants, pitfalls. One flow lives in one file; never split or repeat it.
 
 Per flow -> trigger/entry path, rule/state owner, consequential hazard. Add shortest hop chain, boundary, or co-change/helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values.
 
 ## Shape
 
-Root sections as useful: repository map, runtime, commands, architecture/domain, testing, agent hints, maintenance. Never flows.
+Root sections as useful: runtime, commands, architecture per `## Architecture`, testing, agent hints, maintenance. Never flows.
 
 Add `## Testing` only where test structure or setup changes agent decisions. Cover relevant layers/frameworks, file or config locations, harnesses/fixtures/providers, prerequisites, and E2E ownership. Keep runnable commands only in `## Commands`; do not repeat them under Testing.
 
