@@ -23,9 +23,11 @@ First response -> ask following questions, then stop:
 
 `2. Which run do you want: Light (2-3 scan subagents, root instruction file only) or Full (up to 10 scan subagents, root plus useful nested instruction files)? Both trace application flow in depth; fact-check and review agents run in addition.`
 
-`3. Which model should scan subagents use? Name a model available in this harness, or reply "inherit" to use my current model. Fact-check, writer, review, and fixer agents always use my current model.`
+`3. Which model should scan subagents Use? A cheap model is recommended.`
 
 `4. Any project context, history, constraints, or known traps that would help agents understand it? Reply "skip" if none.`
+
+Question 3 -> harness knows available cheap model -> replace `A cheap model` with `A cheap model (<model name>)`, using actual model name. Availability or cost unknown -> keep generic wording; never guess.
 
 Do not inspect repository or spawn subagents until user selects file, mode, and scan model. Preserve all three choices for entire run. Named model unavailable in harness -> tell user, ask again; never silently substitute.
 
