@@ -1,6 +1,6 @@
 ---
 name: init-project
-description: Initialize or refresh concise AGENTS.md and/or CLAUDE.md from repository scans that trace application flow in depth
+description: Initialize or refresh concise AGENTS.md or CLAUDE.md from repository scans that trace application flow in depth
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Create minimal harness-agnostic navigation and warnings; leave detailed explanat
 
 ## Scope
 
-- Copying this skill to another repository -> copy entire `skills/init-project/` directory, including all `assets/`, `references/`, and `scripts/` files. Exclude nothing.
+- Copying this skill to another repository -> copy entire `skills/init-project/` directory, including all `assets/` and `references/` files. Exclude nothing.
 - Running this skill -> use bundled `assets/llm-oriented-markdowns/llm-oriented-markdowns.md` only within this workflow; do not copy it outside skill directory.
 
 ## Start
@@ -19,19 +19,19 @@ First response -> ask following questions, then stop:
 
 `Before I scan repository:`
 
-`1. Which setup do you want: A: AGENTS.md + Claude hook (harness-agnostic setup), B: only AGENTS.md, or C: only CLAUDE.md?`
+`1. Which file do you want: AGENTS.md or CLAUDE.md?`
 
 `2. Which run do you want: Light (2-3 subagents, root instruction file only) or Full (up to 10 subagents, root plus useful nested instruction files)? Both trace application flow in depth.`
 
 `3. Any project context, history, constraints, or known traps that would help agents understand it? Reply "skip" if none.`
 
-Do not inspect repository or spawn subagents until user selects setup and mode. Preserve both choices for entire run.
+Do not inspect repository or spawn subagents until user selects file and mode. Preserve both choices for entire run.
 
-## Setups
+## Files
 
-- AGENTS.md + Claude hook -> `AGENTS.md` is source of truth. Generate root and mode-selected nested `AGENTS.md` files. Install SessionStart hook that injects AGENTS context into Claude Code. Full mode also creates sibling `CLAUDE.md` pointers for nested `AGENTS.md` files. Do not create root `CLAUDE.md`; hook injects root context. Also injects skills descriptions from `.agents/skills/` to Claude's context.
-- Only AGENTS.md -> generate root and mode-selected nested `AGENTS.md` files. Do not create, update, or delete `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` files.
-- Only CLAUDE.md -> generate root and mode-selected nested `CLAUDE.md` files. Do not create, update, or delete `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` files.
+- AGENTS.md -> generate root and mode-selected nested `AGENTS.md` files. Do not create, update, or delete `CLAUDE.md` or `.claude/` files.
+- CLAUDE.md -> generate root and mode-selected nested `CLAUDE.md` files. Do not create, update, or delete `AGENTS.md` or `.agents/` files.
+- Selected file name = primary instruction file for rest of workflow.
 
 ## Modes
 
@@ -45,19 +45,11 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 2. Inspect manifests, executable config, tests, CI, maintained docs, existing agent instructions, flow entry points, and shallow repository structure. Code and executable config win conflicts; report unresolved intent conflicts.
 3. Identify core boundaries where local context or flow changes implementation choices. Read [flow investigation brief](references/flow-investigation.md); it defines subagent method, complexity signals, and output. Dispatch read-only subagents per selected mode, each with full brief, exact non-overlapping scope, repository root, and user context. Merge findings and join flows crossing scopes.
 4. Before writing, assess whether findings explain consequential behavior. Conflicting reports, unresolved cross-domain behavior, unclear invariants/failure handling, or weak evidence -> resolve locally or dispatch targeted second-round investigation. Prefer reusing completed subagents; new agents stay within selected mode limits. Give each follow-up one question, existing findings, bounded scope (may cross initial domains), and evidence needed to resolve it. Complexity alone does not require another round. Resolve material gaps or report limits explicitly; never turn uncertainty into documented fact.
-5. Write instructions matching selected setup and mode. Merge valuable existing rules in selected files.
-   - AGENTS setups -> write `AGENTS.md`.
-   - CLAUDE-only setup -> write `CLAUDE.md`.
+5. Write selected primary instruction files per selected mode. Merge valuable existing rules in selected files.
    - Light -> root only.
    - Full -> root plus only useful nested files.
    - Flows -> apply threshold, placement, and format from repository analysis `## Flows`; below threshold -> omit. Root never gets `## Flows`.
-6. AGENTS.md + Claude hook only -> install durable support:
-
-   `node "<skill-directory>/scripts/install-assets.mjs" --repo "<repository-root>"`
-
-   Installer adds context script and Claude hook. Do not copy bundled LLM-writing rules outside skill directory. Review reported conflicts before using `--replace-managed` or `--accept-existing-managed`.
-7. AGENTS.md + Claude hook with Full mode -> add sibling `CLAUDE.md` pointers for generated or updated nested `AGENTS.md` files. Each pointer directs Claude to read sibling `AGENTS.md`. Do not create root `CLAUDE.md`.
-8. After initial writes, assign final review and deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files: `AGENTS.md` for AGENTS setups, `CLAUDE.md` for CLAUDE-only setup. Subagent must:
+6. After initial writes, assign final review and deduplication to one completed scan subagent. Grant edit ownership only for generated or updated primary instruction files. Subagent must:
    - Read `<skill-directory>/assets/llm-oriented-markdowns/llm-oriented-markdowns.md` before editing; follow it for all edits.
    - Enforce every bundled writing and formatting rule in each owned file, including terse prose, linear structure, compact formatting, flat lists, and prohibited constructs.
    - Compare owned files with all applicable root and nested primary instruction files for exact and semantic duplication. Single-file runs still require full within-file deduplication.
@@ -69,8 +61,8 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - Hold root `## Architecture` to repository analysis `## Architecture` scope; move single-domain detail to owning nested file, delete excluded content.
    - Remove any `## Commands` section or runnable commands from nested files; root scoped-run pattern covers subtree targets.
    - Edit files directly and report moved or deleted guidance. Do not return recommendations only.
-9. Probe typical change and read-only investigation: can agent find behavioral authority, required helpers, fixture/assertion examples, and timing controls? Fill consequential gaps with smallest source pointer or warning. Delete guidance whose removal changes no investigation or implementation decision.
-10. Missing architectural rationale after investigation -> optionally ask user at end why consequential choices were made. Finish supported documentation first; unknown rationale never blocks documenting verified nonstandard architecture. Incorporate answer when available; never invent reasons.
+7. Probe typical change and read-only investigation: can agent find behavioral authority, required helpers, fixture/assertion examples, and timing controls? Fill consequential gaps with smallest source pointer or warning. Delete guidance whose removal changes no investigation or implementation decision.
+8. Missing architectural rationale after investigation -> optionally ask user at end why consequential choices were made. Finish supported documentation first; unknown rationale never blocks documenting verified nonstandard architecture. Incorporate answer when available; never invent reasons.
 
 ## Generated content
 
@@ -79,15 +71,15 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Root file -> global context. Full mode nested files -> subtree-only deltas; never repeat inherited rules.
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
-- Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
-- Instruction files never reference other instruction files per repository analysis `## Shape`; only exception: step 7 sibling `CLAUDE.md` pointer stubs.
+- Do not reference initializer plumbing or skill locations/discovery in generated files.
+- Instruction files never reference other instruction files per repository analysis `## Shape`.
 - `## Pitfalls` only for verified local failure modes per repository analysis; omit empty sections.
 
 Add following rules to root instruction file only; never to nested files:
 
 "
 # Maintenance
-Update this file or closest nested AGENTS.md/CLAUDE.md when code invalidates guidance; durable boundaries, hazards, or sources of truth change; or work reveals reusable lessons, pitfall workarounds, or user instructions. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
+Update this file or closest nested instruction file when code invalidates guidance; durable boundaries, hazards, or sources of truth change; or work reveals reusable lessons, pitfall workarounds, or user instructions. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
 
 
 # AI Documentation and Code Comments
@@ -96,17 +88,15 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 
 ## Verify
 
-- AGENTS.md + Claude hook -> run `node <repository-root>/scripts/agent-context.mjs` from root and one nested directory; confirm one effective SessionStart hook.
-- AGENTS.md + Claude hook with Full mode -> confirm sibling pointers for generated or updated nested `AGENTS.md` files.
-- Only AGENTS.md -> confirm no `CLAUDE.md`, `.claude/`, or `scripts/agent-context.mjs` file changed.
-- Only CLAUDE.md -> confirm no `AGENTS.md`, `.agents/`, `.claude/settings.json`, or `scripts/agent-context.mjs` file changed.
+- AGENTS.md -> confirm no `CLAUDE.md` or `.claude/` file changed.
+- CLAUDE.md -> confirm no `AGENTS.md` or `.agents/` file changed.
 - Light -> confirm no nested instruction file changed.
 - Confirm final review and deduplication subagent completed, including root-only runs.
 - Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
 - Confirm bundled LLM-writing rules were not copied outside skill directory.
-- Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
-- Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
-- Confirm no generated file references other instruction files, except `CLAUDE.md` pointer stubs.
+- Confirm generated instruction files use plain repository-relative paths, not Markdown links.
+- Confirm generated files omit initializer plumbing and skill-location notes.
+- Confirm no generated file references other instruction files.
 - Confirm pitfalls are evidence-backed; remove empty or low-value sections.
 - Confirm material investigation gaps are resolved or reported; nonstandard architecture is documented, rationale supported or explicitly unknown, and complex domains have actionable source pointers.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
@@ -116,5 +106,5 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm root has `## Architecture` within repository analysis scope and no separate boundaries/overview/repository-map section.
 - Confirm nested instruction files have no `## Commands`.
 - Review generated instructions for unsupported claims, volatile detail, and excess length. Verify strong claims against implementation and meaningful exceptions.
-- Review diff. Run application tests only if changes extend beyond agent-context files.
+- Review diff. Run application tests only if changes extend beyond instruction files.
 - Report changed files, chosen boundaries, documented and skipped flows, validation, evidence gaps, and that the initializer directory may be deleted after success.
