@@ -64,6 +64,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
    - Keep each fact or rule only in most relevant place: repository-wide guidance at root; subtree-only guidance in nearest applicable nested file.
    - Delete duplicate copies from owned files without weakening scope, exceptions, or meaning.
    - Replace flow narration with source pointer + consequential hazard; retain hop chains only where hidden ownership or ordering needs explanation.
+   - Delete pointers to, lists of, or summaries of other instruction files; rewrite needed cross-domain references as source paths + hazard.
    - Fit root `## Commands` in max 5 lines per repository analysis `## Commands`; delete non-essential commands.
    - Hold root `## Architecture` to repository analysis `## Architecture` scope; move single-domain detail to owning nested file, delete excluded content.
    - Remove any `## Commands` section or runnable commands from nested files; root scoped-run pattern covers subtree targets.
@@ -79,6 +80,7 @@ Do not inspect repository or spawn subagents until user selects setup and mode. 
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference initializer or setup plumbing in generated files: SessionStart/context injection, `agent-context.mjs`, skill locations/discovery, nested-skill notes.
+- Instruction files never reference other instruction files per repository analysis `## Shape`; only exception: step 7 sibling `CLAUDE.md` pointer stubs.
 - `## Pitfalls` only for verified local failure modes per repository analysis; omit empty sections.
 
 Add following rules to root instruction file only; never to nested files:
@@ -104,6 +106,7 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm bundled LLM-writing rules were not copied outside skill directory.
 - Confirm generated `AGENTS.md` and `CLAUDE.md` files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit SessionStart/context-injection and nested-skill-location notes.
+- Confirm no generated file references other instruction files, except `CLAUDE.md` pointer stubs.
 - Confirm pitfalls are evidence-backed; remove empty or low-value sections.
 - Confirm material investigation gaps are resolved or reported; nonstandard architecture is documented, rationale supported or explicitly unknown, and complex domains have actionable source pointers.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.

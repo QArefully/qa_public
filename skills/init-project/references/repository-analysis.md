@@ -84,4 +84,4 @@ Add `## Testing` only where test structure or setup changes agent decisions. Cov
 
 Nested files contain only local architecture, local flows, local testing, and local hazards; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
 
-Full -> root may point to owning nested instructions when consequential complex domain would otherwise be easy to miss; keep explanation only in owning file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.
+Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard, never instruction file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.
