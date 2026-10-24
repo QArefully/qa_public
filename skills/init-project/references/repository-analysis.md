@@ -4,7 +4,7 @@
 
 Evidence order: executable config/code -> tests/CI -> maintained docs -> existing instructions -> user context.
 
-Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts:
+Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts. Large files -> skim (search, outline, partial reads), no full dumps; deep reading belongs to scouts. Existing instruction files and manifests -> read fully. Cover:
 
 - main applications, services, packages, infrastructure, and test harnesses
 - runtime and package-manager requirements

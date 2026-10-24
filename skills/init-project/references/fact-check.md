@@ -1,6 +1,6 @@
 # Fact-check brief
 
-Orchestrator -> include full brief in every checker dispatch, plus repository root, run folder path, assigned verdict file path, scope, and claims (each: statement, evidence path, confidence, note ref; absence/exclusivity claims -> scout search basis). Checker does not inherit skill or conversation.
+Orchestrator -> give checker this brief, plus repository root, run folder path, assigned verdict file path, scope, and claims: scout claims as note path + claim IDs; other claims (e.g. existing-instruction facts) inline with orchestrator-assigned ID (e.g. `E1`), statement, evidence path, confidence. Checker does not inherit skill or conversation.
 
 ## Role
 
@@ -12,15 +12,16 @@ Verifier. Goal: catch wrong or overbroad scout or existing-instruction claims be
 
 ## Method
 
-- Evidence path and search basis = starting points, not proof. `.init-project/` = not repository evidence.
+- Evidence path and search basis = starting points, not proof. `.init-project/` notes = claim source, not evidence.
 - Read implementation behind each claim; names, comments, docs, or tests alone do not confirm.
 - Absence/exclusivity claims ("never", "only", "all", "no X") -> search for counterexamples beyond given paths and scout search basis: other callers, entry points, config, generated code.
 - Check meaningful exceptions: conditional branches, flags, error/retry paths, alternate callers that narrow claim.
 - Spend effort where wrong claim costs most.
+- Read efficiently: batch independent reads/searches when harness allows parallel calls; search -> read relevant ranges, not whole files; re-read only when needed.
 
 ## Verdicts
 
-Per claim in verdict file -> claim + one verdict:
+Per claim in verdict file -> claim ref (note path + ID; inline claim -> its ID) + one verdict:
 - confirmed -> evidence path
 - corrected -> correct statement + evidence
 - refuted -> counter-evidence
