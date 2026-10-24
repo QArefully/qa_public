@@ -4,7 +4,7 @@
 
 Evidence order: executable config/code -> tests/CI -> maintained docs -> existing instructions -> user context.
 
-Main agent root scan -> shallow; enough to choose boundaries and brief investigators:
+Orchestrator root scan -> shallow; enough to choose boundaries and brief scouts:
 
 - main applications, services, packages, infrastructure, and test harnesses
 - runtime and package-manager requirements
@@ -13,9 +13,14 @@ Main agent root scan -> shallow; enough to choose boundaries and brief investiga
 - destructive actions, generated boundaries, external effects, and common traps
 - documentation paths to reference instead of repeat
 
-Investigator scans -> deep flow tracing per references/flow-investigation.md. Main agent merges findings and joins flows crossing scopes via reported contracts; follow-up investigation per SKILL.md workflow.
-
 ## Select content
+
+Orchestrator evidence rule, applied before placement:
+
+- documentable -> checker confirmed/corrected (corrected statement replaces original), or high-confidence scout claim not sent to checker
+- refuted -> never document
+- unresolved, unchecked low-confidence, or checker-listed new hazard (= low) -> orchestrator verifies locally or re-checks; still open -> report as gap, never document
+- existing instruction files -> factual claims = leads under same rule; user/process directives (workflow, authorization, style) exempt, kept, placed per `## Placement`
 
 Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
 
@@ -41,9 +46,14 @@ Drop:
 - generic advice or host-provided agent workflow
 - duplicated parent guidance or human documentation
 - worked arithmetic, fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings, and coverage claims inferred from filenames
-- unsupported claims
 
 Keep investigation detail outside instructions. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
+
+## Placement
+
+Nested instruction files load only for agents working in their subtree. Each fact -> one home = subtree root of domain owning trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape`. Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree too thin per `## Shape` -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file.
+
+File set follows placement rule, not scout scopes: one scope may feed several files or none; one file may draw on several scopes.
 
 ## Commands
 
@@ -66,13 +76,13 @@ Root `## Architecture` -> repository-wide structure no single subtree shows; rep
 - cross-boundary decisions and nonstandard solutions -> constraint + supported rationale; unknown rationale -> mark unknown
 - hidden cross-boundary dependencies: couplings, build/resolution or ordering effects invisible on casual read
 
-Exclude request/layer walkthroughs, wiring or add-a-feature recipes, process/port/env/file inventories, conventions visible in neighbouring code. Single-domain detail -> owning nested file (Full) or separate root domain guidance (Light). Keep bullet only when it changes navigation or implementation decision.
+Exclude request/layer walkthroughs, wiring or add-a-feature recipes, process/port/env/file inventories, conventions visible in neighbouring code. Single-domain detail -> home per `## Placement`. Keep bullet only when it changes navigation or implementation decision.
 
 ## Flows
 
 Complexity signal prompts investigation, not documentation. Keep flow only when hidden ownership, ordering, or coupling creates consequential wrong turn. Prefer entry/authority pointer + warning; ordinary multi-file traversal alone does not justify flow section.
 
-Placement -> `## Flows` in nested instruction file of domain owning flow's core rules and state writes; never root. Hops outside that subtree -> repository-relative paths. Full -> create nested file at domain root when none exists. Light -> no flows section; distill flow findings into root architecture, invariants, pitfalls. One flow lives in one file; never split or repeat it.
+Placement -> `## Flows` in nested file per `## Placement` (domain owning flow's core rules and state writes); never root. Hops outside that subtree -> repository-relative paths. Light -> no flows section; distill flow findings into root architecture, invariants, pitfalls. One flow lives in one file; never split or repeat it.
 
 Per flow -> trigger/entry path, rule/state owner, consequential hazard. Add shortest hop chain, boundary, or co-change/helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values.
 
@@ -82,8 +92,8 @@ Root sections as useful: runtime, commands, architecture per `## Architecture`, 
 
 `## Testing` -> only where test structure or setup changes agent decisions; only in root and nested files whose subtree owns test harness or config (app/package level). Root -> cross-cutting only: which layer/framework runs where, shared prerequisites, E2E ownership; existing harness doc -> path pointer, no restatement. Feature-level nested files -> no `## Testing`; test caveat goes in flow entry or pitfall it qualifies. Runnable commands only in `## Commands`.
 
-`## Pitfalls` -> standalone verified hazards, root or nearest applicable nested file. Hazard bound to one flow -> stays in that flow entry.
+`## Pitfalls` -> standalone verified hazards, home per `## Placement`. Hazard bound to one flow -> stays in that flow entry.
 
 Nested files contain only local architecture, flows, testing, and pitfalls; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
 
-Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Fact or invariant relevant to multiple sibling domains -> one copy: domain owning rule or state write, else nearest common parent. Other domains needing it, or any cross-domain dependency -> source authority path + hazard only when needed, never instruction file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.
+Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.

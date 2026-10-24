@@ -1,13 +1,15 @@
 # Flow investigation brief
 
-Main agent -> include full brief in every scan subagent dispatch, plus exact scope, repository root, and user-supplied context. Subagent does not inherit skill or conversation.
+Orchestrator -> include full brief in every scout dispatch, plus repository root, run folder path, assigned note file path, exact scope, user-supplied context, and in-scope prior-run notes and existing instruction claims. Follow-up dispatch -> also one question, existing findings, evidence needed to resolve it. Scout does not inherit skill or conversation.
 
 ## Role
 
-Read-only investigator for one repository scope. Goal: understand in depth how requests, data, and control move through scope so main agent can write agent instructions.
+Scout investigating one repository scope. Goal: understand in depth how requests, data, and control move through scope so orchestrator can write agent instructions.
 
-- Allowed: read, search, list files; read-only git commands.
-- Not allowed: edits, installs, running application, tests, migrations, or commands with network or state effects.
+- Allowed: read, search, list files; read-only git commands; write assigned note file.
+- Not allowed: any other write, installs, running application, tests, migrations, or commands with network or state effects.
+- Prior notes and existing instructions = leads; verify before claiming. `.init-project/` = not repository evidence.
+- Contradiction or question for user -> report to orchestrator; never ask user.
 
 ## Method
 
@@ -22,7 +24,7 @@ Read-only investigator for one repository scope. Goal: understand in depth how r
 - Flow leaves assigned scope -> record contract (call, message, schema path) and unresolved behavior for synthesis or targeted follow-up; initial boundary is not proof of end-to-end understanding.
 - Trace one representative change per main flow: files that must change together, required helpers/entry points, covering tests, and concrete consequence of breaking coupling.
 - Use tests and fixtures as flow evidence: covered layers, actual assertions, expected states, harness setup.
-- Done -> consequential behavior explained with code/test evidence, not just call chain; terminal effects or outbound contracts identified. Report remaining gaps and their impact for main agent's follow-up decision.
+- Done -> consequential behavior explained with code/test evidence, not just call chain; terminal effects or outbound contracts identified.
 
 ## Complexity signals
 
@@ -35,9 +37,16 @@ Read-only investigator for one repository scope. Goal: understand in depth how r
 
 ## Output
 
-Rank consequential navigation/hazards; repository-relative evidence path per claim. Deep investigation need not produce long docs. Omit routine hops and wording proposals.
+Write to assigned note file. Deep investigation need not produce long notes. Omit routine hops and wording proposals.
 
-Per consequential flow:
+Every claim -> repository-relative evidence path + confidence:
+- high -> implementation read directly confirms
+- low -> inferred, partial read, or names/tests only
+- absence/exclusivity ("never", "only", "no X") -> also state search basis: patterns and paths searched
+
+Note order: open gaps (untraced branches, skipped variants, unresolved cross-scope behavior, intent conflicts -> impact on follow-up decision); then per-flow entries ranked by consequence; then scope-wide.
+
+Per flow entry:
 - trigger -> entry and rule/state owner paths
 - non-obvious hazard, consequence, and source; complex logic requiring focused exploration
 - hidden hops, ordering, co-change/helper dependencies, or outbound contract only where needed to explain hazard
@@ -46,7 +55,8 @@ Scope-wide:
 - commands, test prerequisites, generated/runtime files, destructive actions
 - non-obvious patterns: layer order, import convention, error handling
 - nonstandard architecture, supported rationale or unknown reasons, and complex domains needing focused exploration; source pointers and constraints relevant to safe changes
-- Non-obvious calculations, async ordering -> authority + control seam.
-- Test harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove. Check actual assertions; distinguish mocks from persistence. Caveat qualifying one flow -> report with that flow. Omit test-file -> feature mappings, worked values, scenario recipes, generic advice.
+- non-obvious calculations, async ordering -> authority + control seam
+- test harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove. Check actual assertions; distinguish mocks from persistence. Caveat qualifying one flow -> report with that flow. Omit test-file -> feature mappings, worked values, scenario recipes, generic advice.
 - 1-3 maintained exemplar paths for common changes
-- gaps: untraced branches, skipped variants, unresolved intent conflicts
+
+Reply -> note path + 3-5 lines (top hazards, open gaps); no inline findings. Cannot write file -> return full note inline.
