@@ -29,7 +29,7 @@ Keep:
 - durable domain or safety invariants
 - fastest relevant validation and unusual test prerequisites
 - verified non-obvious failure modes -> implementation, test, or observed incident evidence; omit speculative traps
-- complex domains, calculations, state, or async behavior -> what complicates safe changes, entry/authority path, and coupling or ordering to inspect; test pointers where useful
+- complex domains, calculations, state, or async behavior -> what complicates safe changes, entry/authority path, and coupling or ordering to inspect
 - easy-to-bypass boundaries -> required helpers, layer order, transaction scope, validation/error paths, import conventions
 - 1-3 maintained exemplar paths for common changes
 
@@ -40,10 +40,10 @@ Drop:
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
 - duplicated parent guidance or human documentation
-- worked arithmetic, fixture values, test scenarios, ticket/rubric checklists, and coverage claims inferred from filenames
+- worked arithmetic, fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings, and coverage claims inferred from filenames
 - unsupported claims
 
-Keep investigation detail outside instructions. Test guidance -> fixture/assertion/response-control pointer + what it proves; distinguish mocks from persistence. Reuse existing guidance; omit generic checklists.
+Keep investigation detail outside instructions. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
 
 ## Commands
 
@@ -78,10 +78,12 @@ Per flow -> trigger/entry path, rule/state owner, consequential hazard. Add shor
 
 ## Shape
 
-Root sections as useful: runtime, commands, architecture per `## Architecture`, testing, agent hints, maintenance. Never flows.
+Root sections as useful: runtime, commands, architecture per `## Architecture`, testing, pitfalls, maintenance. Never flows.
 
-Add `## Testing` only where test structure or setup changes agent decisions. Cover relevant layers/frameworks, file or config locations, harnesses/fixtures/providers, prerequisites, and E2E ownership. Keep runnable commands only in `## Commands`; do not repeat them under Testing.
+`## Testing` -> only where test structure or setup changes agent decisions; only in root and nested files whose subtree owns test harness or config (app/package level). Root -> cross-cutting only: which layer/framework runs where, shared prerequisites, E2E ownership; existing harness doc -> path pointer, no restatement. Feature-level nested files -> no `## Testing`; test caveat goes in flow entry or pitfall it qualifies. Runnable commands only in `## Commands`.
 
-Nested files contain only local architecture, local flows, local testing, and local hazards; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
+`## Pitfalls` -> standalone verified hazards, root or nearest applicable nested file. Hazard bound to one flow -> stays in that flow entry.
 
-Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard, never instruction file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.
+Nested files contain only local architecture, flows, testing, and pitfalls; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
+
+Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Fact or invariant relevant to multiple sibling domains -> one copy: domain owning rule or state write, else nearest common parent. Other domains needing it, or any cross-domain dependency -> source authority path + hazard only when needed, never instruction file. Light -> retain concise domain guidance at root. Complexity alone does not justify walkthrough or domain inventory.

@@ -46,6 +46,7 @@ Scope-wide:
 - commands, test prerequisites, generated/runtime files, destructive actions
 - non-obvious patterns: layer order, import convention, error handling
 - nonstandard architecture, supported rationale or unknown reasons, and complex domains needing focused exploration; source pointers and constraints relevant to safe changes
-- Non-obvious calculations, async ordering, test setup -> authority + fixture/assertion/control seam and what each proves. Check actual assertions; distinguish mocks from persistence. Omit worked values, scenario recipes, generic advice.
+- Non-obvious calculations, async ordering -> authority + control seam.
+- Test harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove. Check actual assertions; distinguish mocks from persistence. Caveat qualifying one flow -> report with that flow. Omit test-file -> feature mappings, worked values, scenario recipes, generic advice.
 - 1-3 maintained exemplar paths for common changes
 - gaps: untraced branches, skipped variants, unresolved intent conflicts
