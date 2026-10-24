@@ -102,6 +102,7 @@ Write any AI documentation (AGENTS/CLAUDE.md) or code comments in terse language
 - Confirm run folder has inner `.gitignore` (`*`) and manifest; repository `.gitignore` unchanged; no other writes outside primary instruction files.
 - Confirm scouts used selected scan model; checkers, writers, reviewer, fixers inherited orchestrator model.
 - Confirm refuted claims absent from generated files; unresolved claims omitted or reported as gaps.
+- Confirm every security or money factual claim in generated files, incl. claims added in steps 9-10, has checker verdict (confirmed/corrected).
 - Confirm fresh reviewer completed deduplication, including root-only runs, and did not edit run folder.
 - Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
 - Confirm bundled LLM-writing rules were not copied outside skill directory.

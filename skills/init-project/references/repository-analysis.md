@@ -19,7 +19,7 @@ Orchestrator evidence rule, applied before placement:
 
 - documentable -> checker confirmed/corrected (corrected statement replaces original), or high-confidence scout claim not sent to checker
 - refuted -> never document
-- unresolved, unchecked low-confidence, or checker-listed new hazard (= low) -> orchestrator verifies locally or re-checks; still open -> report as gap, never document
+- unresolved, unchecked low-confidence, or checker-listed new hazard (= low) -> orchestrator verifies locally or re-checks; security/money -> re-check via checker, not local; still open -> report as gap, never document
 - existing instruction files -> factual claims = leads under same rule; user/process directives (workflow, authorization, style) exempt, kept, placed per `## Placement`
 
 Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
@@ -31,7 +31,7 @@ Keep:
 - authoritative definitions and extension points
 - ownership of validation, state, permissions, and side effects
 - hidden flow ownership or ordering per `## Flows`
-- durable domain or safety invariants
+- durable domain or safety invariants, e.g. identity/uniqueness keys, granularity a rule applies at (item vs aggregate), write preconditions, which stale/concurrent result wins
 - fastest relevant validation and unusual test prerequisites
 - verified non-obvious failure modes -> implementation, test, or observed incident evidence; omit speculative traps
 - complex domains, calculations, state, or async behavior -> what complicates safe changes, entry/authority path, and coupling or ordering to inspect
@@ -45,13 +45,13 @@ Drop:
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
 - duplicated parent guidance or human documentation
-- worked arithmetic, fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings, and coverage claims inferred from filenames
+- worked numeric examples (non-obvious rule as one statement + authority path stays), fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings, and coverage claims inferred from filenames
 
 Keep investigation detail outside instructions. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
 
 ## Placement
 
-Nested instruction files load only for agents working in their subtree. Each fact -> one home = subtree root of domain owning trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape`. Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree too thin per `## Shape` -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file.
+Nested instruction files load only for agents working in their subtree. Each fact -> one home = subtree root of domain owning trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape`. Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree fails `## Shape` creation rule -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file.
 
 File set follows placement rule, not scout scopes: one scope may feed several files or none; one file may draw on several scopes.
 
@@ -94,6 +94,6 @@ Root sections as useful: runtime, commands, architecture per `## Architecture`, 
 
 `## Pitfalls` -> standalone verified hazards, home per `## Placement`. Hazard bound to one flow -> stays in that flow entry.
 
-Nested files contain only local architecture, flows, testing, and pitfalls; no commands. Create one only when subtree has distinct decisions or risks, or owns doc-worthy flow.
+Nested files contain only local architecture, flows, testing, and pitfalls; no commands. Create one when subtree owns doc-worthy flow, or has distinct decisions, invariants, or risks not evident from its entry point. Small file fine; size alone never folds content into parent.
 
 Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files: root -> nested, parent -> child, sibling -> sibling. Discovery handled outside generated content. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.
