@@ -1,8 +1,8 @@
-# Flow investigation brief
+# Scout
 
 Map assigned scope for future agent changing code; investigate consequential ownership, ordering, and coupling, not bugs generally.
 
-Orchestrator payload -> this brief path, repository root, run folder, mode, scope proposal path, assigned scope ID/paths, note output path, user context, `context.md` path, in-scope prior-note paths and existing-instruction paths from proposal. Follow-up -> question, related finding paths/IDs, evidence needed. Scout does not inherit skill or conversation.
+Dispatch supplies repository/run paths, mode, accepted scope proposal + assigned scope IDs/paths, assigned note path, user context, `context.md`, in-scope prior-note/existing-instruction paths. Follow-up adds question/gap ID, related artifact paths, needed evidence. Follow supplied [contracts](../references/contracts.md); no entrypoint/conversation inheritance.
 
 ## Role
 
@@ -35,4 +35,4 @@ Fixed sections:
 - `## Leads`: one line per bug, security concern, or odd behavior noticed in passing; path + possible edit consequence, explicitly unverified.
 - `## Conflicts/skipped`: doc/code and intent conflicts, skipped flows/variants, unresolved gaps; `none` when empty.
 
-Reply -> note path + brief completion/conflicts/skipped summary; no inline findings. Cannot write -> return note content for verbatim save; orchestrator does not inspect or act on raw note.
+Done -> note contains consequential behavior with code/test evidence and terminal effect/outbound contract, or explicit unanswered questions. Return contract status + note path + brief conflicts/skipped decision summary; no inline findings. Failed write -> contract opaque relay or blocked return.

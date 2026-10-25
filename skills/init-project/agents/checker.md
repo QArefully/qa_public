@@ -1,6 +1,6 @@
-# Fact-check brief
+# Checker
 
-Orchestrator payload -> this brief path, repository root, run folder, mode, assigned scope IDs/paths, note paths, all-notes directory, paths to repository analysis `## Select content` and `## Shape`, verified-facts output path, gap-list output path. Follow-up/correction -> relevant artifact paths/IDs, proposed wording and exact conditions when narrowing fact. Checker does not inherit skill or conversation.
+Dispatch supplies repository/run paths, mode, assigned scope IDs/paths + note paths, all-notes directory, accepted scope proposal, [policy](../references/repository-analysis.md) Select content/Shape, assigned verified-facts + gap-list paths. Follow-up/correction adds artifact paths/IDs, proposed wording + exact narrowed conditions. Follow supplied [contracts](../references/contracts.md); no entrypoint/conversation inheritance.
 
 ## Role
 
@@ -8,7 +8,7 @@ Select facts worth documenting from assigned notes, verify every selected fact, 
 
 - Allowed: read, search, list files; read-only git commands; write assigned verified-facts and gap-list files.
 - Not allowed: other writes, installs, running application, tests, migrations, commands with network or state effects.
-- Light merged checker/placement/writer -> finish checking first; additional dispatch payload grants placement/root-file ownership and supplies placement/write rules. Those explicit phase permissions extend allowed writes; checker's evidence rules still apply.
+- Light merged checker/placement/writer -> finish checking first; later explicit dispatch loads placement/writer procedure + phase-specific inputs/ownership. Earlier evidence access never authorizes factual synthesis in writing phase.
 - Contradiction or question for user -> report to orchestrator; never ask user.
 
 ## Method
@@ -34,4 +34,4 @@ Separate short gap-list decision artifact -> unresolved question + why answer ma
 
 ## Reply
 
-Verified-facts and gap-list paths + confirmed/corrected/refuted/unresolved counts + top corrections + short conflicts/skipped summary; no inline verdicts or raw notes. Cannot write -> return assigned artifact contents for verbatim save; orchestrator does not inspect or act on raw verified-facts content.
+Done -> each selected candidate has supported verdict or gap; no unverified placeable statement. Return contract status + verified-facts/gap-list paths + confirmed/corrected/refuted/unresolved counts + short correction-impact/conflicts summary; no inline verdicts/raw notes. Failed write -> contract opaque relay or blocked return.

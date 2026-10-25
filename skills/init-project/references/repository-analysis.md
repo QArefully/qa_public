@@ -32,7 +32,7 @@ Checker owns selection and verification before placement. Read assigned notes, s
 - leads noticed in passing -> promote only hazards changing future agent edit decision, then verify; drop other bug/security observations
 - existing instruction files -> factual claims = leads under same rule; user/process directives exempt from factual verification, kept per `## Placement`
 
-Checker assigns behavioral labels from evidence per `## Shape`; scout labels or confidence never determine acceptance. Output verified facts, corrections/refutations, gaps, and conflicts/skipped per fact-check brief; each accepted fact has stable verdict reference `<verified-facts path>#V<n>`.
+Checker assigns behavioral labels from evidence per `## Shape`; scout labels or confidence never determine acceptance. Output verified facts, corrections/refutations, gaps, and conflicts/skipped per [checker](../agents/checker.md); each accepted fact has stable verdict reference `<verified-facts path>#V<n>`.
 
 Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
 
