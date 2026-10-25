@@ -17,6 +17,7 @@ Verifier. Goal: catch wrong or overbroad scout or existing-instruction claims be
 - Check shared proposition once per authority; reuse result for covered IDs only when scope/conditions match. Distinct conditions -> separate check. Narrowed claim -> verify intended wording, not discarded broader assertion.
 - Absence/exclusivity claims ("never", "only", "all", "no X") -> search for counterexamples beyond given paths and scout search basis: other callers, entry points, config, generated code.
 - Check meaningful exceptions: conditional branches, flags, error/retry paths, alternate callers that narrow claim.
+- Label -> confirm its evidence: `Invariant:` -> intent beyond observed behavior (asserting test, deliberate guard/constraint, maintained doc, user); `Limitation:` -> TODO/FIXME or documented limitation/consequence, no contrary intent. Missing -> corrected with label dropped, never swapped. Behavior contradicts evidenced intent -> list as intent conflict. `Verify:` test path -> confirm test asserts claimed behavior.
 - Spend effort where wrong claim costs most.
 - Read efficiently: batch independent reads/searches when harness allows parallel calls; search -> read relevant ranges, not whole files; re-read only when needed.
 

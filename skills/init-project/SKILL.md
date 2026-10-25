@@ -10,7 +10,7 @@ Create minimal harness-agnostic navigation and warnings; leave detailed explanat
 
 ## Scope
 
-- Copying this skill to another repository -> copy entire `skills/init-project/` directory, including all `assets/` and `references/` files. Exclude nothing.
+- Copying this skill to another repository -> copy entire `skills/init-project/` directory, including all `assets/`, `references/`, and `scripts/` files. Exclude nothing.
 - Running this skill -> use bundled `assets/llm-oriented-markdowns/llm-oriented-markdowns.md` only within this workflow; do not copy it outside skill directory.
 
 ## Start
@@ -62,7 +62,7 @@ Do not inspect repository or spawn subagents until file, mode, and scan model re
 3. Identify core boundaries where local context or flow changes implementation choices. Read [flow investigation brief](references/flow-investigation.md). Dispatch scouts per selected mode on selected scan model ("inherit" -> no model override), non-overlapping scopes, payload per brief; choose order from dependencies, not fixed sequence. Read each note once (re-read only for specific doubt); join flows crossing scopes via reported contracts.
 4. Assess whether findings explain consequential behavior. Conflicting reports, unresolved cross-domain behavior, unclear invariants/failure handling, or weak evidence -> resolve locally or dispatch targeted follow-up scouts (scope may cross initial domains; payload per brief). Prefer reusing completed scouts; new ones stay within mode limits. Complexity alone does not require another round. Resolve material gaps or report limits explicitly; never turn uncertainty into documented fact.
 5. Select exact claims and intended scope worth retaining in generated files or final report per repository analysis `## Select content` before checking; narrow overbroad wording first. Independent checker required when: low confidence; absence/exclusivity ("never", "only", "no X"); security or money regardless of confidence; existing-instruction facts not verified by scouts. Group overlapping claims by authority; check shared proposition once, map verdict to all covered claim IDs, and check distinct conditions separately. Batch by area/files into few checkers (split when one would read many notes), payload per [fact-check brief](references/fact-check.md). Apply verdicts per repository analysis `## Select content`.
-6. After verdicts, write compact `placement.md` per repository analysis `## Placement`: target file/owner -> verified fact or finished wording + authority path + note path/claim ID + verdict when checked. Apply corrections; reuse finished wording rather than draft prose twice. Covers each existing instruction file: keep, trim, or delete.
+6. After verdicts, write compact `placement.md` per repository analysis `## Placement`: target file/owner -> verified fact or finished wording (incl. label for labeled entries) + authority path + note path/claim ID + verdict when checked. Apply corrections; reuse finished wording rather than draft prose twice. Covers each existing instruction file: keep, trim, or delete.
 7. Write only planned facts. Modest output -> orchestrator writes directly, including many short files. Writers optional when parallel work saves effort; assign disjoint file sets and provide placement plan path, assigned files, repository root, this file's `## Generated content` section pasted verbatim, and paths to repository analysis and bundled style rules (read both first). Writers read plan only, never notes/verdicts.
 8. After writes, dispatch one fresh reviewer, including root-only runs, with paths to bundled style rules and repository analysis (read both first; follow style in all edits), generated file list, and concise fact-to-home ownership map pasted from placement plan. Edit ownership = generated or updated primary instruction files only; may read repository code; no run folder access. Reviewer must:
    - Find exact and semantic duplication across and within generated files; keep copy in file `## Placement` points to, delete others. Moving shared fact to its owner is not weakening; never drop scope, exceptions, or conditions. Disagrees with location -> report; orchestrator decides.
@@ -75,13 +75,13 @@ Do not inspect repository or spawn subagents until file, mode, and scan model re
 
 ## Generated content
 
-- Default omit. Keep source pointer + reason to inspect; complex logic needs entry point, authority, and non-obvious risk, not copied walkthrough. Reference detailed docs with plain repository-relative paths; never use Markdown links or copy doc content.
+- Default omit. Keep source pointer + reason to inspect; complex logic needs entry point, authority, and non-obvious risk, not copied walkthrough. Paths per bundled style rules. Reference detailed docs by path; never copy doc content.
 - Avoid volatile implementation prose (line numbers, function bodies, transient values), inventories, exhaustive environment lists, generic coding advice, and host-provided agent or skill-routing rules.
 - Root file -> global context. Full mode nested files -> subtree-only deltas; never repeat inherited rules.
 - Destructive commands -> state impact and required authorization.
 - Generated/runtime files -> identify only when agents might edit or commit them accidentally.
 - Do not reference initializer plumbing (incl. run folder) or skill locations/discovery in generated files.
-- Instruction files never reference other instruction files, except mandatory root Maintenance rule, per repository analysis `## Shape`.
+- Instruction files never reference other instruction files (harness auto-loads nested files), except mandatory root Maintenance rule, per repository analysis `## Shape`.
 - `## Pitfalls` only for verified local failure modes per repository analysis; omit empty sections.
 
 Add following rules to root instruction file only; never to nested files:
@@ -93,6 +93,8 @@ Update this file or closest nested instruction file when guidance becomes stale;
 # AI Documentation and Code Comments
 AI docs and code comments -> terse facts for future agents; non-obvious architecture, decisions, cross-cutting constraints only. Default no comment; edit only when needed. Omit history, dates, code narration. One fact -> one home across docs/comments.
 "
+
+Generated files use labels -> append legend for used labels only to AI Documentation paragraph: "`Invariant:` -> intended behavior, preserve. `Limitation:` -> current limitation, not contract; fix only when task asks."
 
 ## Verify
 
@@ -106,19 +108,18 @@ AI docs and code comments -> terse facts for future agents; non-obvious architec
 - Confirm fresh reviewer completed deduplication, including root-only runs, and did not edit run folder.
 - Review final-pass diff for lost scope, meaning, or unsupported formatting changes.
 - Confirm bundled LLM-writing rules were not copied outside skill directory.
-- Confirm generated instruction files use plain repository-relative paths, not Markdown links.
 - Confirm generated files omit initializer plumbing and skill-location notes.
 - Confirm no generated file references other instruction files except mandatory root Maintenance rule.
 - Confirm pitfalls are evidence-backed; remove empty or low-value sections.
 - Confirm material investigation gaps are resolved or reported; nonstandard architecture is documented, rationale supported or explicitly unknown, and complex domains have actionable source pointers.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
-- Confirm explicit source pointers exist; check path tokens in context, not every prose slash. Confirm each `## Flows` entry is scout-backed, meets doc-worthy threshold, lives in owning domain nested file, and appears once.
+- Confirm explicit source pointers exist. Run skill directory's `scripts/check-paths.py <repository-root>` with any Python 3 (stdlib only) and `-B` (no bytecode in skill directory); fix missing and format reports in generated files; heuristic -> judge reported tokens in context. Confirm each flow entry (under `## Flows` or sole headingless section) is scout-backed, meets doc-worthy threshold, lives in owning domain nested file, and appears once.
 - Confirm root instruction file starts with `# Agent instructions` + one-line project description, and has no `## Flows`.
-- Confirm generated files use one-fact bullets; multi-fact entries split into sub-bullets per repository analysis `## Shape`.
+- Confirm generated files use one-fact bullets; multi-fact entries split into sub-bullets; labels backed by scout/checker evidence per repository analysis, unlabeled otherwise; single-section nested files omit heading; all per repository analysis `## Shape`.
 - Confirm root `## Commands` has max 5 lines, essential commands only.
 - Confirm root has `## Architecture` within repository analysis scope and no separate boundaries/overview/repository-map section.
-- Confirm nested instruction files have no `## Commands`.
-- Confirm `## Testing` appears only in root and harness-owning nested files per repository analysis `## Shape`.
+- Confirm nested instruction files have no commands.
+- Confirm `## Testing` content appears only in root and harness-owning nested files per repository analysis `## Shape`.
 - Review generated instructions for unsupported claims, volatile detail, and excess length. Verify strong claims against implementation and meaningful exceptions.
 - Review diff. Run application tests only if changes extend beyond instruction files.
 - Report changed files, chosen boundaries, documented and skipped flows, validation, evidence gaps, doc/code conflicts, kept run folder path (reusable for re-analysis; safe to delete), and that the initializer directory may be deleted after success.
