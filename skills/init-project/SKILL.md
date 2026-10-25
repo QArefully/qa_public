@@ -113,7 +113,8 @@ AI docs and code comments -> terse facts for future agents; non-obvious architec
 - Confirm material investigation gaps are resolved or reported; nonstandard architecture is documented, rationale supported or explicitly unknown, and complex domains have actionable source pointers.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
 - Confirm explicit source pointers exist; check path tokens in context, not every prose slash. Confirm each `## Flows` entry is scout-backed, meets doc-worthy threshold, lives in owning domain nested file, and appears once.
-- Confirm root instruction file has no `## Flows`.
+- Confirm root instruction file starts with `# Agent instructions` + one-line project description, and has no `## Flows`.
+- Confirm generated files use one-fact bullets; multi-fact entries split into sub-bullets per repository analysis `## Shape`.
 - Confirm root `## Commands` has max 5 lines, essential commands only.
 - Confirm root has `## Architecture` within repository analysis scope and no separate boundaries/overview/repository-map section.
 - Confirm nested instruction files have no `## Commands`.

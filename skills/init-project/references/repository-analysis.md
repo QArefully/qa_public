@@ -89,7 +89,9 @@ Per flow -> trigger/entry path, rule/state owner, consequential hazard. Add shor
 
 ## Shape
 
-Root sections as useful: runtime, commands, architecture per `## Architecture`, testing, pitfalls, maintenance. Never flows.
+Root file -> starts with `# Agent instructions` header + one-line project description (what repository is/does). Then sections as useful: runtime, commands, architecture per `## Architecture`, testing, pitfalls, maintenance. Never flows.
+
+All files -> short bullets, one fact each; multi-fact entry (e.g. flow) -> parent bullet naming it + sub-bullets (entry, owner, hazard, co-change). Never pack several facts into one long line.
 
 `## Testing` -> only where test structure or setup changes agent decisions; only in root and nested files whose subtree owns test harness or config (app/package level). Root -> cross-cutting only: which layer/framework runs where, shared prerequisites, E2E ownership; existing harness doc -> path pointer, no restatement. Feature-level nested files -> no `## Testing`; test caveat goes in flow entry or pitfall it qualifies. Runnable commands only in `## Commands`.
 
