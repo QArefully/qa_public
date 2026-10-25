@@ -41,7 +41,7 @@ Keep:
 
 Drop:
 
-- file, symbol, route, dependency, or environment-variable inventories
+- file, symbol, route, dependency, or environment-variable inventories; hand-enumerated sets ("files doing X: a, b, c") rot silently -> greppable rule or enforcing test path; enumerate only short, stable sets
 - timings, counts, temporary status
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
@@ -52,7 +52,7 @@ Keep investigation detail outside instructions. Scout/checker output -> guidance
 
 ## Placement
 
-Nested instruction files load only for agents working in their subtree. Each fact -> one home = subtree root of domain owning trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape`. Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree fails `## Shape` creation rule -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file.
+Nested instruction files may not load until agent works in their subtree. Each fact -> one home = deepest owning-domain subtree covering trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape` (parent files load for whole subtree beneath them -> keep lean). Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree fails `## Shape` creation rule -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file. Parent entry whose concern is implemented in child subtree -> child source path (entry file or exemplar) + hazard only when needed; fact stays in child home.
 
 File set follows placement rule, not scout scopes: one scope may feed several files or none; one file may draw on several scopes.
 
@@ -91,14 +91,14 @@ Per flow -> trigger/entry path, rule/state owner, consequential hazard. Coupling
 
 Root file -> starts with `# Agent instructions` header + one-line project description (what repository is/does). Then sections as useful: runtime, commands, architecture per `## Architecture`, testing, pitfalls, maintenance. Never flows.
 
-All files -> short bullets, one fact each; multi-fact entry (e.g. flow) -> parent bullet naming it + sub-bullets (entry, owner, hazard, `Change X -> review Y`). Never pack several facts into one long line.
+All files -> short bullets, one fact each; multi-fact entry (e.g. flow) -> parent bullet naming it + sub-bullets (entry, owner, hazard, `Change X -> review Y`). `Change X -> review Y` spanning several files -> own parent bullet, one sub-bullet per file stating what to update there. Never pack several facts into one long line.
 
-Label behavioral entry only where invariant vs limitation changes what agent may change; coupling, pointer, ownership lines -> no label. `Invariant:` = intended behavior, preserve; needs intent evidence (asserting test, deliberate guard/constraint, maintained doc, user). `Limitation:` = current limitation, no contrary intent evidence; needs limitation evidence (TODO/FIXME, documented limitation or consequence). Neither evidenced -> no label. Behavior contradicting evidenced intent -> conflict for final report, not label. Focused test proving entry exists -> append `Verify: <test path>`; one pointer, never test list or coverage claim.
+Label behavioral entry only where invariant vs limitation changes what agent may change; coupling, pointer, ownership lines -> no label. `Invariant:` = intended behavior, preserve; needs intent evidence (asserting test, deliberate guard/constraint, maintained doc, user). `Limitation:` = known gap, quirk, or bug in current behavior, not contract; no contrary intent evidence; needs limitation evidence (TODO/FIXME, documented limitation or consequence). Neither evidenced -> no label; entry agent could wrongly preserve or fix -> end with `intent unknown`. Behavior contradicting evidenced intent -> conflict for final report, not label. Focused test proving entry exists -> append `Verify: <test path>`; one pointer, never test list or coverage claim.
 
 `## Testing` -> only where test structure or setup changes agent decisions; only in root and nested files whose subtree owns test harness or config (app/package level). Root -> cross-cutting only: which layer/framework runs where, shared prerequisites, E2E ownership; existing harness doc -> path pointer, no restatement. Feature-level nested files -> no `## Testing`; test caveat or `Verify:` pointer goes in entry it qualifies. Runnable commands only in `## Commands`.
 
 `## Pitfalls` -> standalone verified hazards, home per `## Placement`. Hazard bound to one flow -> stays in that flow entry.
 
-Nested files contain only local architecture, flows, testing, and pitfalls; no commands. One section -> omit heading. Create one when subtree owns doc-worthy flow, or has distinct decisions, invariants, or risks not evident from its entry point. Small file fine; size alone never folds content into parent.
+Nested files contain only local architecture, flows, testing, and pitfalls; no commands. First line -> subtree scope + main entry point path when one exists; orientation line, exempt from cross-file dedup. One section -> omit heading; several -> headings from that set (`## Architecture`, `## Flows`, `## Testing`, `## Pitfalls`). Create one when subtree owns doc-worthy flow, or has distinct decisions, invariants, or risks not evident from its entry point. Small file fine; size alone never folds content into parent.
 
 Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files, except mandatory root Maintenance rule's generic update instruction. Harness auto-loads nested files; pointers to them are noise. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.

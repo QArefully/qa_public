@@ -68,7 +68,7 @@ Do not inspect repository or spawn subagents until file, mode, and scan model re
    - Find exact and semantic duplication across and within generated files; keep copy in file `## Placement` points to, delete others. Moving shared fact to its owner is not weakening; never drop scope, exceptions, or conditions. Disagrees with location -> report; orchestrator decides.
    - Delete pointers to, lists of, or summaries of other instruction files, except mandatory root Maintenance rule; rewrite needed cross-domain references as source paths + hazard.
    - Fix wording directly; report moved or deleted guidance.
-   - Report dubious, unsupported, or missing-pointer lines (file + line); never delete on support grounds, never guess.
+   - Report dubious, unsupported, or missing-pointer lines, and pointers whose cited file lacks claimed thing (file + line); never delete on support grounds, never guess.
 9. Reported lines -> orchestrator re-checks directly when few; else dispatch fixers with findings, owned files, repository root, paths to bundled style rules and repository analysis. Fixer verifies in code, then corrects, adds pointer, or deletes claim. Required independent checks from step 5 still apply. None -> skip.
 10. Probe typical change and read-only investigation: can agent find behavioral authority, required helpers, test harness setup, and timing controls? Fill consequential gaps with smallest source pointer or warning, verified under step 5 evidence rules. Delete guidance whose removal changes no investigation or implementation decision.
 11. Missing architectural rationale after investigation -> optionally ask user at end why consequential choices were made. Finish supported documentation first; unknown rationale never blocks documenting verified nonstandard architecture. Incorporate answer when available; never invent reasons.
@@ -94,7 +94,7 @@ Update this file or closest nested instruction file when guidance becomes stale;
 AI docs and code comments -> terse facts for future agents; non-obvious architecture, decisions, cross-cutting constraints only. Default no comment; edit only when needed. Omit history, dates, code narration. One fact -> one home across docs/comments.
 "
 
-Generated files use labels -> append legend for used labels only to AI Documentation paragraph: "`Invariant:` -> intended behavior, preserve. `Limitation:` -> current limitation, not contract; fix only when task asks."
+Generated files use labels or `intent unknown` -> append legend for used items only to AI Documentation paragraph: "`Invariant:` -> intended behavior, preserve. `Limitation:` -> known gap, quirk, or bug, not contract; fix only when task asks. `intent unknown` -> ask before changing."
 
 ## Verify
 
@@ -113,9 +113,9 @@ Generated files use labels -> append legend for used labels only to AI Documenta
 - Confirm pitfalls are evidence-backed; remove empty or low-value sections.
 - Confirm material investigation gaps are resolved or reported; nonstandard architecture is documented, rationale supported or explicitly unknown, and complex domains have actionable source pointers.
 - Confirm Maintenance and AI Documentation rules appear in root instruction file only.
-- Confirm explicit source pointers exist. Run skill directory's `scripts/check-paths.py <repository-root>` with any Python 3 (stdlib only) and `-B` (no bytecode in skill directory); fix missing and format reports in generated files; heuristic -> judge reported tokens in context. Confirm each flow entry (under `## Flows` or sole headingless section) is scout-backed, meets doc-worthy threshold, lives in owning domain nested file, and appears once.
+- Confirm explicit source pointers exist and each cited file itself contains claimed thing (not sibling or caller). Run skill directory's `scripts/check-paths.py <repository-root>` with any Python 3 (stdlib only) and `-B` (no bytecode in skill directory); fix missing and format reports in generated files; heuristic -> judge reported tokens in context. Confirm each flow entry (under `## Flows` or sole headingless section) is scout-backed, meets doc-worthy threshold, lives in owning domain nested file, and appears once.
 - Confirm root instruction file starts with `# Agent instructions` + one-line project description, and has no `## Flows`.
-- Confirm generated files use one-fact bullets; multi-fact entries split into sub-bullets; labels backed by scout/checker evidence per repository analysis, unlabeled otherwise; single-section nested files omit heading; all per repository analysis `## Shape`.
+- Confirm generated files use one-fact bullets; multi-fact entries and multi-file change triggers split into sub-bullets; nested files open with scope line (+ main entry point path when one exists); labels backed by scout/checker evidence per repository analysis, unlabeled otherwise; single-section nested files omit heading; all per repository analysis `## Shape`.
 - Confirm root `## Commands` has max 5 lines, essential commands only.
 - Confirm root has `## Architecture` within repository analysis scope and no separate boundaries/overview/repository-map section.
 - Confirm nested instruction files have no commands.

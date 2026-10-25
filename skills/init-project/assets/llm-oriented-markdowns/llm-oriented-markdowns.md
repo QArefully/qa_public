@@ -4,7 +4,7 @@ Apply only when init-project writes or edits AI-oriented repository instruction 
 
 ## Writing rules
 
-- Terse and direct: remove articles, filler, pleasantries, hedging, and repeated preambles; prefer short words; keep technical terms exact. Fragments allowed when actor and relation stay explicit; name referent, not generic noun (which snapshot, which check). Never hide relations in stacked noun chains or slash lists; few extra words beat ambiguity.
+- Terse and direct: remove articles, filler, pleasantries, hedging, and repeated preambles; prefer short words; keep technical terms exact. Fragments allowed when actor and relation stay explicit; name referent, not generic noun or pronoun (which snapshot, which check; not "its", "this"). Never hide relations in stacked noun chains or slash lists; few extra words beat ambiguity.
   - Bad: `Payment CAS + notification lack atomicity`. Good: `Payment status CAS and notification insert commit in separate transactions; crash between them drops notification.`
 - Exact: preserve fenced code, shell commands, and config snippets verbatim. Quote identifiers, error text, URLs, paths, and versions exactly.
 - Linear: put preconditions before dependent rules; avoid forward references; say each fact once.
