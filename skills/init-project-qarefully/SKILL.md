@@ -10,7 +10,7 @@ Create minimal harness-agnostic navigation + warnings; detailed explanations sta
 
 ## Start
 
-Read [workflow](references/workflow.md) for intake, modes, stages, routing, and completion; read [contracts](references/contracts.md) before dispatch. Reuse known choices; ask only missing filename, Light/Full mode, scan model. Wait for required answers before repository inspection or child dispatch. Optional project context never blocks.
+Read [workflow](references/workflow.md) for intake, modes, stages, routing, and completion; read [contracts](references/contracts.md) before dispatch. Reuse known choices; ask only missing filename, Light/Full mode, scout model. Wait for required answers before repository inspection or child dispatch. Optional project context never blocks.
 
 Before first child, bind actual dispatch, isolation, model/profile inheritance, recipient paths/write visibility, slots, wait/cancellation, and disabled nesting using contracts. Missing required capability -> explain affected stage + viable correction; no silent substitution or local evidence-role takeover.
 

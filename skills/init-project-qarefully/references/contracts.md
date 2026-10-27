@@ -18,7 +18,7 @@ Transport binds run/stage/attempt when possible; otherwise include explicit iden
 role: <ID + resolved agents/<role>.md path>
 task: <bounded objective; explicit phase for merged role>
 run: <root/location hint; actual run path after scan>
-choices: <filename; mode; selected scan binding>
+choices: <filename; mode; selected scout binding>
 binding: <this role's requested/effective model; tools; no nested children>
 constraints: <user/host restrictions; task boundary; preserve others' edits>
 inputs:

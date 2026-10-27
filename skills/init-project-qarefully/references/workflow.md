@@ -6,7 +6,7 @@
 - Light: root selected file only; 2-3 scouts total across investigation rounds. Broad main domains; supporting areas merge into nearest domain.
 - Full: root + useful nested selected files; only meaningful independent boundaries; <=20 scouts total across rounds. Split large domains before context becomes unwieldy. Fewer than 20 expected.
 - scout total counts initial/follow-up scout agents, including new retry agents; reuse completed scout for compatible bounded follow-up when possible. Total differs from concurrency; lower host/user limits always win.
-- scouts: selected scan binding (`inherit` -> no override). Every other role: immediate parent's model/effort binding; never replace with scout model. All roles dispatched directly by orchestrator; nested delegation disabled.
+- scouts: selected scout binding (`inherit` -> orchestrator's model/effort). Initial scan + every other non-scout role: inherit orchestrator's model/effort; never use scout override. All roles dispatched directly by orchestrator; nested delegation disabled.
 - Light temporal merges: one checker -> placement -> root writer; fresh reviewer -> Verify/report. Each transition needs explicit dispatch granting next phase's inputs/writes; earlier completion does not grant later permissions. Optional disjoint writers remain available.
 - completion: accepted placement, fresh review + report-only probe, routed repairs, reconciled mapping, passing current Verify report, all required children terminal. Unresolved evidence gaps may remain reported; missing required output/check is never completion.
 
@@ -26,7 +26,7 @@ No sibling-skill dependency. Copy entire package when relocating. Resolve resour
 - Default run folder: `<repository-root>/.init-project/runs/<YYYY-MM-DDTHHMM>/`; unique suffix on collision. User/host location restrictions override default. Alternate approved root -> stable repository-specific directory (avoid basename collisions) -> timestamped run directory.
 - Scan creates run folder, inner `.gitignore` containing `*`, manifest, immutable baseline. All scratch/evidence stays there. Keep run folder uncommitted, including without Git.
 - Discover prior runs in allowed repository-specific + default locations only. Prior notes/verdicts are leads; matching clean HEAD raises priority, never establishes truth.
-- Manifest: actual root/run path, timestamp, Git availability, HEAD + dirty flag when available, file/mode/scan binding, accepted scopes. Scan checks Git once during preflight; later Verify may compare baseline read-only.
+- Manifest: actual root/run path, timestamp, Git availability, HEAD + dirty flag when available, file/mode/scout binding, accepted scopes. Scan checks Git once during preflight; later Verify may compare baseline read-only.
 - Baseline: status/diff plus before-state copies/hashes + inventory sufficient to compare task writes, including dirty/untracked files and approved external run folder. Capture before first task write to each boundary; scan may create run-folder shell first, but record shell creation explicitly. Baseline measures deliverable write scope, not runtime reads.
 - After scan, orchestrator may maintain `state.md` in run folder: capability binding, selected choices, current attempt/status, accepted artifact pointers/revisions, target owners/revisions, decisions, scout count. Consumer = scheduling/resume; no payload copies or access ledger. Later artifacts use unique `attempts/<stage>-<attempt>/` paths; baseline never overwritten.
 
@@ -38,7 +38,7 @@ Ready independent scouts/checkers/writers may run in parallel with disjoint outp
 
 ## 1. Intake and binding
 
-Orchestrator reuses known choices. Ask only missing file (`AGENTS.md` or `CLAUDE.md`), mode (Light/Full with scout counts), scan model. Recommend cheap model; name actual cheap model only when availability/cost known. Invite optional history/constraints/traps alongside missing questions. Missing optional context never blocks.
+Orchestrator reuses known choices. Ask only missing file (`AGENTS.md` or `CLAUDE.md`), mode (Light/Full with scout counts), scout model. Recommend cheap model for scouts; name actual cheap model only when availability/cost known. Invite optional history/constraints/traps alongside missing questions. Missing optional context never blocks.
 
 No repository inspection or child dispatch until three required choices resolved. Preserve choices entire run. Unavailable requested model/profile -> explain and ask; never substitute. Before first child, bind capabilities per contracts; no isolation/dispatch -> capability issue, never orchestrator evidence-role takeover.
 
