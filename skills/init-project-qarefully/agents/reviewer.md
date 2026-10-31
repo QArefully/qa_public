@@ -1,18 +1,21 @@
 # Fresh Reviewer
 
-Fresh agent uninvolved in evidence/placement/write. Read [policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style first; follow supplied [contracts](../references/contracts.md). Inputs: current generated file list/revisions + compact ownership map. May read repository source. Review phase: no run-folder/notes/verdict/placement access; write only assigned generated/updated instruction files. No entrypoint/conversation inheritance.
+Fresh agent uninvolved in evidence/placement/write/repair; semantic review only, report-only. Mechanical path/shape checks belong to helpers, not reviewer. Read [policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style first; follow supplied [contracts](../references/contracts.md). Inputs: sanitized manifest (targets, dispositions, revisions), generated files, repository source. No notes/records/routing/sidecars/run evidence. Write assigned findings file only; no instruction-file edits. No entrypoint/conversation inheritance.
 
-## Dedup and wording
+## Review
 
-- Find exact + semantic duplication within/across generated files. Keep copy at supplied ownership-map home; delete duplicates. Moving fact to owner never permits loss of scope/exceptions/conditions. Location disagreement -> report alternatives; orchestrator decides.
-- Delete pointers/lists/summaries of other instruction files except mandatory root Maintenance rule. Needed cross-domain reference -> existing supported source path + hazard; if rewriting changes factual meaning, report for checker route.
-- Fix wording directly under style. Report all moved/deleted guidance for placement reconciliation.
-- Dubious/unsupported/missing-pointer line, or cited file lacks claimed thing -> report file/line + issue. Never delete on support grounds or guess replacement. Fresh fixers own support repairs.
+- Exact + semantic duplication within/across generated files; scope/exceptions/conditions lost by compression.
+- Pointers/lists/summaries of other instruction files except mandatory root Maintenance rule.
+- Wrong or unsupported line: cited file lacks claimed thing, unrelated test citation, wrong authority, missing required helper pointer. Never guess replacement.
+- Wording violating style or policy Shape not caught by helpers.
+- Low-value guidance whose removal changes no decision; tiny nested file whose boundary adds no value -> parent-placement finding.
 
 ## Report-only probe
 
-Probe typical code change + read-only investigation: can future agent find behavioral authority, required helpers, test-harness setup, timing controls? Report file + missing thing + reason. Identify low-value guidance whose removal changes no decision. Never add probe discoveries directly; consequential gap follows checker -> placement -> fixer.
+Probe typical code change + read-only investigation: can future agent find behavioral authority, required helpers, test-harness setup, timing controls? Report file + missing thing + reason. Never add discoveries.
 
-## Completion and Light transition
+## Findings
 
-Return status + changed target paths/revisions + compact moved/deleted guidance, support findings, probe gaps, conflicts/skipped. Return artifact = changed target paths, or `none` when no file changed; no run-folder findings report. Light also finishes review without run access; later explicit dispatch loads [verify](verify.md), grants exact verification inputs/report path, revokes instruction writes. Never repair Verify failures during that phase.
+One line each: `file:line | category | route | issue`. Route tags: `wording` (in-place, same meaning), `support` (wrong/unsupported line), `probe` (missing pointer/warning), `dedup` (any duplicated proposition; cite every file:line) -> fixer; `move`, `delete`, `location` (alternatives + reasons) -> placement; mapping per contracts Helper results and routing. Budget ~3k chars; consequential first. End `## Conflicts/skipped`.
+
+Return contract status + findings path + per target `<path>: fixer <n>, placement <n>`; no inline findings. Targeted re-review -> only assigned changed files.

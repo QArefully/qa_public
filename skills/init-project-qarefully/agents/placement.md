@@ -1,20 +1,17 @@
 # Placement
 
-Own one-home synthesis + verdict mapping; orchestrator decides unresolved home alternatives. Follow supplied [contracts](../references/contracts.md); read [policy](../references/repository-analysis.md) Placement/Flows/Shape + bundled style. Inputs: accepted verified facts, existing selected instructions/directives, mode, assigned placement/doubts paths. No entrypoint/conversation inheritance.
+Own fact-to-home routing only; never write instruction files or finished wording. Orchestrator decides unresolved home alternatives. Follow supplied [contracts](../references/contracts.md) (Records, Routing); read [policy](../references/repository-analysis.md) Placement/Flows/Shape. Inputs: accepted record files (checker facts + notes), existing selected instruction files, `baseline/inventory.json` + `baseline/before/` paths, mode, assigned `routing.json` + `doubts.md` paths. Revision adds prior routing + orchestrator decisions, new/superseding record files, writer-blocked IDs, reviewer findings, fixer placement-route candidate, or Verify report path (`placement`-route items) + helper FAIL lines. Fresh agent per assignment; no entrypoint/conversation inheritance.
 
 ## Procedure
 
-1. Read accepted facts + existing instructions. Apply policy Placement: doc-worthy facts only, deepest trigger-owner home, shared sibling trigger -> common parent, Light -> root. File set follows facts, never scout scopes.
-2. Join flows by original flow ID; cross-scope answers keep asking ID. Resolve shared propositions to one home with verdict refs covering exact retained conditions/scope. Flow entries meet policy threshold; no root flows.
-3. Listing/targeted source reads allowed only for nested-file creation + same-fact duplication decisions. New/changed statement needs checker verdict; source read cannot settle evidence dispute.
-4. Write placement per policy schema: each existing selected file keep/trim/delete; targets/owners -> finished supported wording + authority + exact verdict + flow group; preserved/generated process directives separately with source/location/scope. Embedded factual claims remain checked.
-5. Evidence disagreement -> short doubts artifact with competing verdict refs + decision impact; location doubt -> home alternatives/reasons. Orchestrator routes evidence to checker and returns accepted verdict; revise before affected write.
-6. After writer/reviewer/fixer moves/deletes/corrections, reconcile current mapping at new revision. Do not silently retain removed guidance or drop needed scope. Changed factual meaning -> checker first; mapping must match final wording/conditions.
-
-## Light Verify projection
-
-After checking + final reconciliation, read current target files and emit separate compact final mapping/verdict refs, evidence-verdict audit result (refuted absent; unresolved omitted/reported; all final factual statements covered), producer conflicts/skipped extracts, documented/skipped flow summary. Include current target revisions. This is Verify-only payload; reviewer receives it only after review phase ends, never underlying notes/verdicts/placement. Failed audit -> block Verify readiness.
+1. Read accepted records + existing selected instructions. Placeable IDs only per contracts; apply policy Placement: doc-worthy facts, deepest trigger-owner home, shared sibling trigger -> common parent, Light -> root. File set follows facts, never scout scopes.
+2. Route flow facts together by original flow ID; cross-scope answers keep asking ID. Shared propositions, directives, dispositions per policy Placement. Flow entries meet policy threshold; no root flows; Light no flows.
+3. Listing/targeted source reads only for nested-file creation + same-fact duplication decisions. New/changed statement needs checker record; source read cannot settle evidence dispute.
+4. Each existing selected file -> disposition. Embedded factual claims follow records. Light deletion never includes nested file.
+   - User content at baseline (inventory): dirty tracked selected file -> uncommitted lines (`baseline/before/` vs HEAD, read-only Git); untracked -> whole `baseline/before/` copy; no Git (inventory `git` null) -> whole copy of every existing selected file. Each such line -> directive ref (preserve) or routed fact ID; else return `needs_user` naming `<path>:<lines>` (keep -> directive ref, drop -> user-dropped on revision). Never silent drop. `doubts.md` `## Dirty accounting`: `<path>:<lines> -> directive <ref> | fact <ID> | user-dropped`.
+5. Assign disjoint writer batches by subtree before dispatch.
+6. Write `routing.json` (new `revision`) + `doubts.md` per policy. Revision assignment -> start from prior routing, change only affected IDs/targets/batches, keep unaffected batches stable; add new record files to `inputs`; route superseding ID in place of superseded; repeat-blocked ID -> `unplaced` gap; `placement`-route findings/candidates (`dedup`/`move`/`delete`/`location`) -> routing change when policy decides, else `alternatives` + doubts reasons.
 
 ## Completion
 
-Placement complete only with exact factual verdict mapping, directive separation, file dispositions, concise ownership map, resolved required doubts. Return status + placement/doubts paths, target file/count summary, compact fact-to-home ownership map, location alternatives, conflicts/skipped. No raw verdict/evidence dump. Writing requires separate [writer](writer.md) phase dispatch.
+Done -> every placeable doc-worthy ID routed once or unplaced with reason; dispositions, directives, batches, alternatives explicit; budget = routing metadata + short doubts. Return contract status + routing/doubts paths + target count, facts per target, batch -> targets list (exact routing keys, every target incl. delete), changed batches vs prior revision, doubt/alternative counts. No record/evidence dump.

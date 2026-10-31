@@ -3,94 +3,106 @@
 ## Outcome and modes
 
 - result: concise selected instruction files; reusable evidence + final decision report inside retained run folder. Explicit invocation only.
-- Light: root selected file only; 2-3 scouts total across investigation rounds. Broad main domains; supporting areas merge into nearest domain.
+- Light: root selected file only; 2-3 scouts total across investigation rounds; no flows section. Broad main domains; supporting areas merge into nearest domain.
 - Full: root + useful nested selected files; only meaningful independent boundaries; <=20 scouts total across rounds. Split large domains before context becomes unwieldy. Fewer than 20 expected.
-- scout total counts initial/follow-up scout agents, including new retry agents; reuse completed scout for compatible bounded follow-up when possible. Total differs from concurrency; lower host/user limits always win.
-- scouts: selected scout binding (`inherit` -> orchestrator's model/effort). Initial scan + every other non-scout role: inherit orchestrator's model/effort; never use scout override. All roles dispatched directly by orchestrator; nested delegation disabled.
-- Light temporal merges: one checker -> placement -> root writer; fresh reviewer -> Verify/report. Each transition needs explicit dispatch granting next phase's inputs/writes; earlier completion does not grant later permissions. Optional disjoint writers remain available.
-- completion: accepted placement, fresh review + report-only probe, routed repairs, reconciled mapping, passing current Verify report, all required children terminal. Unresolved evidence gaps may remain reported; missing required output/check is never completion.
+- scout total counts initial/follow-up scout agents, including retry agents. Total differs from concurrency; lower host/user limits always win.
+- models: scouts -> selected scout binding (`inherit` -> orchestrator's model/effort). Scan + every other role -> inherit orchestrator's model/effort; never scout override, no per-role overrides or cheaper substitutes.
+- roles never merge across phases, Full or Light: scan, scout, checker, placement, writer, reviewer, fixer, Verify each separate fresh agents per contracts.
+- completion: accepted routing, writer preflight clean, fresh review + report-only probe, routed repairs, final index PASS, passing current Verify report, all required children terminal. Unresolved evidence gaps may remain reported; missing required output/check is never completion.
 
 ## Bundled resources
 
-No sibling-skill dependency. Copy entire package when relocating. Resolve resources from package root in recipient's workspace; pass absolute recipient-visible paths or exact selected text when inaccessible. Missing role, policy, style, helper, or accepted artifact blocks affected dispatch; do not replace missing resource with guessed procedure.
+No sibling-skill dependency. Resolve resources from package root in recipient's workspace; pass absolute recipient-visible paths or exact selected text when inaccessible. Missing role, policy, style, helper, or accepted artifact blocks affected dispatch; do not replace missing resource with guessed procedure.
 
-- [repository policy](repository-analysis.md): content selection, placement, commands, architecture, flows, shape; roles read selected sections.
+- [repository policy](repository-analysis.md): scan, content selection, placement, commands, architecture, flows, shape; roles read selected sections.
 - [generated-content rules](generated-content.md): every writing/review/repair/Verify phase.
-- [bundled style](../assets/llm-oriented-markdowns/llm-oriented-markdowns.md): instruction-file writers/reviewer/fixers/Verify; scan also receives it for shared digest.
-- [contracts](contracts.md): orchestrator binds dispatch, status, acceptance, recovery; supply relevant contract text to each child.
+- [bundled style](../assets/llm-oriented-markdowns/llm-oriented-markdowns.md): writers/reviewer/fixers/Verify; scan for shared digest.
+- [contracts](contracts.md): binding, dispatch, records, routing/provenance, helpers/runner roles, helper failure routes, acceptance, recovery; supply relevant sections to each child.
+- `scripts/ledger.py`, `scripts/check-paths.py`, `scripts/check-shape.py`: deterministic helpers per contracts runner roles.
 
 ## Task boundary and run folder
 
 - `AGENTS.md` selected -> no create/update/delete of `CLAUDE.md` or `.claude/` files. `CLAUDE.md` selected -> no create/update/delete of `AGENTS.md` or `.agents/` files.
 - Only task writes: selected mode-approved instruction files + actual run folder. Light never modifies nested instruction files. No repository `.gitignore` changes.
-- Default run folder: `<repository-root>/.init-project/runs/<YYYY-MM-DDTHHMM>/`; unique suffix on collision. User/host location restrictions override default. Alternate approved root -> stable repository-specific directory (avoid basename collisions) -> timestamped run directory.
-- Scan creates run folder, inner `.gitignore` containing `*`, manifest, immutable baseline. All scratch/evidence stays there. Keep run folder uncommitted, including without Git.
-- Discover prior runs in allowed repository-specific + default locations only. Prior notes/verdicts are leads; matching clean HEAD raises priority, never establishes truth.
-- Manifest: actual root/run path, timestamp, Git availability, HEAD + dirty flag when available, file/mode/scout binding, accepted scopes. Scan checks Git once during preflight; later Verify may compare baseline read-only.
-- Baseline: status/diff plus before-state copies/hashes + inventory sufficient to compare task writes, including dirty/untracked files and approved external run folder. Capture before first task write to each boundary; scan may create run-folder shell first, but record shell creation explicitly. Baseline measures deliverable write scope, not runtime reads.
-- After scan, orchestrator may maintain `state.md` in run folder: capability binding, selected choices, current attempt/status, accepted artifact pointers/revisions, target owners/revisions, decisions, scout count. Consumer = scheduling/resume; no payload copies or access ledger. Later artifacts use unique `attempts/<stage>-<attempt>/` paths; baseline never overwritten.
+- Default run folder: `<repository-root>/.init-project/runs/<YYYY-MM-DDTHHMM>/`; unique suffix on collision. User/host location restrictions override default; never hardcode host paths. Alternate approved root -> stable repository-specific directory (avoid basename collisions) -> timestamped run directory (`--external-run` for baseline).
+- Scan creates run folder, inner `.gitignore` containing `*`, manifest, then immutable baseline via `ledger.py baseline` before any task write to instruction files. All scratch/evidence stays in run folder; keep it uncommitted, including without Git.
+- Discover prior runs in allowed repository-specific + default locations only. Prior notes/records are leads; matching clean HEAD raises priority, never establishes truth.
+- Manifest: actual root/run path, timestamp, Git availability, HEAD + dirty flag when available, file/mode/scout binding.
+- `state.md` (orchestrator-owned after scan): capability binding, choices, `accepted-scopes.md` pointer, approved external prefixes, assigned ID prefixes, attempts/status, accepted artifact pointers, batch -> targets, target owners/revisions, cap counters, decisions, scout count, usage. Consumer = scheduling/resume; no payload copies.
+- Layout: `accepted-scopes.md`; `attempts/<stage>-<attempt>/` per attempt (notes, `facts.md` + `gaps.md`, question index, `routing.json` + `doubts.md`, projections, manifests, index output, findings, reports); `provenance/provenance-<batch>.json` mutable sidecars; `quarantine/` stale/cancelled/unaccepted artifacts; `baseline/` never overwritten.
 
 ## Flow
 
-intake -> capability binding -> scan -> accepted scopes -> scouts -> checkers -> optional follow-up -> placement -> writers -> fresh reviewer/probe -> fixers as needed -> mapping reconciliation -> Verify -> final acceptance.
+intake -> binding -> scan -> accepted scopes -> scouts (barrier) -> question index -> checkers -> optional follow-up -> placement -> projections -> fresh writers + preflight -> index -> fresh reviewer/probe -> fixers as needed -> Verify -> final acceptance.
 
-Ready independent scouts/checkers/writers may run in parallel with disjoint outputs + available slots. Serialize source-dependent work and mutable ownership transfers. Contracts own failures, invalidation, retries, cancellation, and resume.
+Ready independent scouts/checkers/writers run in parallel with disjoint outputs + available slots. Stage starts only after its required inputs are terminal; overlap only with explicit immutable dependencies. Contracts own failures, helper FAIL routes, invalidation, retries, caps, cancellation, resume.
 
 ## 1. Intake and binding
 
-Orchestrator reuses known choices. Ask only missing file (`AGENTS.md` or `CLAUDE.md`), mode (Light/Full with scout counts), scout model. Recommend cheap model for scouts; name actual cheap model only when availability/cost known. Invite optional history/constraints/traps alongside missing questions. Missing optional context never blocks.
+Reuse known choices. Ask only missing file (`AGENTS.md` or `CLAUDE.md`), mode (Light/Full with scout counts), scout model. Recommend cheap model for scouts; name actual cheap model only when availability/cost known. Invite optional history/constraints/traps alongside missing questions. Missing optional context never blocks.
 
-No repository inspection or child dispatch until three required choices resolved. Preserve choices entire run. Unavailable requested model/profile -> explain and ask; never substitute. Before first child, bind capabilities per contracts; no isolation/dispatch -> capability issue, never orchestrator evidence-role takeover.
+No repository inspection or child dispatch until three required choices resolved. Preserve choices entire run. Unavailable requested model/profile -> explain and ask; never substitute. Bind capabilities per contracts before first child.
 
 ## 2. Scan and scope decision
 
 - role: [scan](../agents/scan.md).
-- inputs: root/location hint, optional user context, task boundary/run-folder rules, mode, bindings, repository policy + style.
-- writes: run initialization/baseline/manifest, `context.md`, `scan-note.md`, `scope-proposal.md`.
-- done: root/baseline resolved; scope proposal + artifacts present; ambiguity -> `needs_user` before deeper work.
-- orchestrator reads proposal/reply only; chooses mode-sized scopes using IDs/paths/reasons. Scan records accepted scopes in manifest through explicit continuation.
+- inputs: per role + task boundary/run-folder rules, bindings, user context.
+- writes: run folder, manifest, baseline, `context.md`, `scan-note.md`, `scope-proposal.md`.
+- done: root/baseline resolved; proposal + artifacts present; ambiguity -> `needs_user` before deeper work.
+- orchestrator reads proposal/reply only; chooses mode-sized scopes from IDs/paths/reasons. No scan continuation for recording.
+- orchestrator writes `<run>/accepted-scopes.md` (identity only, no evidence): accepted scope ID + paths per line; each scan claim and question ID -> accepted scope checker; merged/rejected proposed scope ID -> accepted scope (orphan owner reassignment). Scan proposes checker scopes before accepted scopes exist; orchestrator chooses the final mappings. Pass to every scout + checker.
+- root scout only when proposal flags genuinely complex runtime/E2E behavior; otherwise scan covers root orientation.
 
-## 3. Investigate and check
+## 3. Investigate
 
-- role: [scout](../agents/scout.md); inputs = accepted scope IDs/paths, proposal/context, in-scope prior-note/existing-instruction paths, user context; writes assigned note. Initial scopes narrow/non-overlapping; order by dependencies.
-- role: [checker](../agents/checker.md); inputs = assigned notes/scope IDs, all-notes directory for tagged questions, scope proposal, policy Select content/Shape; writes verified facts + short gap list.
-- Full: separate checker for scan note; area checker gets few related notes. Split before many notes exceed context. Light: one checker gets scan + all 2-3 scout notes.
-- orchestrator chooses consequential follow-up from gap lists only: conflicting evidence, cross-domain question, unclear behavior, weak support. Dispatch targeted scout with gap ID/question, artifact paths, needed evidence; may cross initial domains. Route new note to one checker; complexity alone needs no extra round. Exhausted scout budget -> checker investigates within assignment or reports gap; never exceed cap.
-- unresolved after useful bounded follow-up -> report gap; never generated fact. Stable claim/flow/verdict IDs survive handoffs; original asking flow ID survives cross-scope answer.
+- role: [scout](../agents/scout.md); inputs per role; `ids:` = scope ID (follow-up -> assigned `<scopeID>-R<k>`); writes assigned note. Initial scopes narrow/non-overlapping; order by dependencies.
+- barrier: all scouts of round terminal -> orchestrator runs `ledger.py questions` per contracts -> fresh question index path per round.
 
-## 4. Placement decision
+## 4. Check
 
-- role: [placement](../agents/placement.md); Light reuses checker with explicit new phase.
-- inputs: accepted verified facts, existing selected instruction paths/directives, policy Placement/Flows/Shape, style; writes placement + short doubts decision artifact.
-- done: each existing selected file disposition, planned targets, exact fact-to-verdict mapping, one-home ownership map, directives, doubts/conflicts. Planned deletion in Light cannot include nested file.
-- orchestrator accepts from short reply/doubts only. Evidence doubt -> one checker -> placement; uncertain home -> decide from placement's location alternatives. No orchestrator evidence resolution.
+- role: [checker](../agents/checker.md); fresh agent per area assignment.
+- inputs: per role; writes `facts.md` + `gaps.md` in own attempt folder.
+- question owner: explicit question ID mapping in `accepted-scopes.md` -> mapped scope's checker; otherwise accepted or merged/rejected scope from `owner` -> its checker; `unassigned` -> asking scope resolved from the question ID prefix through the same mapping.
+- Full: area checker gets a few related notes, routed scan claims, and explicitly assigned scan questions; no separate scan checker or scan pseudo-scope. Split before notes exceed context. Light: one checker gets scan + all 2-3 notes.
+- follow-up: orchestrator picks consequential items from gap lists only: conflicting evidence, cross-domain question, unclear behavior, weak support. Fresh targeted scout with new `<scopeID>-R<k>` prefix, gap/question ID, artifact paths, needed evidence; may cross initial domains. New note -> rebuilt question index -> fresh checker (own `-R<k>` prefix). Complexity alone needs no extra round. Exhausted scout budget -> checker investigates within assignment or reports gap; never exceed cap.
+- unknown intent/dependency -> bounded uncertainty reported; no repeated expansion solely to eliminate unknowns. Unresolved -> gap, never generated fact.
 
-## 5. Write
+## 5. Placement
 
-- role: [writer](../agents/writer.md); default placement producer changes to write-only phase. Optional writers when disjoint file sets make parallel work useful. Light checker explicitly gains root write ownership.
-- inputs: current accepted placement, assigned target files, policy/style/generated-content rules. Placement is sole factual input; no notes/verdict/source reads in writing phase.
-- done: only planned facts/directives written, target dispositions applied, changed paths/current target revisions returned. Placement producer's retained evidence does not authorize new factual synthesis during writing.
+- role: [placement](../agents/placement.md).
+- inputs: per role; writes `routing.json` + `doubts.md`.
+- done: routing covers each existing selected file disposition, targets, fact IDs, directives, disjoint writer batches; unplaced/alternatives explicit.
+- orchestrator accepts from reply/doubts only. Evidence doubt -> fresh checker -> fresh placement revision. Home alternative -> orchestrator decides from doubts reasons -> fresh placement revision applies decision (prior routing + decisions; unaffected batches may proceed).
+- every placement revision -> sidecar retirement per contracts.
+- per batch: orchestrator runs `ledger.py project` over all targets in placement reply's batch -> targets list, verbatim keys; no disposition knowledge needed. FAIL -> contracts helper routes; never hand-edit routing.
 
-## 6. Fresh review and report-only probe
+## 6. Write
 
-- role: [reviewer](../agents/reviewer.md); fresh agent uninvolved in scan/check/placement/write, including root-only runs.
-- inputs: current generated file list, compact ownership map + conflict-free target revisions, policy/style/generated-content rules. No notes/verdicts/placement.
-- writes: assigned generated/updated instruction files only. Full reviewer gets no run-folder access; returns short findings in reply. Light review phase also has no run-folder access; later explicit Verify phase grants exact verification inputs + report path only.
-- done: dedup/wording corrections + report-only typical-change/investigation probe; reply includes moved/deleted guidance, file/line support findings, probe gaps, conflicts/skipped. Reviewer never adds probe discoveries or deletes on support grounds.
+- role: [writer](../agents/writer.md); fresh agent per disjoint batch, batch chosen in routing before dispatch.
+- inputs: per role; expected revisions per contracts (first writer -> `ledger.py hash --baseline`).
+- done: dispositions applied, helpers clean per contracts Helper results, sidecar written, revisions returned.
+- blocked IDs / target conflict -> contracts recovery routes.
+- all writers terminal + blocked-ID rounds resolved (contracts) -> orchestrator runs `ledger.py index` over current-batch sidecars; FAIL -> contracts helper routes.
 
-## 7. Repair and reconcile
+## 7. Fresh review and report-only probe
 
-- role: [fixer](../agents/fixer.md); fresh worker per repair assignment, never reviewer repairing own support findings or Verify failures. Disjoint ownership when parallel.
-- inputs: findings, current accepted placement, assigned current targets, policy/style/generated-content rules; source reads allowed for verification.
-- exact verdict-supported correction or unsupported-line deletion -> fixer edits. New/corrected fact/scope -> candidate artifact -> one checker -> placement -> fixer using revised accepted placement; no factual write before verdict.
-- consequential probe gap -> same checker -> placement -> fixer route for smallest pointer/warning. Location doubt -> placement alternatives -> orchestrator decision -> updated placement.
-- placement producer reconciles reviewer/fixer move/delete replies and updates mapping at new revision; contradictions -> checker. Light producer also emits compact final mapping/verdict refs + audit result and producer conflicts/skipped extracts for Verify-only payload. Reviewer receives payload only after review phase ends; no underlying evidence access.
-- no findings -> no fixer. Later input/target changes invalidate affected review/Verify acceptance; contracts define bounded reruns.
+- role: [reviewer](../agents/reviewer.md).
+- inputs: `ledger.py manifest` output + per role; no run evidence. writes: findings file only.
+- done: semantic findings + probe gaps tagged by route; reply counts per target per route.
+- routes per contracts Helper results and routing; `fixer` -> stage 8.
 
-## 8. Verify and accept
+## 8. Repair
 
-- role: [verify](../agents/verify.md); Full dedicated worker; Light reviewer transitions explicitly to report-only Verify after repairs/reconciliation. No instruction-file writes during Verify.
-- shared inputs: root/mode/file choice, current generated paths/revisions, actual run + exact manifest/baseline paths, policy/style/generated-content/helper paths, review/fixer decision replies, assigned report path. Full adds current placement, verified-facts paths, producer conflicts/skipped sections. Light receives final mapping/audit/extract payload only; no notes/verdict/placement access.
-- done: checks + short report present, pass/fail and failures routed. Missing inputs/report or failed mandatory check -> dependent completion blocked; repair through stage 7, rerun affected checks on current revisions.
-- optional rationale question at end: finish supported guidance first; route user answer through checker/placement/fixer, then revalidate. Never infer rationale.
-- orchestrator checks replies: scout binding/count/host limits, non-scout inheritance, fresh reviewer/probe, accepted placement + reconciled mapping, routed findings/gaps, passing current report, terminal children. Relay report, actual retained run path, unresolved limits. Run folder reusable/safe to delete; initializer package deletable after success. Do not claim success from tool termination alone.
+- role: [fixer](../agents/fixer.md); partitioned by writer batch (reply per-target counts -> placement batch list).
+- inputs: per role; dispatch passes reviewer findings and/or Verify report path(s) (`fixer`-route items only) or helper FAIL lines; batch projection re-run at current routing.
+- checker-/placement-route candidate files -> contracts routes.
+- after fixer: `ledger.py index`; changed targets with `meaning-risk: yes` -> fresh targeted reviewer scoped to those files only; `no` -> no review. No findings -> no fixer.
+
+## 9. Verify and accept
+
+- role: [verify](../agents/verify.md).
+- inputs: per role Inputs; all-target projection per contracts `project`.
+- done: helpers rerun + semantic checks + report; each failure tagged `format`, `semantic`, or `boundary` with route.
+- orchestrator routes from Verify reply alone (contracts route vocabulary): `fixer` -> stage 8; `checker`/`placement` -> those routes; then fresh Verify on current revisions; cycle counted per contracts caps (`format`/`semantic` split). `boundary` -> contracts compare route.
+- optional rationale question at end: finish supported guidance first; route answer through checker -> placement -> fixer, then revalidate. Never infer rationale.
+- final acceptance: Outcome completion + scout binding/count/host limits, non-scout inheritance, fresh roles per contracts, compare PASS, routed findings/gaps. Relay passing Verify report (contracts route vocabulary), actual retained run path, unresolved limits. Never claim success from tool termination alone.

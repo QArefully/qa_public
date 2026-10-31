@@ -4,9 +4,9 @@ Read before instruction-file write, review, repair, Verify. Apply bundled style 
 
 - Default omit. Source pointer + reason to inspect; complex logic needs entry point, authority, non-obvious risk. Detailed docs -> path, never copied explanation.
 - Avoid volatile implementation prose (line numbers, function bodies, transient values), inventories, exhaustive environment lists, generic coding advice, host-provided routing rules.
-- Root = global context; Full nested files = subtree-only deltas. Preserve source/conditions/scope when compressing; placement supplies checked factual wording.
+- Root = global context; Full nested files = subtree-only deltas. Preserve source/conditions/scope/labels when compressing; projected records supply placeable factual meaning, writer renders wording once.
 - Destructive command -> impact + required authorization. Generated/runtime boundary -> identify only when agent may accidentally edit/commit it.
-- Omit initializer plumbing, run folder, skill locations/discovery. Instruction-to-instruction pointers prohibited except root Maintenance generic update rule. Pitfalls verified + nonempty per repository policy.
+- Omit initializer plumbing, run folder, skill locations/discovery. Instruction-file pointers per policy Shape. Pitfalls verified + nonempty per repository policy.
 
 Root only -> include following rules; never nested:
 
