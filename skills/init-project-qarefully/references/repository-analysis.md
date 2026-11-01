@@ -17,7 +17,8 @@ Write assigned run-folder artifacts:
 
 - `context.md` -> shared digest: repository root, project purpose, root entry/authority paths, shared foundation, relevant user context, existing-instruction paths. Facts remain leads until checked; digest never substitutes for source evidence.
 - `scan-note.md` -> root-level claims (orientation, runtime, commands, architecture) + factual claims extracted from existing instructions, as `scan-C<n>` records per contracts Records; every scan claim `confidence: low` (shallow read; checker required). Flow IDs, tagged question records, leads per scout note schema. Existing user/process directives (workflow, authorization, style) -> separate `## Kept directives` bullets with source file:line + applicable scope; never claims.
-- `scope-proposal.md` -> short decision artifact: each proposed scope's id, paths, one-line reason, prior-note paths, existing-instruction paths, scan claim and question IDs routed to that scope's checker (root-wide items -> most related scope); flag genuinely complex runtime/E2E behavior needing root scout. The orchestrator maps each ID to an accepted scope after choosing or merging scopes. End with conflicts/skipped: doc/code and intent conflicts, skipped flows, unresolved gaps.
+- `scope-proposal.md` -> decision artifact using [contracts Scope grammar](contracts.md#scope-grammar): root `## Container: .`, connected domain/package/feature/route/test containers, `## Scope: <ID>` with literal `- path: <directory> -> <investigation/merge reason>` per directory, and `## Skipped: <directory> -> <reason>`. Classify every immediate child of declared containers; broad ancestor scope never discharges declared child obligations. Keep human reasons, prior-note/existing-instruction paths, scan claim/question-to-checker mappings outside machine sections; flag genuinely complex runtime/E2E behavior needing root scout. A shared scope retains each directory's reason. Evidence-shaped skips identify producer, consumer, or delegated authority where applicable; small/out-of-scope/budget alone is insufficient. End with conflicts/skipped: doc/code and intent conflicts, skipped flows, unresolved gaps.
+- Expose real deeper domain boundaries from structure/configuration, including route/test containers and flat-file investigation at the container itself. Directory coverage checks assignment, never whether every directory deserves a note. Run proposal coverage per contracts; complete only with current PASS identity/hash/counts. Scope-rewrite consumes proposal + uncovered report and revises assignment only, reusing immutable baseline/context; no deep source investigation. Accepted ownership and gate handling per workflow.
 
 Scan claims and questions -> area checker per routing; no separate scan checker. Scan proposes checker scopes before accepted scopes exist; the orchestrator records each scan question ID's accepted-scope assignment.
 
@@ -26,11 +27,12 @@ Scan claims and questions -> area checker per routing; no separate scan checker.
 Scouts tag confidence; checker selects guidance-worthy candidates first, then verifies only where required. Selection applies to scan claims, scout claims, existing-instruction facts, promoted leads, late additions.
 
 - confidence: per [scout](../agents/scout.md) Confidence.
-- checker required: low confidence; absence/exclusivity ("never", "only", "all", "no X"); security/money regardless of confidence; existing-instruction and scan facts not read in implementation by scout; promoted leads; late additions; any entry needing `Invariant:`/`Limitation:`/`intent unknown` label or `Verify:` pointer.
+- checker required: low confidence; absence/exclusivity ("never", "only", "all", "no X"); security/money regardless of confidence; existing-instruction and scan facts not read in implementation by scout; promoted leads; late additions; directional edit warnings and source-navigation mappings; any entry needing `Invariant:`/`Limitation:`/`intent unknown` label or `Verify:` pointer.
 - placeable per contracts Records; `ledger.py project` enforces. Unresolved -> gap list, never document.
 - leads noticed in passing -> promote only hazards changing future agent edit decision, then verify as `-F<n>` record; drop other bug/security observations.
 - existing instruction files -> factual claims = leads under same rule; user/process directives exempt from factual verification, kept per `## Placement`.
 - dedupe shared propositions within batch before verifying; drop non-guidance-worthy claims before expensive checks.
+- Validate cited source/test paths before placeable records. Absent install/build outputs are not existing authorities: cite checked-in generator/configuration or real delegate. If output naming matters, describe it as generated in ordinary prose + cite its existing producer; never exempt missing source citations from strict path checks.
 
 Checker assigns labels from evidence per `## Shape`; scout wording never sets labels. Output per [checker](../agents/checker.md).
 
@@ -57,13 +59,17 @@ Drop:
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
 - duplicated parent guidance or human documentation
-- worked numeric examples (non-obvious rule as one statement + authority path stays), fixture values, test scenarios, ticket/rubric checklists, test-file -> feature mappings beyond one `Verify:` pointer per `## Shape`, and coverage claims inferred from filenames
+- worked numeric examples (non-obvious rule as one statement + authority path stays), fixture values, test scenarios, ticket/rubric checklists, per-test-file -> feature inventories beyond one `Verify:` pointer per `## Shape`, and coverage claims inferred from filenames. A verified conceptual route/test navigation rule per `## Placement` is permitted.
 
 Keep investigation detail outside instructions. Scout/checker output -> guidance-worthy facts and consequential gaps, not general bug audit or test-absence inventory. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
 
 ## Placement
 
-Nested instruction files may not load until agent works in their subtree. Each fact -> one home = deepest owning-domain subtree covering trigger (code whose edit triggers hazard or must honor fact), at app/package/feature granularity per `## Shape` (parent files load for whole subtree beneath them -> keep lean). Trigger owner usually owns rule or state write; failure surfacing in another domain -> still trigger owner, not failure site. Trigger spans sibling domains -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree fails `## Shape` creation rule -> nearest parent home), Light uses root (root holds all, concise domain guidance included). Other domains needing fact -> source authority path + hazard only when needed, never instruction file. Parent entry whose concern is implemented in child subtree -> child source path (entry file or exemplar) + hazard only when needed; fact stays in child home.
+Instruction loading depends on the bound harness/version; verify its supported path context rather than assuming source reads load sibling notes. Each fact ID -> one home = deepest local subtree covering its edit trigger, at app/package/feature granularity per `## Shape`; use a suitable ancestor when it covers the edit path. Canonical behavior stays with its rule/state owner. A shared edit trigger spanning siblings -> nearest common parent. Repository-wide structure -> root per `## Architecture`. Home file: existing one; none -> Full creates it (subtree fails creation rule -> nearest suitable parent), Light uses root for all concise domain guidance.
+
+Editing D can break authority in sibling S -> separate, independently verified directional record: `Change X in D -> review Y in S because Z`. Its distinct ID, evidence, and home serve D's edit trigger; source authority path + hazard, never copied invariant or instruction-file pointer. Verify D->S and S->D separately when both matter; shared authority does not prove reverse coupling. Parent already provides sufficiently local guidance available from D -> use it. Full permits a small pointer-only file for a verified local hazard meeting Shape; never fold it into an unavailable sibling solely for size. Parent concern implemented in child -> child source pointer + hazard only when needed; canonical fact stays in child home.
+
+Route/test edits may need a compact source-navigation rule at their app/package common ancestor: inspect owning feature behavior/guards before editing adapters or tests. Verify the actual mapping through layout/imports/dispatch and give real exception pointers; never infer a universal basename match. One conceptual mapping, parent bullet + one trigger path per sub-bullet if needed; no test-to-feature inventory or note per mirrored test directory. A routes-local note requires route-local hazards.
 
 File set follows placement rule, not scout scopes: one scope may feed several files or none; one file may draw on several scopes.
 
@@ -72,7 +78,7 @@ Placement agent procedure per [placement](../agents/placement.md). Flow joining 
 Write `routing.json` per contracts; routing metadata only, never finished wording or manuscript:
 
 - target -> disposition, placeable fact IDs, directive refs, writer batch; flow facts routed together by flow ID to one target
-- shared propositions across records -> one ID routed; duplicates -> `unplaced` with reason naming kept ID
+- shared propositions across records -> one ID routed; duplicates -> `unplaced` with reason naming kept ID. Verified directional warnings with different edit triggers are distinct propositions; identical triggers, repeated invariants, and copied flow narratives remain duplicates.
 - existing selected file -> keep/update/delete; factual content follows records; user/process directives -> refs with original file:line, preserving intent and scope
 - non-placeable, low-value, or out-of-mode IDs -> `unplaced` with short reason
 - policy cannot decide home -> `alternatives`, facts withheld from targets until decided
@@ -109,7 +115,7 @@ Complexity signal prompts investigation, not documentation. Keep flow only when 
 
 Placement routes flow facts by flow ID; cross-scope answers retain asking flow's ID. Home -> `## Flows` in nested file per `## Placement` (domain owning flow's core rules and state writes); never root. Light -> no flows section; distill flow facts into root architecture, invariants, pitfalls. One flow lives in one file; never split or repeat it. Writer renders flow entry from routed records; flow/fact IDs stay in run artifacts, never generated instructions.
 
-Per flow -> trigger/entry path, rule/state owner, consequential hazard. Coupling hazard -> `Change X -> review Y` trigger, not descriptive "X owns Y" line. Add shortest hop chain, boundary, or helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values.
+Per flow -> trigger/entry path, rule/state owner, consequential hazard. Coupling hazard -> `Change X -> review Y` trigger, not descriptive "X owns Y" line. Add shortest hop chain, boundary, or helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values. A distinct trigger-side warning outside the owning file is not a second flow entry: give it its own checked ID, omit the original `flow:` field when that would force the owning flow's target, and retain relationship through Evidence/contract source paths. Never route one ID to multiple homes.
 
 ## Shape
 
@@ -125,4 +131,4 @@ Label behavioral entry only where invariant vs limitation changes what agent may
 
 Nested files contain only local architecture, flows, testing, and pitfalls; no commands. First line = orientation line -> subtree scope; scope text exempt from cross-file dedup. Entry pointer optional, only when agent would not find entry by convention: omit conventional bootstrap/config/barrel names (`main.*`, `index.*`, `config.*`, `App.*`) unless they hold non-obvious logic; pointer targets real logic, never shim/re-export (point at delegate or omit); path cited elsewhere in same file -> no orientation repeat. One section -> omit heading; several -> headings from that set (`## Architecture`, `## Flows`, `## Testing`, `## Pitfalls`). Create one when subtree owns doc-worthy flow, or has distinct decisions, invariants, or risks not evident from its entry point. Small file fine; size alone never folds content into parent.
 
-Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files, except mandatory root Maintenance rule's generic update instruction. Harness auto-loads nested files; pointers to them are noise. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.
+Instruction files never point to, list, or summarize other `AGENTS.md`/`CLAUDE.md` files, except mandatory root Maintenance rule's generic update instruction. Use source navigation independently of harness loading behavior. Cross-domain dependency -> source authority path + hazard per `## Placement`. Complexity alone does not justify walkthrough or domain inventory.

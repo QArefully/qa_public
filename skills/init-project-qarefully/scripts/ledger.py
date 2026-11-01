@@ -37,7 +37,8 @@ Usage: ledger.py <command> ...
       except <run-dir>/quarantine/ and <run-dir>/baseline/ (refuted|conflict verdict or "supersedes" counts even
       when unlisted). FAIL rules: unparsed-record (scanned fact-ID record, ID ending -C<n>|-F<n>, lacking verdict
       and confidence field; verdict/confidence field in record without fact ID or outside any record),
-      unrouted-target, superseded (any ID inside any scanned "supersedes" value), refuted (first word of any
+      unrouted-target, fact-multiple-targets (same ID routed to multiple homes, including outside requested
+      targets), superseded (any ID inside any scanned "supersedes" value), refuted (first word of any
       verdict line refuted|conflict), duplicate-checker, invalid-verdict (verdict first word not
       confirmed|corrected|refuted|conflict; >1 distinct verdict), duplicate-claim, missing, low-confidence
       (confidence first word != high). Any FAIL -> exit 1, nothing written.
@@ -45,6 +46,20 @@ Usage: ledger.py <command> ...
       Question index lines "<ID> | flow | contract | owner | status | answer" (notes/gaps run-relative or
       absolute). Gaps lines "answered: <QID> -> <ID>" set status answered + answer (later line wins); unknown QID
       -> WARN unknown-question. Duplicate question IDs -> FAIL duplicate-id, exit 1, nothing written.
+  coverage <run-dir> <scope-proposal.md> [--accepted <accepted-scopes.md>] --out <report>
+      Directory assignment gate (no note/file completeness check). Strict unfenced Markdown: "## Container: .",
+      "## Container: <dir>", "## Scope: <ID>" followed by "- path: <dir> -> <reason>", and
+      "## Skipped: <dir> -> <reason>". Literal repo-relative directories; separators normalized, host case rules.
+      Accepted input permits Scope sections only; its path set must equal proposal ownership. Containers must
+      connect through declared immediate parents to root. Every immediate child requires scope, skip or child
+      container; scope+container refines children. Linked children require explicit skip; never followed.
+      .git and current run are excluded; a nested run's ancestors still require classification. No recursive
+      walk of skipped/scoped trees. Inputs belong to this run (baseline root/run identity verified); reports
+      only under <run>/attempts/<attempt>/. The nearest baseline marker owns inputs/outputs; nested foreign
+      runs are excluded regardless of their baseline root or validity. Schema 1 JSON: identities/hashes,
+      fixed counts, sorted uncovered,
+      issues {path, code, reason}, assignments and skips (reasons only in report). Exit 1 retains completed
+      failure report; exit 2 removes stale guarded report. Stdout paths/hashes/counts only, never reasons.
   manifest <repo-root> <routing.json> --out <file>
       Reviewer manifest lines "<target> <disposition> <sha256|absent>"; no fact IDs or evidence.
   index <repo-root> <routing.json> <provenance-*.json>... --out <file>
@@ -56,7 +71,7 @@ Usage: ledger.py <command> ...
 Target args (project <target>, routing keys, sidecar keys) = routing "targets" keys exactly (repo-relative, "/").
 Path args: repo content (hash paths, --allow) -> repo-relative or absolute; run-dir, routing, provenance, notes,
 --out -> cwd-relative or absolute. Paths resolved through symlinks/junctions. Outputs use "/", UTF-8.
---out guard (project, questions, manifest, index): exit 2, nothing written/deleted, when basename AGENTS.md,
+--out guard (project, questions, coverage, manifest, index): exit 2, nothing written/deleted, when basename AGENTS.md,
 CLAUDE.md or facts.md, a path component .agents/.claude (below run dir when inside it), inside
 <run-dir>/baseline/, inside repo but outside run dir, or same file as any input (routing, routing inputs,
 provenance, notes, answers; case-insensitive on Windows; existing --out hardlinked to input). Repo root + run
@@ -766,6 +781,13 @@ def cmd_project(args):
     run_dir = args.run_dir
     routing = load_routing(args.routing)
     scouts, checkers, superseded, vetoed, invalid, listed, failures = {}, {}, {}, set(), set(), set(), []
+    homes = {}
+    for target, entry in routing["targets"].items():
+        for ident in entry.get("facts", []):
+            homes.setdefault(ident, set()).add(target)
+    for ident, targets in sorted(homes.items()):
+        if len(targets) > 1:
+            failures.append(("fact-multiple-targets", f"{ident}: {', '.join(sorted(targets))}"))
 
     def scan(record):
         detail = unparsed(record, run_dir)
@@ -869,6 +891,186 @@ def cmd_questions(args):
     write_out(args.out, "".join(" | ".join([i] + [v.replace("|", "/") for v in rows[i]]) + "\n" for i in order))
     print(f"PASS: questions {slash(args.out)}: {summary}")
     return 0
+
+
+# coverage: intentionally independent of scan_tree's file-only baseline traversal
+
+def coverage_path(value):
+    """Strict literal directory spelling; host case folded only for comparisons, never for display."""
+    value = slash(value)
+    if value.startswith("`") and value.endswith("`") and len(value) > 2:
+        value = value[1:-1]
+    if (not value or value != value.strip() or value.startswith("/")
+            or any(c in value for c in "{}*?[]:`\x00")
+            or (value != "." and any(p in ("", ".", "..") for p in value.split("/")))):
+        raise InputError("coverage requires literal repo-relative directory paths")
+    return value
+
+
+def parse_coverage(path, accepted=False):
+    """Only unfenced machine sections; prose/mappings belong under separate non-machine headings."""
+    containers, skips, owners, scopes = {}, {}, {}, set()
+    fence, active, scope_paths = None, None, 0
+
+    def finish():
+        if active is not None and active[0] == "Scope" and not scope_paths:
+            raise InputError("coverage scope must own at least one directory")
+
+    for number, line in enumerate(common.split_lines(read_text(path)), 1):
+        marker = FENCE.match(line)
+        if marker:
+            token = marker.group(1)
+            if fence is None:
+                fence = token
+            elif token[0] == fence[0] and len(token) >= len(fence):
+                fence = None
+            continue
+        if fence is not None:
+            continue
+        heading = re.match(r"\s*#+\s*(.*?)\s*$", line)
+        if heading:
+            finish()
+            active, scope_paths = None, 0
+            recognized = re.match(r"(?:Container|Scope|Skipped)\b", heading.group(1), re.I)
+            if not recognized:
+                continue
+            match = re.fullmatch(r"## (Container|Scope|Skipped): (.+)", line)
+            if not match or (accepted and match.group(1) != "Scope"):
+                raise InputError(f"malformed coverage section at line {number}")
+            kind, value = match.groups()
+            if kind == "Scope":
+                if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", value) or value in scopes:
+                    raise InputError(f"invalid or duplicate coverage scope at line {number}")
+                scopes.add(value)
+                active = kind, value
+                continue
+            reason = None
+            if kind == "Skipped":
+                if " -> " not in value:
+                    raise InputError(f"coverage skip lacks reason at line {number}")
+                value, reason = value.split(" -> ", 1)
+                if not reason.strip():
+                    raise InputError(f"coverage skip lacks reason at line {number}")
+            directory = coverage_path(value)
+            table = containers if kind == "Container" else skips
+            if key(directory) in table:
+                raise InputError(f"duplicate coverage declaration at line {number}")
+            table[key(directory)] = {"path": directory, "reason": reason}
+            active = kind, directory
+            continue
+        if re.match(r"\s*(?:[-*+]\s*path\b|path\s*:)", line, re.I):
+            match = re.fullmatch(r"- path: (.+?) -> (.*)", line)
+            if not match or active is None or active[0] != "Scope" or not match.group(2).strip():
+                raise InputError(f"malformed coverage path at line {number}")
+            directory, reason = coverage_path(match.group(1)), match.group(2)
+            if key(directory) in owners:
+                raise InputError(f"duplicate coverage owner at line {number}")
+            owners[key(directory)] = {"path": directory, "scope": active[1], "reason": reason}
+            scope_paths += 1
+        elif active is not None and line.strip():
+            raise InputError(f"unexpected content in coverage section at line {number}")
+    finish()
+    return {"containers": containers, "skips": skips, "owners": owners, "scopes": scopes}
+
+
+def coverage_children(root, directory, run_dir):
+    """Immediate directory inventory, including empty/linked directories; never descend through a link."""
+    children, excluded = {}, []
+    path = root if directory == "." else os.path.join(root, *directory.split("/"))
+    try:
+        with os.scandir(fs(path)) as listing:
+            for entry in listing:
+                child = entry.name if directory == "." else directory + "/" + entry.name
+                if entry.name == ".git":
+                    excluded.append({"path": child, "code": "git", "reason": "Git metadata excluded."})
+                    continue
+                # Use lexical component comparison: an external linked alias is never mistaken for the run.
+                if key(common.unfs(entry.path)) == key(run_dir):
+                    excluded.append({"path": child, "code": "run", "reason": "Current run excluded."})
+                    continue
+                linked = is_linked_dir(entry)
+                if linked or entry.is_dir(follow_symlinks=False):
+                    if not linked and not inside(real(common.unfs(entry.path)), root):
+                        raise InputError("coverage directory resolves outside repository")
+                    children[key(child)] = {"path": child, "linked": linked}
+    except OSError as error:
+        raise InputError(f"unreadable coverage directory: {directory}: {error.__class__.__name__}")
+    return children, excluded
+
+
+def coverage_inventory(root, run_dir, proposal):
+    containers, owners, skips = (proposal[k] for k in ("containers", "owners", "skips"))
+    if key(".") not in containers:
+        raise InputError("coverage requires root Container: .")
+    if set(skips) & (set(containers) | set(owners)):
+        raise InputError("coverage skip conflicts with scope or container")
+    children, excluded = {}, []
+    # Parent-first order means no container is ever inspected before its parent proves it safe.
+    for ident, entry in sorted(containers.items(), key=lambda pair: (pair[1]["path"].count("/"),
+                                                                  pair[0] != ".", pair[0])):
+        directory = entry["path"]
+        if directory != ".":
+            parent = directory.rsplit("/", 1)[0] if "/" in directory else "."
+            if key(parent) not in containers or ident not in children:
+                raise InputError(f"orphan or nonexistent coverage container: {directory}")
+            if children[ident]["linked"]:
+                raise InputError(f"linked directory cannot be a coverage container: {directory}")
+        found, ignored = coverage_children(root, directory, run_dir)
+        children.update(found)
+        excluded += ignored
+    for table, kind in ((owners, "scope"), (skips, "skip")):
+        for ident, entry in table.items():
+            if ident not in children and not (kind == "scope" and ident in containers):
+                raise InputError(f"orphan or nonexistent coverage {kind} path: {entry['path']}")
+            if kind == "scope" and ident in children and children[ident]["linked"]:
+                raise InputError(f"linked directory requires explicit coverage skip: {entry['path']}")
+    issues = []
+    for ident, entry in children.items():
+        if ident not in owners and ident not in skips and ident not in containers:
+            code = "linked-unclassified" if entry["linked"] else "unclassified"
+            issues.append({"path": entry["path"], "code": code,
+                           "reason": "Linked directory requires explicit exclusion reason." if entry["linked"]
+                           else "Immediate directory lacks scope, skip or container disposition."})
+    return children, excluded, issues
+
+
+def cmd_coverage(args):
+    proposal = parse_coverage(args.proposal)
+    children, excluded, issues = coverage_inventory(args.root, args.run_dir, proposal)
+    accepted = parse_coverage(args.accepted, accepted=True) if args.accepted else None
+    if accepted is not None:
+        for ident, entry in accepted["owners"].items():
+            if ident not in proposal["owners"]:
+                raise InputError(f"accepted path absent from proposal ownership: {entry['path']}")
+        for ident in set(proposal["owners"]) - set(accepted["owners"]):
+            issues.append({"path": proposal["owners"][ident]["path"], "code": "accepted-dropped",
+                           "reason": "Proposed directory lacks accepted investigation ownership."})
+    issues.sort(key=lambda issue: (issue["path"], issue["code"]))
+    counts = {"containers": len(proposal["containers"]), "directories": len(children),
+              "proposed_scopes": len(proposal["scopes"]), "proposed_paths": len(proposal["owners"]),
+              "accepted_scopes": len(accepted["scopes"]) if accepted is not None else 0,
+              "accepted_paths": len(accepted["owners"]) if accepted is not None else 0,
+              "skipped": len(proposal["skips"]), "linked": sum(e["linked"] for e in children.values()),
+              "excluded": len(excluded), "uncovered": len({i["path"] for i in issues}), "issues": len(issues)}
+    data = {"schema": 1, "status": "fail" if issues else "pass", "root": slash(args.root),
+            "run_dir": slash(args.run_dir), "proposal": slash(args.proposal),
+            "proposal_sha256": hashlib.sha256(common.read_bytes(args.proposal)).hexdigest(),
+            "accepted": slash(args.accepted) if args.accepted else None,
+            "accepted_sha256": hashlib.sha256(common.read_bytes(args.accepted)).hexdigest() if args.accepted else None,
+            "counts": counts, "uncovered": sorted({i["path"] for i in issues}), "issues": issues,
+            "assignments": {"proposal": sorted(proposal["owners"].values(), key=lambda e: e["path"]),
+                            "accepted": sorted(accepted["owners"].values(), key=lambda e: e["path"])
+                            if accepted is not None else None},
+            "skips": sorted(proposal["skips"].values(), key=lambda e: e["path"]),
+            "excluded": sorted(excluded, key=lambda e: e["path"])}
+    write_out(args.out, json.dumps(data, indent=1, sort_keys=True, ensure_ascii=False) + "\n")
+    args.coverage_report_complete = True
+    print(f"proposal {slash(args.proposal)} {data['proposal_sha256']}")
+    if args.accepted:
+        print(f"accepted {slash(args.accepted)} {data['accepted_sha256']}")
+    print(f"report {slash(args.out)} {sha256(args.out)}")
+    print(f"{'FAIL' if issues else 'PASS'}: coverage: " + ", ".join(f"{v} {k}" for k, v in counts.items()))
+    return 1 if issues else 0
 
 
 def cmd_manifest(args):
@@ -996,6 +1198,25 @@ def find_run_dir(start, root):
         directory = parent
 
 
+def nearest_run_dir(start):
+    """Nearest baseline marker owning a file, including foreign-root or malformed nested runs."""
+    directory = os.path.dirname(real(start))
+    while True:
+        marker = os.path.join(baseline_path(directory), "inventory.json")
+        try:
+            os.lstat(fs(marker))
+        except FileNotFoundError:
+            pass
+        except OSError as error:
+            raise InputError(f"unreadable run baseline marker: {error.__class__.__name__}")
+        else:
+            return directory
+        parent = os.path.dirname(directory)
+        if parent == directory:
+            return None
+        directory = parent
+
+
 def same_file(a, b):
     try:
         return os.path.samefile(fs(a), fs(b))
@@ -1031,7 +1252,7 @@ def guard_out(out, root, run_dir, inputs=()):
 
 def prepare_out(args):
     """Resolve repo root + run dir for --out guard; sets args.out to guarded real path."""
-    if args.command in ("project", "questions"):
+    if args.command in ("project", "questions", "coverage"):
         args.run_dir = real(args.run_dir)
         root = real(load_baseline(args.run_dir)["root"])
         run_dir = args.run_dir
@@ -1043,6 +1264,33 @@ def prepare_out(args):
         inputs += [run_file(run_dir, name) for name in load_routing(args.routing).get("inputs", [])]
     if args.command == "questions":
         inputs += [run_file(run_dir, name) for name in args.notes + args.answers]
+    if args.command == "coverage":
+        base = load_baseline(run_dir)
+        if not os.path.isdir(fs(root)) or not isinstance(base.get("run_dir"), str) or key(real(base["run_dir"])) != key(run_dir):
+            raise InputError("coverage baseline root/run identity is invalid")
+        check_run_dir(root, run_dir, base.get("external_run") is True)
+        args.root = root
+        for field in ("proposal", "accepted"):
+            name = getattr(args, field)
+            if name is None:
+                continue
+            path = real(run_file(run_dir, name))
+            owner = nearest_run_dir(path)
+            if (not inside(path, run_dir) or inside(path, baseline_path(run_dir))
+                    or owner is None or key(owner) != key(run_dir)):
+                raise InputError("coverage input must belong to current run outside baseline")
+            setattr(args, field, path)
+            inputs.append(path)
+        inputs.append(os.path.join(baseline_path(run_dir), "inventory.json"))
+        output = real(args.out)
+        parts = rel(output, run_dir).split("/") if inside(output, run_dir) else []
+        if len(parts) < 3 or key(parts[0]) != key("attempts"):
+            raise InputError("coverage --out must be under current run attempts/<attempt>/")
+        owner = nearest_run_dir(output)
+        if owner is None or key(owner) != key(run_dir):
+            raise InputError("coverage --out must belong to current run")
+        if os.path.isfile(fs(output)) and os.stat(fs(output)).st_nlink > 1:
+            raise InputError("coverage --out must not be an existing hardlink")
     args.out = guard_out(args.out, root, run_dir, inputs)
 
 
@@ -1066,6 +1314,7 @@ def parsers():
         mode={"required": True, "choices": ("light", "full")}, allow={"action": "append", "default": []})
     add("project", "run_dir", "routing", "targets+", **out)
     add("questions", "run_dir", "notes+", answers={"nargs": "+", "action": "extend", "default": []}, **out)
+    add("coverage", "run_dir", "proposal", accepted={"default": None}, **out)
     add("manifest", "root", "routing", **out)
     add("index", "root", "routing", "provenance+", **out)
     return table
@@ -1096,7 +1345,8 @@ def main(argv):
     except Exception as error:  # never traceback; partial --out removed below
         print(f"error: unexpected {common.one_line(error)}", file=sys.stderr)
         code = 2
-    if code and guarded and os.path.isfile(fs(guarded)):
+    retain_coverage = args.command == "coverage" and code == 1 and getattr(args, "coverage_report_complete", False)
+    if code and guarded and not retain_coverage and os.path.isfile(fs(guarded)):
         try:
             os.remove(fs(guarded))
         except OSError:

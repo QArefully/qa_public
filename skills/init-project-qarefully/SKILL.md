@@ -16,10 +16,10 @@ Before first child, bind capabilities per contracts Capability binding. Missing 
 
 ## Orchestration boundary
 
-- Own capability binding, scope/follow-up/location decisions, scheduling, ID prefixes, accepted revisions, routing of findings/helper FAILs, `state.md` + `accepted-scopes.md` + usage, quarantine moves, user communication (concise progress, bounded by host intervals), final acceptance.
+- Own capability binding, scope/follow-up/location decisions, proposal + accepted-scope coverage gates, consequential QID dispositions, scheduling, ID prefixes, accepted revisions, routing of findings/helper FAILs, `state.md` + `accepted-scopes.md` + usage, quarantine moves, user communication (concise progress, bounded by host intervals), final acceptance.
 - Read package routing instructions, compact replies, short scope proposal/gap lists/doubts only; findings/candidates/Verify reports per contracts Helper results and routing (route from reply counts). Role scripts + policy resources are dispatch instructions, never permission to inspect evidence.
 - Run bundled helpers only per contracts orchestrator runner role; consume identity output only (paths, hashes, pass/fail, counts). Never open helper outputs, repository source, notes, records, routing payload, generated files, or diffs. Pass paths/IDs; never reconstruct evidence in prompts. Write-incapable producer -> opaque verbatim save only, per contracts.
-- Every phase loads exact role/resource paths from workflow; self-contained dispatch + fresh agents per contracts; never move agent to another role. `agents/` scripts require explicit loading; folder placement registers no agents. No child skill invocations/task tracking/nested agents.
+- Use workflow's compact dispatch matrix; every phase loads exact role/resource paths, self-contained dispatch + fresh agents per contracts; never move agent to another role. `agents/` scripts require explicit loading; folder placement registers no agents. No child skill invocations/task tracking/nested agents.
 - Only selected mode-approved primary files + run folder may change; workflow owns exact counterpart protections, baseline, and run-folder rules.
 
 ## Finish

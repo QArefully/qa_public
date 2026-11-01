@@ -8,7 +8,7 @@ check only those (absolute or repo-relative). --allow-external -> absolute paths
 Resolution: bare filename -> instruction file's directory, else repository root. Path with "/" -> repository root.
 `path#symbol`, `path:line[-end]`, `path:ident`, pytest `path::node` -> path part checked; suffix never checked.
 Checked: tokens whose last segment has known extension or is env-like (.env, .env.local; backticked or not);
-backticked extensionless "/" tokens whose first segment is existing directory; unbackticked extensionless tokens
+backticked extensionless "/" tokens, including absent first directories; unbackticked extensionless tokens
 only when ending "/". Skipped as ambiguous: fenced blocks, spans with spaces (commands), globs/placeholders, URLs,
 host:port, domains, web routes, options, package names, AGENTS/CLAUDE.md alternations, tool names not found
 (Node.js, `Next.js`), code objects (process.env), calls (res.json()), unbackticked bare filenames not found,
@@ -186,7 +186,7 @@ def examine(raw, quoted, base, root, allow=()):
         return (token, None) if exists else (None, None)  # prose slash list, e.g. client/server, read/write
     first = token.split("/", 1)[0]
     first_is_dir = "/" in token and any(fisdir(os.path.join(d, first)) for d in (root, base))
-    if not pathlike and not first_is_dir:
+    if not pathlike and not first_is_dir and not (quoted and "/" in token):
         return None, None  # prose slash list, e.g. read/write
     if "/" in token and not first_is_dir and DOMAIN.fullmatch(first) and not first.startswith("."):
         return None, None  # example.com/x.json
