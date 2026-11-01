@@ -12,24 +12,24 @@ Own canonical fact records for assigned claims: select guidance-worthy candidate
 
 ## Method
 
-- Select per policy Select content: guidance-worthy claims from assigned notes + routed scan claims; dedupe shared propositions first. Verify every selected checker-required claim (policy list), including every directional edit warning/source-navigation mapping. Different verified edit triggers remain distinct propositions even when authority matches. High-confidence selected claims outside required categories -> no record needed; record only when evidence contradicts or label/`Verify:` adds value.
+- Select per policy Select content: guidance-worthy claims from assigned notes + routed scan claims; dedupe shared propositions first. Verify every selected checker-required claim (policy list), including every directional edit warning/source-navigation mapping. High-confidence selected claims outside required categories -> no record needed; record only when evidence contradicts or label/`Verify:` adds value.
 - IDs per contracts Records (claim ID reuse, `-F<n>`, `supersedes:`). Never rewrite another attempt's record.
 - Leads per policy Select content; promoted -> `<prefix>-F<n>`; no general bug/security audit.
 - Questions: resolve the explicit QID mapping in `accepted-scopes.md` before owner-scope or question-ID-prefix fallback; answer assigned index entries even when the checker has no scan scope. For other questions, apply the workflow Check owner rule: resolve the accepted or merged/rejected scope from `owner`, or resolve the `unassigned` asking scope through its question ID prefix; answer -> `<prefix>-F<n>` record keeping asking `flow` + contract path. Outside area or insufficient evidence -> gap, never fact.
 - Every consequential unresolved QID -> `gaps.md`, including unassigned owner, candidates outside accepted paths, or questions owned administratively but outside expertise. Reconcile assigned index entries before completion; missing gap is rewrite work. A bounded unsuccessful follow-up remains a gap; already answered entries retain their answer mapping, never reopen merely for scope ownership.
 - Evidence paths, search basis, run artifacts = starting points, not proof. Read implementation behind selected claims; names, comments, docs, tests alone do not confirm runtime behavior.
 - Validate cited source/test paths before placeable output; missing generated/install output -> existing producer/configuration authority, with output described as generated only when needed. No generated-path exemption. Sample consequential scan skips against producer/consumer/delegation evidence; false skip -> consequential gap with candidate paths/next step, never fabricated fact.
-- Directional warnings: verify trigger, target authority, and reason independently; no inferred reverse direction or copied canonical invariant. Keep their distinct IDs; a warning outside a flow home omits the original `flow:` field and links through Evidence/contract source paths. Verify route/test navigation via actual imports/dispatch and exceptions, not names.
+- Directional warnings: verify trigger, target authority, and reason independently; no inferred reverse direction or copied canonical invariant. Different edit triggers -> separate records even with shared authority; whether both get placed = placement's call (policy Placement routing); a warning outside a flow home omits the original `flow:` field and links through Evidence/contract source paths. Verify route/test navigation via actual imports/dispatch and exceptions, not names.
 - Group shared propositions; check once per authority; distinct conditions -> separate records. Narrowed correction -> verify proposed statement, not discarded broader assertion.
 - Absence/exclusivity -> search counterexamples beyond supplied paths: other callers, entry points, config, generated code. Check meaningful exceptions: branches, flags, error/retry paths, alternate callers.
-- Labels per policy Shape (`invariant` needs intent evidence beyond observed behavior; neither -> `none` + `intent unknown` when decision depends on intent; contradicting evidenced intent -> `conflict`). `verify:` only after confirming test asserts claimed behavior.
+- Labels per policy Shape; behavior contradicting evidenced intent -> `verdict: conflict`; `intent unknown` -> `label: none` + body ends `intent unknown`. `verify:` only after confirming test asserts claimed behavior.
 - Spend effort where wrong claim costs most. Batch independent reads/searches; search -> relevant ranges; re-read only for specific need.
 
 ## Output
 
 `facts.md`:
 
-- `## Facts`: one `### <ID>` record per verified proposition; fields per contracts checker record (unindented, bare values); body = exact placeable statement + conditions; `Evidence:` holds label evidence, correction reason, counter-evidence, covered duplicate IDs.
+- `## Facts`: one `### <ID>` record per verified proposition; fields per contracts checker record (unindented, bare values); body = exact placeable statement per policy Shape `All files` rule; `Evidence:` holds mechanism detail, label evidence, correction reason, counter-evidence, covered duplicate IDs.
 - refuted/conflict -> same record format with that verdict; never placeable.
 - `## Conflicts/skipped`: doc/code and intent conflicts, skipped claims/flows; `none` when empty.
 

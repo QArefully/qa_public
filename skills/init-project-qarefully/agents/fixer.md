@@ -7,7 +7,7 @@ Fresh worker per repair assignment, owning one current writer batch's targets + 
 1. Confirm target revisions (`ledger.py hash`); mismatch now or before later write -> contracts target-conflict rule. Preserve user/other worker edits + task-generated files; no baseline restoration.
 2. Per finding, verify line in source/projection:
    - `wording`/format, mapped line diverging from projected record -> edit to projection meaning.
-   - `dedup`: lines map (sidecar) to same owned ID -> render once; different IDs or other batch -> placement-route candidate. Distinct verified edit triggers are distinct warnings even with shared authority; preserve them pending placement decision, never collapse into one ID or copy a canonical invariant/flow narrative.
+   - `dedup`: lines map (sidecar) to same owned ID -> render once; different IDs or other batch -> placement-route candidate. Whether different IDs are duplicates is placement's call (policy Placement routing); never collapse IDs or copy a canonical invariant/flow narrative.
    - unmapped unsupported line -> delete; report.
    - new/corrected statement, wrong authority/test, consequential probe gap -> checker-route candidate: proposed wording/conditions + finding/source IDs + evidence paths; affected line waits. Missing generated output -> existing producer/configuration lead, never fabricated authority or path-check exemption. Source/evidence changes require a new checked ID with `supersedes: <oldID>`, fresh placement/projection; unchanged-ID wording restoration cannot amend authority.
    - move/delete of routed fact or uncertain home -> placement-route candidate: target lines + IDs + reason; no unilateral relocation.
