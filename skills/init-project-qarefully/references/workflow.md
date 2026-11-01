@@ -35,7 +35,7 @@ No sibling-skill dependency. Resolve resources from package root in recipient's 
 
 intake -> binding -> scan + proposal coverage -> accepted scopes + coverage -> scouts (barrier) -> question index -> checkers -> question dispositions/follow-up -> placement -> projections -> fresh writers + preflight -> index -> fresh reviewer/probe -> fixers as needed -> Verify -> final acceptance.
 
-Ready independent scouts/checkers/writers run in parallel with disjoint outputs + available slots. Stage starts only after its required inputs are terminal; overlap only with explicit immutable dependencies. Contracts own failures, helper FAIL routes, invalidation, retries, caps, cancellation, resume.
+Dispatch ready independent scouts/checkers/writers with disjoint outputs up to available capacity before waiting; refill slots as workers finish. Stage starts only after its required inputs are terminal; overlap only with explicit immutable dependencies. Contracts own failures, helper FAIL routes, invalidation, retries, caps, cancellation, resume.
 
 ## Dispatch matrix
 
@@ -112,7 +112,7 @@ No repository inspection or child dispatch until three required choices resolved
 
 ## 8. Repair
 
-- role: [fixer](../agents/fixer.md); partitioned by writer batch (reply per-target counts -> placement batch list).
+- role: [fixer](../agents/fixer.md); repair only batches affected by findings or routing changes, partitioned by writer batch (reply per-target counts -> placement batch list).
 - inputs: per role; dispatch passes reviewer findings and/or Verify report path(s) (`fixer`-route items only) or helper FAIL lines; batch projection re-run at current routing.
 - checker-/placement-route candidate files -> contracts routes.
 - after fixer: `ledger.py index`; changed targets with `meaning-risk: yes` -> fresh targeted reviewer scoped to those files only; `no` -> no review. No findings -> no fixer.

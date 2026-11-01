@@ -13,10 +13,10 @@ Read before instruction-file write, review, repair, Verify. Apply bundled style 
 Root only -> include following rules; never nested:
 
 ```md
-# Maintenance
+## Maintenance
 Update this file or closest nested instruction file when guidance becomes stale; durable boundaries, hazards, sources of truth change; or reusable lessons, workarounds, user instructions emerge. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
 
-# AI Documentation and Code Comments
+## AI Documentation and Code Comments
 AI docs and code comments -> terse facts for future agents; non-obvious architecture, decisions, cross-cutting constraints only. Default no comment; edit only when needed. Omit history, dates, code narration. One fact -> one home across docs/comments; warnings with different edit triggers are distinct facts, but review list already in ancestor file is not repeated in descendant files.
 ```
 

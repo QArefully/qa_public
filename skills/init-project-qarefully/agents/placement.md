@@ -9,7 +9,7 @@ Own fact-to-home routing only; never write instruction files or finished wording
 3. Listing/targeted source reads only for nested-file creation + same-fact duplication decisions. New/changed statement needs checker record; source read cannot settle evidence dispute.
 4. Each existing selected file -> disposition. Embedded factual claims follow records. Light deletion never includes nested file.
    - User content at baseline (inventory): dirty tracked selected file -> uncommitted lines (`baseline/before/` vs HEAD, read-only Git); untracked -> whole `baseline/before/` copy; no Git (inventory `git` null) -> whole copy of every existing selected file. Each such line -> directive ref (preserve) or routed fact ID; else return `needs_user` naming `<path>:<lines>` (keep -> directive ref, drop -> user-dropped on revision). Never silent drop. `doubts.md` `## Dirty accounting`: `<path>:<lines> -> directive <ref> | fact <ID> | user-dropped`.
-5. Assign disjoint writer batches by subtree before dispatch.
+5. Assign disjoint writer batches per policy Placement before dispatch.
 6. Write `routing.json` (new `revision`) + `doubts.md` per policy. Revision assignment -> start from prior routing, change only affected IDs/targets/batches, keep unaffected batches stable; add new record files to `inputs`; route superseding ID in place of superseded; repeat-blocked ID -> `unplaced` gap; `placement`-route findings/candidates (`dedup`/`move`/`delete`/`location`) -> routing change when policy decides, else `alternatives` + doubts reasons.
 
 ## Completion
