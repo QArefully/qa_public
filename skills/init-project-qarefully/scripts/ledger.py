@@ -931,7 +931,7 @@ def parse_coverage(path, accepted=False):
         if heading:
             finish()
             active, scope_paths = None, 0
-            recognized = re.match(r"(?:Container|Scope|Skipped)\b", heading.group(1), re.I)
+            recognized = re.match(r"(?:Container|Scope|Skipped)\s*:", heading.group(1), re.I)
             if not recognized:
                 continue
             match = re.fullmatch(r"## (Container|Scope|Skipped): (.+)", line)

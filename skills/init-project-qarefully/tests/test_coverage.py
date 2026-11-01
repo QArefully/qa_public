@@ -158,10 +158,30 @@ class Coverage(RepoCase):
                    "~~~markdown\n## Scope: duplicate\n~~~\n## Container: .\n")
         self.assertEqual(self.report()["counts"]["proposed_paths"], 0)
 
+    def test_human_titles_and_notes_can_start_with_reserved_words(self):
+        self.dirs("src", "generated")
+        proposed = ("# Scope proposal\nInvestigate the source and omit generated output.\n"
+                    "## Container: .\n## Container notes\nThe root holds both source and output.\n"
+                    "## Scope: source\n- path: src -> Source behavior\n"
+                    "### Scope rationale\nKeep source ownership together.\n"
+                    "## Skipped: generated -> Rebuilt from source\n"
+                    "## Skipped directory notes\nGenerated output needs no separate investigation.\n")
+        accepted = ("# Scope decisions\nKeep the proposed boundaries.\n"
+                    "## Scope: source\n- path: src -> Source behavior\n"
+                    "## Scope notes\nNo boundary changes were needed.\n")
+        self.check(proposed, accepted=accepted)
+        report = self.report()
+        self.assertEqual(report["counts"]["containers"], 1)
+        self.assertEqual(report["counts"]["proposed_paths"], 1)
+        self.assertEqual(report["counts"]["accepted_paths"], 1)
+        self.assertEqual(report["counts"]["skipped"], 1)
+
     def test_malformed_machine_grammar(self):
         self.dirs("src")
-        invalid = ("# Container: .\n", "### Container: .\n", "## Container .\n",
-                   "## Container: . #\n", "## Scope:\n", "## Scope: bad id\n",
+        invalid = ("# Container: .\n", "### Container: .\n", "## Container:\n",
+                   "## Container:.\n", "## Container: . #\n", "## Scope:\n",
+                   "## scope: src\n", " ## Scope: src\n", "## Scope : src\n", "## Scope:src\n",
+                   "## Scope: bad id\n", "## Skipped:\n", "## Skipped : src -> reason\n",
                    "## Scope: empty\n", "## Skipped: src\n", "## Skipped: src -> \n",
                    "## Scope: src\n- path: src -> \n", "## Scope: src\n- path: src\n",
                    "## Scope: src\n* path: src -> reason\n", "- path: src -> Outside scope\n",
