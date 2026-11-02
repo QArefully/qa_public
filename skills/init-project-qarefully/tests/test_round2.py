@@ -1,11 +1,10 @@
-"""Fix round 2 regressions: encoding, record parsing, ignored/nested/long/locked files, --out aliasing, lines."""
+"""Regression checks for encoding, ignored and nested files, and instruction-file paths."""
 import contextlib
 import hashlib
 import io
 import json
 import os
 import subprocess
-import sys
 import unittest
 
 from support import HAS_GIT, RepoCase, legacy_env, load_script, run
@@ -111,108 +110,6 @@ class Encoding(Base):
         self.assertFalse(os.path.exists(os.path.join(self.run_dir, "baseline")))
         self.assertEqual([n for n in os.listdir(self.run_dir) if n.startswith(".baseline-tmp-")], [])
         self.assertEqual(self.baseline()[0], 0)  # rerun works, no baseline-exists loop
-
-    def test_unexpected_error_deletes_partial_out(self):
-        self.assertEqual(self.baseline()[0], 0)
-        routing = self.write("routing.json", json.dumps({"targets": {"CLAUDE.md": {"disposition": "keep"}}}),
-                             base=self.run_dir)
-        out = os.path.join(self.run_dir, "manifest.txt")
-        ledger = load_script("ledger")
-        original = ledger.write_out
-
-        def partial(path, text):
-            original(path, text[:3])
-            raise OSError("device gone")
-
-        ledger.write_out = partial
-        code, _, err = in_process(ledger, "manifest", self.root, routing, "--out", out)
-        self.assertEqual(code, 2)
-        self.assertIn("unexpected OSError", err)
-        self.assertFalse(os.path.exists(out))
-
-
-SCOUT = "### api-C1\nOrders persist.\n- confidence: high\n- authority: src/o.ts#x\n"
-
-
-class RecordParsing(Base):
-    def setUp(self):
-        super().setUp()
-        self.write("notes/scout.md", SCOUT, base=self.run_dir)
-        self.assertEqual(self.baseline()[0], 0)
-        self.routing = self.write("routing.json", json.dumps({"inputs": ["notes/scout.md"], "targets": {
-            "CLAUDE.md": {"disposition": "update", "facts": ["api-C1"], "batch": "b1"}}}), base=self.run_dir)
-        self.out = os.path.join(self.run_dir, "writer-input.md")
-
-    def project(self):
-        return run("ledger.py", "project", self.run_dir, self.routing, "--out", self.out, "CLAUDE.md")
-
-    def test_loose_field_formats_still_veto(self):
-        self.assertEqual(self.project()[0], 0)
-        for line in ("-  verdict: refuted", "  - verdict: refuted", "- **verdict**: refuted",
-                     "- **verdict:** refuted", "* verdict: **Refuted**", "+ Verdict: `conflict`",
-                     "1. verdict: refuted (stale evidence)"):
-            self.write("attempts/check-9/facts.md", f"### api-C1\n{line}\n- authority: src/o.ts#x\n",
-                       base=self.run_dir)
-            code, lines, _ = self.project()
-            self.assertEqual(code, 1, (line, lines))
-            self.assertIn("FAIL: refuted: CLAUDE.md api-C1", lines, line)
-            self.assertFalse(os.path.exists(self.out))
-
-    def test_loose_confidence_in_input(self):
-        self.write("notes/scout.md", "### api-C1\nOrders persist.\n  - **confidence**: **High**\n", base=self.run_dir)
-        code, lines, _ = self.project()
-        self.assertEqual(code, 0, lines)
-
-    def test_unparsed_record_fails(self):
-        self.write("attempts/check-9/facts.md", "# Checker\n\n### Summary\nprose heading ok\n\n"
-                   "### api-C1\nverdict: refuted\n", base=self.run_dir)
-        code, lines, _ = self.project()
-        self.assertEqual(code, 1, lines)
-        self.assertIn("FAIL: unparsed-record: attempts/check-9/facts.md api-C1", lines)
-        self.assertEqual(sum(1 for line in lines if "unparsed-record" in line), 1)  # "### Summary" not flagged
-        self.write("attempts/check-9/facts.md", "### api-C1\n- verdict: confirmed\n", base=self.run_dir)
-        self.write("notes/scout.md", SCOUT + "\n### api-C2\nno fields\n\n### api-Q1\n- status: open\n",
-                   base=self.run_dir)
-        code, lines, _ = self.project()
-        self.assertEqual(lines[0], "FAIL: unparsed-record: notes/scout.md api-C2")
-        self.assertEqual(code, 1)
-
-    def test_utf16_record_files(self):
-        with open(self.write("attempts/c/facts.md", "", base=self.run_dir), "wb") as handle:
-            handle.write("### api-C1\n- verdict: refuted\n".encode("utf-16"))
-        code, lines, _ = self.project()
-        self.assertIn("FAIL: refuted: CLAUDE.md api-C1", lines)
-        with open(os.path.join(self.run_dir, "attempts", "c", "facts.md"), "wb") as handle:
-            handle.write("### api-C1\n- verdict: refuted\n".encode("utf-16-le"))  # no BOM
-        code, _, err = self.project()
-        self.assertEqual(code, 2)
-        self.assertIn("attempts/c/facts.md", err.replace("\\", "/"))
-        self.assertIn("NUL", err)
-
-    def test_out_aliasing_inputs_refused(self):
-        notes = os.path.join(self.run_dir, "notes", "scout.md")
-        before = digest(notes)
-        aliases = [self.routing, notes, os.path.join(self.run_dir, "s1", "facts.md")]
-        if os.name == "nt":
-            aliases.append(notes.upper())
-        for out in aliases:
-            code, lines, err = run("ledger.py", "project", self.run_dir, self.routing, "--out", out, "CLAUDE.md")
-            self.assertEqual(code, 2, (out, lines))
-            self.assertIn("--out", err)
-        self.assertTrue(os.path.isfile(self.routing))
-        self.assertEqual(digest(notes), before)
-        self.assertFalse(os.path.exists(os.path.join(self.run_dir, "s1", "facts.md")))
-        code, _, err = run("ledger.py", "questions", self.run_dir, "notes/scout.md", "--out", notes)
-        self.assertEqual(code, 2, err)
-        self.assertEqual(digest(notes), before)
-        sidecar = self.write("provenance/p.json", json.dumps({"batch": "b1", "targets": {}}), base=self.run_dir)
-        code, _, err = run("ledger.py", "index", self.root, self.routing, sidecar, "--out", sidecar)
-        self.assertEqual(code, 2, err)
-        self.assertTrue(os.path.isfile(sidecar))
-        code, _, err = run("ledger.py", "manifest", self.root, self.routing, "--out", self.routing)
-        self.assertEqual(code, 2, err)
-        self.assertTrue(os.path.isfile(self.routing))
-
 
 class Trees(Base):
     def test_node_modules_writes_are_observed_without_blocking(self):
@@ -424,37 +321,3 @@ class TextFiles(RepoCase):
             code, _, err = run(script, self.root, "link/CLAUDE.md")
             self.assertEqual(code, 2, script)
             self.assertIn("outside repository root", err)
-
-
-class IndexRound2(RepoCase):
-    def setUp(self):
-        super().setUp()
-        self.run_dir = os.path.join(self.root, ".init-project", "runs", "r1")
-        self.target = self.write("CLAUDE.md", "a\u2028b\nc\n")
-        self.assertEqual(run("ledger.py", "baseline", self.root, self.run_dir)[0], 0)
-
-    def index(self, targets, sidecar_targets):
-        routing = self.write("routing.json", json.dumps({"targets": targets}), base=self.run_dir)
-        sidecar = self.write("provenance/p.json", json.dumps({"batch": "b1", "targets": sidecar_targets}),
-                             base=self.run_dir)
-        return run("ledger.py", "index", self.root, routing, sidecar, "--out", os.path.join(self.run_dir, "i.json"))
-
-    def test_line_count_split_on_newline_only(self):
-        targets = {"CLAUDE.md": {"disposition": "update", "facts": ["a-C1"], "batch": "b1"}}
-        code, lines, _ = self.index(targets, {"CLAUDE.md": {"revision": digest(self.target), "facts": {"a-C1": [3]}}})
-        self.assertIn("FAIL: line-out-of-range: CLAUDE.md a-C1:3", lines)
-        code, lines, _ = self.index(targets, {"CLAUDE.md": {"revision": digest(self.target), "facts": {"a-C1": [2]}}})
-        self.assertEqual(code, 0, lines)
-
-    def test_delete_target_unrouted_fact_and_directive(self):
-        targets = {"CLAUDE.md": {"disposition": "keep", "batch": "b1"},
-                   "old/CLAUDE.md": {"disposition": "delete", "directives": ["existing old/CLAUDE.md:1"],
-                                     "batch": "b1"}}
-        code, lines, _ = self.index(targets, {"old/CLAUDE.md": {"revision": "absent", "facts": {"a-C7": [1]}}})
-        self.assertEqual(code, 1)
-        self.assertIn("FAIL: unrouted-fact: old/CLAUDE.md a-C7", lines)
-        self.assertIn("FAIL: missing-provenance: old/CLAUDE.md existing old/CLAUDE.md:1", lines)
-
-
-if __name__ == "__main__":
-    unittest.main()

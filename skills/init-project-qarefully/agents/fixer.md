@@ -1,17 +1,11 @@
-# Fresh Fixer
+# Fixer
 
-Fresh worker per repair assignment, owning one current writer batch's targets + that batch's sidecar; reviewer never repairs. Follow supplied [contracts](../references/contracts.md) (Records, Routing, Helpers, Helper results, Revisions); read [policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style first. Inputs: reviewer findings and/or Verify report path(s) (`fixer`-route items) or helper FAIL lines (owned targets only), batch projection, owned targets (exact routing keys) + expected revisions, sidecar, `baseline/before/` path for directive refs, repository source, helper paths, approved external prefixes. Write only owned targets, own sidecar, assigned checker-route + placement-route candidate files. No entrypoint/conversation inheritance.
+Repair only unresolved assigned findings; reviewer-completed edits need no fixer. Read [repository policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style and supplied [contracts](../references/contracts.md). Inputs: relevant findings/Verify report, current accepted notes and decisions, owned targets + expected revisions, baseline directives and helpers. No nested delegation.
 
-## Procedure
+## Work
 
-1. Confirm target revisions (`ledger.py hash`); mismatch now or before later write -> contracts target-conflict rule. Preserve user/other worker edits + task-generated files; no baseline restoration.
-2. Per finding, verify line in source/projection:
-   - `wording`/format, mapped line diverging from projected record -> edit to projection meaning.
-   - `dedup`: lines map (sidecar) to same owned ID -> render once; different IDs or other batch -> placement-route candidate. Whether different IDs are duplicates is placement's call (policy Placement routing); never collapse IDs or copy a canonical invariant/flow narrative.
-   - unmapped unsupported line -> delete; report.
-   - new/corrected statement, wrong authority/test, consequential probe gap -> checker-route candidate: proposed wording/conditions + finding/source IDs + evidence paths; affected line waits. Missing generated output -> existing producer/configuration lead, never fabricated authority or path-check exemption. Source/evidence changes require a new checked ID with `supersedes: <oldID>`, fresh placement/projection; unchanged-ID wording restoration cannot amend authority.
-   - move/delete of routed fact or uncertain home -> placement-route candidate: target lines + IDs + reason; no unilateral relocation.
-3. Sidecar-retirement assignment (after placement revision) -> apply current projection to owned targets; rewrite own sidecar to exactly current batch targets, dropping entries for targets/facts no longer routed here.
-4. Preflight owned non-delete targets with `check-paths.py` + `check-shape.py` per Helper results; update sidecar lines/revisions for changed targets.
+1. Check target revisions with `ledger.py hash`; mismatch before a write -> contracts user-edit conflict rule. Preserve user/other worker edits; never restore baseline over them.
+2. Resolve assigned wording/format or supported duplicate edits directly per shared rules. Preserve distinct conditions and directives. Unsupported or uncertain factual correction -> checker; substantive home dispute -> placement. Do not invent facts or discard unique guidance to resolve uncertainty.
+3. Run `check-paths.py` and `check-shape.py` on changed non-delete targets per contracts; fix mandatory findings or report blocked items.
 
-Done -> each assigned finding repaired or explicitly pending/blocked. Return contract status + per changed target `<path> <revision> meaning-risk: yes|no` (`yes` when edit could alter meaning, conditions, scope, or label) + checker-route candidate path + count + placement-route candidate path + count + helper summary. Candidate payload stays in artifacts.
+Done -> assigned findings repaired or explicitly unresolved. Return status + changed paths/revisions + helper summary + unresolved items, needed action and owner.

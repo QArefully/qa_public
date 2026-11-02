@@ -4,8 +4,9 @@ Read before instruction-file write, review, repair, Verify. Apply bundled style 
 
 - Default omit. Source pointer + reason to inspect; complex logic needs entry point, authority, non-obvious risk. Detailed docs -> path, never copied explanation.
 - Avoid volatile implementation prose (line numbers, function bodies, transient values), inventories, exhaustive environment lists, generic coding advice, host-provided routing rules.
-- Root = global context; Full nested files = subtree-only deltas. Preserve source/conditions/scope/labels when compressing; projected records supply placeable factual meaning, writer renders wording once.
-- Canonical behavior -> one owning home. Directional warnings dedup per policy Placement routing; write only each trigger's hazard, never repeat invariants or a flow narrative. Light -> root only. Compact app/package route/test navigation must reflect checked source mapping, not a per-test inventory.
+- Root = global context; Full nested files = subtree-only deltas. Preserve source/conditions/scope/labels when compressing; accepted notes supply supported meaning.
+- Canonical behavior -> one owning home. Directional warnings dedup per policy Placement; write only each trigger's hazard, never repeat invariants or a flow narrative. Light -> root only. Compact app/package route/test navigation must reflect checked source mapping, not a per-test inventory.
+- Rephrase, shorten, regroup, or remove duplication while preserving supported meaning, conditions, scope, labels, source pointers, and user directives. Keep distinct conditions and triggers. Never invent facts or discard unique guidance to resolve uncertainty.
 - Source citations must exist and contain the claimed authority. Missing generated/install output -> cite existing producer/configuration; name the output as generated in ordinary prose when needed, never as an existing authority. Path checks stay strict.
 - Destructive command -> impact + required authorization. Generated/runtime boundary -> identify only when agent may accidentally edit/commit it.
 - Omit initializer plumbing, run folder, skill locations/discovery. Instruction-file pointers per policy Shape. Pitfalls verified + nonempty per repository policy.

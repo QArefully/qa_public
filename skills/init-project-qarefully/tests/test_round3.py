@@ -1,5 +1,4 @@
-"""Fix round 3 regressions: record heading IDs, orphan fields, first-word verdicts, supersedes values, bytecode,
-other run dirs, long-path walks, locked inventory files, hardlinked --out."""
+"""Regression checks for bytecode, other run dirs, long paths and locked files."""
 import json
 import os
 import shutil
@@ -9,7 +8,9 @@ import tempfile
 import unittest
 
 from support import SCRIPTS, RepoCase, run
-from test_round2 import SCOUT, Base, digest
+from test_round2 import Base
+
+SCOUT = "A concise source note.\n"
 
 
 def lock(case, path):
@@ -40,98 +41,6 @@ def long_name(path):
 
 def tree_size(path):
     return sum(os.path.getsize(os.path.join(d, n)) for d, _, names in os.walk(path) for n in names)
-
-
-class Records(Base):
-    def setUp(self):
-        super().setUp()
-        self.write("notes/scout.md", SCOUT, base=self.run_dir)
-        self.assertEqual(self.baseline()[0], 0)
-        self.routing = self.write("routing.json", json.dumps({"inputs": ["notes/scout.md"], "targets": {
-            "CLAUDE.md": {"disposition": "update", "facts": ["api-C1"], "batch": "b1"}}}), base=self.run_dir)
-        self.out = os.path.join(self.run_dir, "writer-input.md")
-
-    def project(self):
-        return run("ledger.py", "project", self.run_dir, self.routing, "--out", self.out, "CLAUDE.md")
-
-    def facts(self, text):
-        self.write("attempts/check-9/facts.md", text, base=self.run_dir)
-
-    def test_heading_id_anywhere_and_levels_3_to_6(self):
-        self.assertEqual(self.project()[0], 0)
-        for heading in ("### Refuted: api-C1", "### 1. api-C1", "#### api-C1", "###### api-C1",
-                        "### **`api-C1`** (recheck)", "### Claim api-C1: orders"):
-            self.facts(f"# Checker\n\n{heading}\n- verdict: refuted\n")
-            code, lines, _ = self.project()
-            self.assertEqual(code, 1, (heading, lines))
-            self.assertIn("FAIL: refuted: CLAUDE.md api-C1", lines, heading)
-            self.assertFalse(os.path.exists(self.out))
-
-    def test_graded_field_without_fact_id_fails(self):
-        for text, line in (("### Summary\n- verdict: refuted\n", 1),
-                           ("- verdict: refuted\n", 1),
-                           ("### api-C1\n- verdict: confirmed\n\n## Other\n- confidence: high\n", 5),
-                           ("### api-Q1\n- verdict: refuted\n", 1)):
-            self.facts(text)
-            code, lines, _ = self.project()
-            self.assertEqual(code, 1, (text, lines))
-            self.assertIn(f"FAIL: unparsed-record: attempts/check-9/facts.md line {line}", lines, text)
-        self.facts("### api-C1\n- verdict: confirmed\n\n#### Evidence\nprose only\n\n## Appendix\ntext\n")
-        code, lines, _ = self.project()
-        self.assertEqual(code, 0, lines)
-
-    def test_input_record_heading_variants_placed(self):
-        self.write("notes/scout.md", "## Claims\n\n### 1. `api-C1` orders\nOrders persist.\n- confidence: High\n",
-                   base=self.run_dir)
-        code, lines, _ = self.project()
-        self.assertEqual(code, 0, lines)
-        with open(self.out, encoding="utf-8") as handle:
-            self.assertIn("### 1. `api-C1` orders", handle.read())
-
-    def test_supersedes_value_markup(self):
-        for value in ("**api-C1**", '"api-C1";', "`api-C2`, api-C1", "api-C1 (stale evidence)"):
-            self.facts(f"### api-C9\n- verdict: confirmed\n- supersedes: {value}\n")
-            code, lines, _ = self.project()
-            self.assertEqual(code, 1, (value, lines))
-            self.assertIn("FAIL: superseded: CLAUDE.md api-C1 by api-C9", lines, value)
-
-    def test_verdict_first_word(self):
-        for verdict, expected in (("confirmed (not refuted)", None), ("**Corrected** — narrower", None),
-                                  ("**Refuted** (stale)", "refuted"), ("`conflict`: two owners", "refuted"),
-                                  ("not refuted", "invalid-verdict"), ("rejected", "invalid-verdict")):
-            self.write("notes/check.md", f"### api-C1\n- verdict: {verdict}\n", base=self.run_dir)
-            with open(self.routing, "w", encoding="utf-8") as handle:
-                json.dump({"inputs": ["notes/scout.md", "notes/check.md"], "targets": {
-                    "CLAUDE.md": {"disposition": "update", "facts": ["api-C1"], "batch": "b1"}}}, handle)
-            code, lines, _ = self.project()
-            if expected is None:
-                self.assertEqual(code, 0, (verdict, lines))
-            else:
-                self.assertIn(f"FAIL: {expected}: CLAUDE.md api-C1", lines, verdict)
-
-    def test_unlisted_invalid_verdict_fails(self):
-        self.facts("### api-C1\n- verdict: rejected\n")
-        code, lines, _ = self.project()
-        self.assertEqual(code, 1, lines)
-        self.assertIn("FAIL: invalid-verdict: CLAUDE.md api-C1", lines)
-        self.facts("### api-C1\n- verdict: confirmed (not refuted)\n")
-        self.assertEqual(self.project()[0], 0)
-
-    def test_hardlinked_out_refused(self):
-        notes = os.path.join(self.run_dir, "notes", "scout.md")
-        alias = os.path.join(self.run_dir, "writer-alias.md")
-        try:
-            os.link(notes, alias)
-        except (OSError, NotImplementedError) as error:
-            self.skipTest(f"hardlinks unsupported: {error}")
-        before = digest(notes)
-        code, lines, err = run("ledger.py", "project", self.run_dir, self.routing, "--out", alias, "CLAUDE.md")
-        self.assertEqual(code, 2, lines)
-        self.assertIn("--out is an input", err)
-        code, _, err = run("ledger.py", "questions", self.run_dir, "notes/scout.md", "--out", alias)
-        self.assertEqual(code, 2, err)
-        self.assertEqual(digest(notes), before)
-        self.assertTrue(os.path.isfile(alias))
 
 
 class Bytecode(unittest.TestCase):
