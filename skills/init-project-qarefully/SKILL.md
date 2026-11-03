@@ -6,22 +6,19 @@ disable-model-invocation: true
 
 # Initialize Project Agent Context
 
-Create minimal harness-agnostic navigation + warnings; detailed explanations stay in source. Explicit invocation only. Copy entire package when relocating; bundled style stays inside package.
+Create minimal harness-agnostic navigation + warnings; detailed explanations stay in source. Explicit invocation only. Copy entire package when relocating; bundled style + helpers stay inside package.
 
 ## Start
 
-Read [workflow](references/workflow.md) for intake, modes, stages, routing, and completion; read [contracts](references/contracts.md) before dispatch. Reuse known choices; ask only missing filename, Light/Full mode, scout model. Wait for required answers before repository inspection or child dispatch. Optional project context never blocks.
+Read [workflow](references/workflow.md) for intake, modes, stages and completion; read [contracts](references/contracts.md) before dispatch. Bind capabilities before first child; missing required capability -> explain affected stage and viable correction, never silently substitute or take over an evidence role.
 
-Before first child, bind actual dispatch, isolation, model/profile inheritance, recipient paths/write visibility, slots, wait/cancellation, and disabled nesting using contracts. Missing required capability -> explain affected stage + viable correction; no silent substitution or local evidence-role takeover.
+## Orchestration
 
-## Orchestration boundary
-
-- Own capability binding, scope/follow-up/location decisions, scheduling, accepted revisions, routing, user communication, final acceptance.
-- Read package routing instructions, compact replies, short scope proposal/gap lists/placement doubts/final report only. Role scripts + policy resources are dispatch instructions, never permission to inspect evidence.
-- Never analyze repository source, notes, verdicts, placement payload, generated files, or diffs. Pass paths/scope IDs; never reconstruct evidence in prompts. Write-incapable producer -> opaque verbatim save only, separate from decision reply, per contracts.
-- Every phase loads exact role/resource paths from workflow. Children receive self-contained bounded dispatch; no conversation or `SKILL.md` inheritance. `agents/` scripts require explicit loading; folder placement registers no agents. No child skill invocations/task tracking/nested agents.
-- Only selected mode-approved primary files + run folder may change; workflow owns exact counterpart protections, baseline, and run-folder rules.
+- Own scope and follow-up decisions, scheduling, placement decisions, target ownership, user communication and final acceptance. Dispatch isolated roles with exact relevant resources and concise handoffs; only orchestrator starts children.
+- Mainly run agents and unblock issues; large reading/synthesis -> agents (follow-up planner, checkers, placement). Do small jobs directly when delegating would complicate flow; keep context free for coordination. Pass artifact paths and brief summaries; preserve reviewer's independent initial view.
+- Follow workflow: scouts -> one follow-up planner/fresh scout round -> selective checkers -> placement -> writers -> one reviewer pass/direct fixes -> unresolved repairs as needed -> final helper gate. No repeated reviewer passes.
+- Only selected mode-approved instruction files and run folder may change. Protect user edits and disjoint ownership per contracts.
 
 ## Finish
 
-Accept only current artifacts with met role done checks. Workflow + contracts govern missing resources, stale revisions, retries, repairs, and resume. Require fresh reviewer/probe, reconciled placement, passing Verify report, terminal required children. Relay decision report + actual retained run path and unresolved limits. Do not read evidence to resolve failures.
+Accept only when required artifacts and checks are complete and final helper gate passes. Report retained run path, consequential unanswered questions and observed limits; never infer completion from tool termination alone.
