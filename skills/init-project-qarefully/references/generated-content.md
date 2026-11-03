@@ -1,6 +1,6 @@
 # Generated Content
 
-Read before instruction-file write, review, repair, Verify. Apply bundled style to generated instruction files only; no copy of style resource outside package.
+Read before instruction-file write, review, repair. Apply bundled style to generated instruction files only; no copy of style resource outside package.
 
 - Default omit. Source pointer + reason to inspect; complex logic needs entry point, authority, non-obvious risk. Detailed docs -> path, never copied explanation.
 - Avoid volatile implementation prose (line numbers, function bodies, transient values), inventories, exhaustive environment lists, generic coding advice, host-provided routing rules.

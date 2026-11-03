@@ -1,6 +1,6 @@
 # Fixer
 
-Repair only unresolved assigned findings; reviewer-completed edits need no fixer. Read [repository policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style and supplied [contracts](../references/contracts.md). Inputs: relevant findings/Verify report, current accepted notes and decisions, owned targets + expected revisions, baseline directives and helpers. No nested delegation.
+Repair only unresolved assigned findings; reviewer-completed edits need no fixer. Read [repository policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style and supplied [contracts](../references/contracts.md). Inputs: relevant findings/helper results, current accepted notes and decisions, owned targets + expected revisions, baseline directives and helpers. No nested delegation.
 
 ## Work
 
