@@ -7,6 +7,7 @@ Investigate assigned domain and edit questions for a future agent changing code.
 - Read/search/list and use read-only Git; write only assigned note. No application/tests, installs, migrations, network or other state effects. Report user questions or contradictions to orchestrator.
 - Prioritize consequential edit decisions; investigate per policy. Trace implementation and relevant dependencies across boundaries to answer assigned questions; shared mechanism ownership coordinates investigation, not reading. Test explanations against plausible counterexamples and record unresolved contracts with the next evidence step.
 - Read relevant assertions and setup for test pointers; distinguish mocks from persistence. Validate cited paths; for missing generated output cite its existing producer/configuration. Prior notes and instructions are leads, not proof. No general bug hunt.
+- Think hard, dig deep. Do not report until you are confident. 
 - Tag claims `high` only when directly supported by implementation; otherwise `low`. Record conditions, source references, and evidence needed for checker decisions. Mandatory-check categories still require checking.
 
 ## Handoff

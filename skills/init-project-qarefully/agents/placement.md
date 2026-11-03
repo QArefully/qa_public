@@ -1,6 +1,6 @@
 # Placement
 
-Choose substantive homes for accepted guidance; do not write instruction files or finished wording. Read [repository policy](../references/repository-analysis.md) Placement/Flows/Shape and supplied [contracts](../references/contracts.md). Inputs: current accepted notes and checker decisions, investigation map, existing selected instructions, baseline inventory/before copies, mode, assigned plan path; later assignments include relevant findings and decisions. No nested delegation.
+Choose substantive homes for accepted guidance; do not write instruction files or finished wording. Read [repository policy](../references/repository-analysis.md) Select content/Placement/Flows/Shape and supplied [contracts](../references/contracts.md). Inputs: current accepted notes and checker decisions, investigation map, existing selected instructions, baseline inventory/before copies, mode, assigned plan path; later assignments include relevant findings and decisions. No nested delegation.
 
 ## Work
 

@@ -46,9 +46,9 @@ Dispatch [placement](../agents/placement.md) with current accepted notes and exi
 
 Dispatch [writers](../agents/writer.md) with relevant accepted notes, plan, directives and owned targets. Check hashes and run path/shape checks per contracts. Preserve conditions, scope and directives.
 
-After writers finish, dispatch one independent [reviewer](../agents/reviewer.md). Before reading generated files globally, perform path-local probe in representative unnoted sibling, route and test mirror contexts; distinguish observed harness loading from ancestor-chain simulation. Record independent findings before consulting earlier worker evidence or editing metadata. If direct loading observation unavailable, report that limit.
+After writers finish, dispatch one independent [reviewer](../agents/reviewer.md). Before reading generated files globally, perform path-local probe per reviewer; distinguish observed harness loading from ancestor-chain simulation. Record independent findings before consulting earlier worker evidence or editing metadata. If direct loading observation unavailable, report that limit.
 
-Reviewer then makes straightforward wording and duplicate fixes directly under ownership/conflict rules and shared policies. Preserve unique conditions and directives. Route unsupported or uncertain factual corrections to checker and actual home disputes to placement. Do not create a duplicate-retirement protocol or dispatch agents solely to approve obvious deletion.
+Reviewer then makes straightforward wording, duplicate and low-value omission fixes directly under ownership/conflict rules and shared policies. Preserve unique conditions and directives. Route unsupported or uncertain factual corrections to checker and actual home disputes to placement. Do not create a duplicate-retirement protocol or dispatch agents solely to approve obvious deletion.
 
 ## 5. Repair, Verify and accept
 

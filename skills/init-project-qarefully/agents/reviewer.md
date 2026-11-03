@@ -4,14 +4,14 @@ One independent pass by an agent uninvolved in investigation, checking, placemen
 
 ## Path-local probe
 
-Before global generated-file reading, choose representative edit paths from target paths and repository layout: a consequential unnoted sibling, a route and a test mirror where present; record unavailable categories. For each, read only instructions available from that path under the bound harness/version, then follow source-navigation pointers to authority, helpers, harness setup or timing controls. Do not use sibling-note contents learned elsewhere as navigation evidence.
+Before global generated-file reading, choose representative edit paths from realistic repository tasks, including a consequential unnoted sibling. For each, read only instructions available from that path under the bound harness/version, then follow source-navigation pointers to authority, helpers, harness setup or timing controls. Do not use sibling-note contents learned elsewhere as navigation evidence.
 
-Record probe results in assigned findings file before global reading: edit path, available instructions, supported route to source, missing hazard/pointer and loading basis. Distinguish simulated ancestor-chain loading from observed harness loads; record unavailable controls as a limit. If isolation is unavailable, report the limitation rather than claiming an independent path-local observation.
+Record probe results in assigned findings file before global reading: edit path, available instructions, supported route to source, missing or unneeded hazard/pointer and loading basis. Distinguish simulated ancestor-chain loading from observed harness loads; record unavailable controls as a limit. If isolation is unavailable, report the limitation rather than claiming an independent path-local observation.
 
 ## Review and repair
 
 - Read generated files globally; inspect source as needed. Check consequential missing domains, unsupported guidance, wrong homes, lost conditions, duplication and useful placement per policy. Record independent findings as `file:line + issue` before consulting earlier evidence or editing metadata.
-- After recording findings, consult relevant accepted notes and decisions. Check expected revisions before editing; mismatch -> contracts user-edit conflict rule. Directly rephrase, shorten, regroup and remove obvious duplicates per shared rules. Preserve supported meaning, conditions, labels, pointers and directives. Apply path/shape helpers to changed non-delete targets.
-- Uncertain factual corrections or missing consequential guidance -> checker; actual home disputes -> placement. Do not invent facts or discard unique guidance. Report unresolved findings with needed action and owner. No separate approval for obvious duplicate removal.
+- After recording findings, consult relevant accepted notes and decisions. Check expected revisions before editing; mismatch -> contracts user-edit conflict rule. Directly rephrase, shorten, regroup, remove obvious duplicates and omit low-value entries per shared rules. Preserve directives, and supported meaning, conditions, labels and pointers of kept entries. Apply path/shape helpers to changed non-delete targets.
+- Uncertain factual corrections or missing consequential guidance -> checker; actual home disputes -> placement. Do not invent facts or discard unique guidance to resolve uncertainty. Report unresolved findings with needed action and owner. No separate approval for obvious duplicate or low-value removal.
 
 Return status + findings path + changed paths/revisions + helper summary + unresolved items, needed action and owner. Report loading limits and consequential skips. This is the only reviewer pass; later repairs do not trigger another review.

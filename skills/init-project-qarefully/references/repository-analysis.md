@@ -32,13 +32,13 @@ Scouts tag confidence; checker selects guidance-worthy candidates first, then ve
 - checker required: low confidence; absence/exclusivity ("never", "only", "all", "no X"); security/money regardless of confidence; existing-instruction and scan facts not read in implementation by scout; promoted leads; late additions; directional edit warnings and source-navigation mappings; any entry needing `Invariant:`/`Limitation:`/`intent unknown` label or `Verify:` pointer.
 - Placeable: directly supported high-confidence claim outside mandatory-check categories, or checker-confirmed/corrected claim. Rejected or unresolved -> gap, never document.
 - leads noticed in passing -> promote only hazards changing future agent edit decision, then verify; drop other bug/security observations.
-- existing instruction files -> factual claims = leads under same rule; user/process directives exempt from factual verification, kept per `## Placement`.
+- existing instruction files -> factual claims = leads under same rule; user/process directives exempt from factual verification, kept per `## Placement`; former generated root `## Maintenance` / `## AI Documentation and Code Comments` sections + label legend holding only generic generator policy (no repository-specific fact or user preference) = generator output, not directives -> replace with current generated-content root block, drop legend; repository-specific or user-added text -> directive per contracts; ambiguous -> surface per placement.
 - dedupe shared propositions within batch before verifying; drop non-guidance-worthy claims before expensive checks.
 - Validate cited source/test paths before placeable records. Absent install/build outputs are not existing authorities: cite checked-in generator/configuration or real delegate. If output naming matters, describe it as generated in ordinary prose + cite its existing producer; never exempt missing source citations from strict path checks.
 
 Checker assigns labels from evidence per `## Shape`; scout wording never sets labels. Output per [checker](../agents/checker.md).
 
-Except for runtime requirements and exact commands, prefer where and why over current implementation detail.
+Keep list = leads, not quota: keep entry only when it exposes consequential constraint or source relationship that exploration from likely edit path would miss. Runtime requirements + exact commands exempt; otherwise prefer where and why over current implementation detail.
 
 Keep:
 
@@ -52,8 +52,7 @@ Keep:
 - verified non-obvious failure modes -> implementation, test, or observed incident evidence; omit speculative traps
 - complex domains, calculations, state, or async behavior -> what complicates safe changes, entry/authority path, and coupling or ordering to inspect
 - easy-to-bypass boundaries -> required helpers, layer order, transaction scope, validation/error paths, import conventions
-- 1-3 maintained exemplar paths for common changes
-- root directory map + repo-wide conventions per `## Architecture`
+- repo-wide conventions per `## Architecture`
 
 Drop:
 
@@ -61,14 +60,15 @@ Drop:
 - timings, counts, temporary status
 - line-by-line code narration; flows obvious from entry point and adjacent files
 - generic advice or host-provided agent workflow
+- warnings resting only on hypothetical bypass of a visible ordinary guard
 - duplicated parent guidance or human documentation
 - worked numeric examples (non-obvious rule as one statement + authority path stays), fixture values, test scenarios, ticket/rubric checklists, per-test-file -> feature inventories beyond one `Verify:` pointer per `## Shape`, and coverage claims inferred from filenames. A verified conceptual route/test navigation rule per `## Placement` is permitted.
 
-Keep investigation detail outside instructions. Scout/checker output -> guidance-worthy facts and consequential gaps, not general bug audit or test-absence inventory. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats on what tests or mocks do not prove (mock vs persistence, weak assertions). Reuse existing guidance; omit generic checklists.
+Keep investigation detail outside instructions. Scout/checker output -> guidance-worthy facts and consequential gaps, not general bug audit or test-absence inventory. Test guidance -> harness setup (fixture lifecycle, seed/template, config limits) + caveats only where tests or mocks look more realistic than they are. Reuse existing guidance; omit generic checklists.
 
 ## Placement
 
-Instruction loading depends on the bound harness/version; verify its supported path context rather than assuming source reads load sibling notes. Each fact -> one home = deepest local subtree covering its edit trigger, at app/package/feature granularity per `## Shape`; feature-specific fact -> feature's own directory, never broad ancestor merely because ancestor file exists. Canonical behavior stays with its rule/state owner. A shared edit trigger spanning siblings -> nearest common parent. Repository-wide structure -> root per `## Architecture`; directory-map role record -> root, that dir's nested orientation scope/path only. Home file: existing one; none -> Full creates it (subtree fails creation rule -> nearest suitable parent), Light uses root for all concise domain guidance.
+Instruction loading depends on the bound harness/version; verify its supported path context rather than assuming source reads load sibling notes. Each fact -> one home = deepest local subtree covering its edit trigger, at app/package/feature granularity per `## Shape`; feature-specific fact -> feature's own directory, never broad ancestor merely because ancestor file exists. Canonical behavior stays with its rule/state owner. A shared edit trigger spanning siblings -> nearest common parent. Repository-wide structure -> root per `## Architecture`; directory-map role record -> root, that dir's nested orientation scope/path only. Home file: existing one; none -> Full creates it when subtree meets creation rule; else broader home (Full nearest suitable parent, Light root) only when consequential enough for its wider exposure (e.g. silent cross-boundary hazard); else run notes.
 
 Editing D can break authority in sibling S -> separate, independently verified directional record: `When changing X in D, review Y in S because Z`. Its evidence and home serve D's edit trigger; source authority path + hazard, never copied invariant or instruction-file pointer. Verify D->S and S->D separately when both matter; shared authority does not prove reverse coupling. Parent already provides sufficiently local guidance available from D -> use it. Full permits a small pointer-only file for a verified local hazard meeting Shape; never fold it into an unavailable sibling solely for size. Parent concern implemented in child -> child source pointer + hazard only when needed; canonical fact stays in child home.
 
@@ -80,7 +80,7 @@ Placement agent procedure per [placement](../agents/placement.md). Flow joining 
 
 Placement produces a simple file-to-guidance plan, including existing file dispositions, relevant accepted notes and directives, substantive home alternatives, and disjoint writer ownership. Group related targets when useful; scope boundaries alone do not require separate writers. Unsupported claims stay out. Preserve user/process directives and their scope.
 
-Deduplicate shared propositions: retain the useful occurrence at its appropriate home, regardless of note or fact identifiers. Different triggers or conditions can carry distinct information; preserve them. Apply ancestor loading when selecting a home. Real home disputes go to placement; uncertainty about facts goes to checking. Earlier plan entries do not require separately accounting for an obvious duplicate removed during review.
+Deduplicate shared propositions: retain the useful occurrence at its appropriate home, regardless of note or fact identifiers. Different triggers or conditions can carry distinct information; preserve them. Apply ancestor loading when selecting a home. Real home disputes go to placement; uncertainty about facts goes to checking. Earlier plan entries do not require separately accounting for an obvious duplicate or low-value entry removed during review.
 
 ## Commands
 
@@ -98,7 +98,7 @@ Drop interactive/UI modes, tooling self-tests and profilers, repo-wide auto-fix 
 
 Root `## Architecture` -> repository-wide structure no single subtree shows; replaces boundary, overview, repository-map sections. Contents:
 
-- ownership: which app/package owns which concern; essential directories agent would not spot on entry (~5-10) -> parent bullet + one `dir/` -> concern per sub-bullet, short stable set allowed despite inventory exclusions; allowed dependency direction + enforcing config
+- ownership: which app/package owns which concern; essential directories agent would not spot on entry -> parent bullet + one `dir/` -> concern per sub-bullet, short stable set allowed despite inventory exclusions; allowed dependency direction + enforcing config
 - sources of truth: where canonical logic, configuration, schemas live
 - cross-boundary decisions and nonstandard solutions -> constraint + supported rationale; unknown rationale -> mark unknown
 - hidden cross-boundary dependencies: couplings, build/resolution or ordering effects invisible on casual read
@@ -109,7 +109,7 @@ Exclude request/layer walkthroughs, wiring or add-a-feature recipes, process/por
 
 Complexity signal prompts investigation, not documentation. Keep flow only when hidden ownership, ordering, or coupling creates consequential wrong turn. Prefer entry/authority pointer + warning; ordinary multi-file traversal alone does not justify flow section.
 
-Placement keeps each flow together regardless of investigation scope. Home -> `## Flows` in nested file per `## Placement` (domain owning flow's core rules and state writes); never root. Light -> no flows section; distill flow facts into root architecture, invariants, pitfalls. One flow lives in one file; never split or repeat it. Writer renders from accepted notes; references stay in run artifacts, never generated instructions.
+Placement keeps each flow together regardless of investigation scope. Home -> `## Flows` in nested file per `## Placement` (domain owning flow's core rules and state writes); never root. Light -> no flows section; qualifying flow hazard -> root pitfall. One flow lives in one file; never split or repeat it. Writer renders from accepted notes; references stay in run artifacts, never generated instructions.
 
 Per flow -> trigger/entry path, rule/state owner, consequential hazard. Coupling hazard -> `When changing X, review Y because Z`, not descriptive "X owns Y" line. Add shortest hop chain, boundary, or helper pointer only when needed to explain hazard. No full trace, line numbers, function bodies, or transient config values. A distinct trigger-side warning outside the owning file is not a second flow entry: verify it independently and retain the relationship through source paths.
 
