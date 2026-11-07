@@ -1,7 +1,7 @@
 interface:
   display_name: "Initialize Project"
   short_description: "Write root + nested AGENTS.md/CLAUDE.md with project knowledge"
-  default_prompt: "Use $init-project to generate or refresh root and nested AGENTS.md or CLAUDE.md files giving new agents the non-obvious knowledge of this repository: architecture, conventions, pitfalls, unusual solutions, couplings, complex-logic hints."
+  default_prompt: "Use $init-project to generate root and nested AGENTS.md or CLAUDE.md files giving new agents the non-obvious knowledge of this repository: architecture, conventions, pitfalls, unusual solutions, couplings, complex-logic hints."
 
 policy:
   allow_implicit_invocation: false

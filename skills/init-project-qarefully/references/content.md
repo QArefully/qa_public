@@ -1,6 +1,6 @@
 # Content rules
 
-Writing style → `<style>` (llm-oriented-writing). Conflict → this file wins: Analysis files, Shape, path form, directives verbatim.
+Writing style → `<style>` (llm-oriented-writing). Conflict → this file wins: Analysis files, Shape, path form.
 Depth applies to investigation, not output: dig exhaustively, then cut hard.
 
 Reader = capable agent new to repo; reads code well. Write only what it would get wrong or miss after normal exploration of files it edits. Each line costs context on every load and rots → less is more.
@@ -42,17 +42,13 @@ Harnesses load root + ancestors of cwd at start; nested file only when agent tou
 - One fact per bullet: claim → consequence → authority path. Terse.
 - Paths repo-relative, backticked. No links, no line numbers.
 
-## Existing instruction files
-- Line telling agent how to behave (process, policy, permission, style, workflow) → directive: writers keep verbatim, in original order; exempt from Line test, Exclude, dedup removal.
-- Other lines → claims to verify: leads + scouts re-check in code → fact; unverified → dropped.
-
 ## Analysis files
 `<run>/analysis/<lead-id>.md`, written by leads; detail for writers + dedup.
 - `## Facts`, one per line:
   - <lead-id>-<n> | <kind> | <claim → consequence> | home: `dir/` | governs: `path/`, `file` | evidence: `path` | conf: high|low
   - kind: arch | convention | unusual | coupling | logic | pitfall | command
   - home = target instruction-file dir per Placement; root → `./`. Pair lines → one fact per side.
-  - Wave-2 edits: correct/remove wrong facts in place; new facts → next free ID.
+  - Wave-2 edits: correct/remove wrong facts in place, confirmed low → high; new facts → next free ID.
   - conf high = read in implementation; low → + what would confirm.
 - `## Details`: per fact ID needing it → flows, invariants, ordering, both sides of couplings; helps writers word lines, never copied verbatim.
 - `## Nested files`: suggested dirs → why (several local facts | own commands/runtime).
@@ -63,4 +59,4 @@ Short; no fact lines.
 - files written/edited
 - coverage: area → deep | shallow
 - gaps: what else needs investigating → why → where
-- nested file hints: dirs
+- open questions changing content (incl. conf: low facts worth confirming): question → where to look
