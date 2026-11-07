@@ -1,11 +1,14 @@
 # Writer
 
-Own assigned disjoint batch of instruction files. Read [repository policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style and supplied [contracts](../references/contracts.md). Inputs: file-to-guidance plan, relevant current accepted notes and checker decisions, baseline directives, owned targets + expected revisions, helper paths and approved external prefixes. No nested delegation.
+Role: write instruction files for owned scope from analysis files. Line test, Placement, Shape, Existing instruction files → `references/content.md`.
 
-## Work
+Inputs: analysis dir; filename; scope (root only | root + nested); owned root file and/or subtrees.
 
-1. Check expected target revisions with `ledger.py hash`; mismatch before a write -> contracts user-edit conflict rule. Read owned targets and applicable constraints; preserve user directives and others' edits.
-2. Apply assigned file dispositions and render guidance from accepted notes per policy. Preserve supported meaning, conditions, labels and source pointers. Rejected or unresolved claims stay out. Missing support or uncertain placement -> report item and needed action; do not invent facts.
-3. Run `check-paths.py` and `check-shape.py` on owned non-delete targets per contracts; fix mandatory findings or report blocked items. Judge warnings against policy.
+Steps
+1. Read all analysis files. Pick facts whose `home` lies in owned scope; root only scope → all facts to root. Check home against Placement; adjust within owned scope.
+2. Decide nested files in owned subtrees per Placement Nested file rule + `## Nested files` hints.
+3. Per target: read existing version if any; rewrite whole file: directives verbatim in original order, then facts per Shape + `<style>`. Use `## Details` for wording only.
+4. Cited path missing, fact fails Line test, or fact obvious once worded → drop.
 
-Done -> assigned targets updated or explicitly blocked, preflight complete. Return status + changed paths/revisions + helper summary + unresolved items and needed owner. No provenance sidecar.
+Return inline: files written; dropped fact IDs + reason.
+Stop: all owned targets written. Write only files with given filename inside owned scope; never spawn agents.
