@@ -7,32 +7,30 @@ description: >-
 
 # LLM-Oriented Writing
 
-Apply to AI-oriented `.md` and `.mdc` files: agent instructions, skills, prompts. Exclude user chat and human docs such as `README.md`, changelogs, contributor guides, articles, tutorials. Unclear audience -> ask before applying.
+Scope: AI-oriented `.md`/`.mdc` (agent instructions, skills, prompts). Not user chat or human docs (`README.md`, changelogs, guides, tutorials). Unclear audience -> ask user.
 
 ## Prose
 
-- Use fragments, short words, direct instructions. Drop articles, filler, pleasantries, preambles, rhetorical hedging where meaning stays clear.
-- Preserve actor, action, scope, obligations, conditions, exceptions, uncertainty. Keep distinctions such as `must`, `may`, `only if`; brevity must not change required behavior.
-- Name specific referents; avoid vague pronouns, stacked noun chains, and slash lists hiding relations. Add words when needed for clarity.
-- Style edits -> preserve fenced code, shell commands, config snippets verbatim. Keep identifiers, quoted errors, URLs, literal paths, versions exact.
-- Prefer definitions; include examples only when needed to disambiguate.
+- Fragments, short words, direct instructions. Drop articles, filler, rhetorical hedging, preambles; keep real uncertainty.
+- Keep meaning exact: actor, action, scope, conditions, exceptions, uncertainty, modality (`must`/`may`/`only if`).
+- Name referents; no vague pronouns, noun stacks, or slash lists hiding relations. Add words when clarity needs them.
+- Keep code, commands, config, identifiers, errors, URLs, paths, versions verbatim.
+- Examples only to disambiguate.
 
 Before: "Order update + email lack atomicity."
-
 After: "Order status update commits before email job insert; crash between operations loses email job."
 
 ## Format
 
-- Relations -> `A -> B`; mappings -> `key: value`; identifiers -> inline code. Replace Mermaid and pipe/ASCII tables with compact lists or relation chains.
-- File references: bare filename resolves in instruction file's directory first, else repository root. Same-directory target -> bare filename; other targets -> repository-relative path using `/`. No Markdown links, `./`, `../`, or absolute paths for file references; preserve literal paths in code, commands, config, and quotes.
-- Prefer flat lists; hierarchy -> 2-space indent, maximum 2 levels where practical.
-- Use headings for structure; omit horizontal rules, decorative separators, structural emoji, ASCII art.
-- Put definitions and preconditions before dependent rules, details after. Avoid forward references. Keep each concept's rules and exceptions together.
+- Relations -> `A -> B`; mappings -> `key: value`; identifiers -> inline code. No Mermaid or tables.
+- File refs: target in instruction file's directory -> bare filename; else repo-relative path with `/`. No Markdown links, `./`, `../`, absolute paths (except literals in code/quotes).
+- Flat lists; max 2 nesting levels.
+- Headings for structure; no horizontal rules, separators, emoji, ASCII art.
+- Definitions before dependent rules; no forward refs; keep each concept's rules and exceptions together.
 
 ## Consolidation
 
-- Before editing, read full target file and applicable root and nested agent instruction files. Find existing guidance before adding content.
-- Merge additions into relevant sections; consolidate semantic duplicates throughout owned files, including redundancy unrelated to immediate addition. Keep each rule in one authoritative place. Repository-wide guidance -> root instruction file; subtree-only guidance -> nearest nested instruction file.
-- New files -> one concept per section; state each fact once.
-- Remove generic advice only when deletion leaves task-specific behavior unchanged. Preserve project-specific constraints even when seemingly obvious; uncertain value -> retain. Delete established no-op statements rather than shortening them.
-- Conflicting rules -> apply established precedence; unresolved -> stop and ask which rule wins. Never leave contradictory rules active.
+- First read target file and relevant root/nested instruction files; reuse existing guidance.
+- Merge into relevant sections; dedupe across files in scope; one authoritative place per rule. Repo-wide -> root file; subtree-only -> nearest nested file.
+- Delete generic advice only if behavior unchanged; delete no-op statements outright, don't shorten them. Keep project-specific constraints; unsure -> keep.
+- Conflicts -> apply established precedence; unresolved -> ask. Never leave contradictions.
