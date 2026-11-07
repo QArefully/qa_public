@@ -1,6 +1,7 @@
 # Content rules
 
-Writing style → `<style>` (llm-oriented-writing). Conflict → this file wins: Analysis files, Shape, path form.
+All output (returns, analysis files) → terse AI-to-AI: fragments, arrows, no articles/filler/hedging.
+Writer, dedup → also `<style>` (llm-oriented-writing) for instruction files. Conflict → this file wins: Shape, path form.
 Depth applies to investigation, not output: dig exhaustively, then cut hard.
 
 Reader = capable agent new to repo; reads code well. Write only what it would get wrong or miss after normal exploration of files it edits. Each line costs context on every load and rots → less is more.

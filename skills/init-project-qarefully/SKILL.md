@@ -11,7 +11,8 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 ## Spawning
 - Roles → `<skill>/agents/<role>.md`: general-scout, lead, scout, writer, dedup. `<skill>` = dir holding this SKILL.md.
 - `<style>` = `<skill>/../llm-oriented-writing/SKILL.md`; missing → installed `llm-oriented-writing` skill's SKILL.md; neither → ask user for path, never proceed without it.
-- Child prompt = `Read <skill>/agents/<role>.md, <skill>/references/content.md and <style>; follow them.` + `<skill>`, `<style>`, `<run>` paths + task inputs its profile lists.
+- Child prompt = `Read <skill>/agents/<role>.md and <skill>/references/content.md; follow them.` + `<skill>`, `<run>` paths + task inputs its profile lists.
+- Writer, dedup only → prompt also says `Read <style>; follow it.` + `<style>` path. Other roles never get `<style>`.
 - Models: scout → scout model from Intake; general-scout, lead, writer, dedup → inherit your model.
 - Leads must be able to spawn scouts → grant subagent permission at dispatch. Host cannot → stop, tell user.
 - Add only task-specific inputs; never restate role instructions.
