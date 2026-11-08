@@ -23,7 +23,10 @@ After: "Order status update commits before email job insert; crash between opera
 ## Format
 
 - Relations -> `A -> B`; mappings -> `key: value`; identifiers -> inline code. No Mermaid or tables.
-- File refs: target in instruction file's directory -> bare filename; else repo-relative path with `/`. No Markdown links, `./`, `../`, absolute paths (except literals in code/quotes).
+- File refs: full path from repo root with `/` (skill files: from skill root), every mention; never relative to instruction file's directory. Reason: lines get read away from their file (many injected files, compaction, copied into prompts); ref must paste into Read/Grep as-is.
+  - Several files, one directory, one line -> full directory once, then bare filenames. Bare filename standalone -> only if unique in repo.
+  - Spot inside file -> exact identifier as in code (class, method, field, type, setting/command key) + its file path; never paraphrase.
+  - No Markdown links, `./`, `../`, absolute paths, line numbers (except literals in code/quotes).
 - Flat lists; max 2 nesting levels.
 - Headings for structure; no horizontal rules, separators, emoji, ASCII art.
 - Definitions before dependent rules; no forward refs; keep each concept's rules and exceptions together.
