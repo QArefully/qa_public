@@ -18,19 +18,20 @@ Reader = capable agent new to repo; reads code well. Write only what it would ge
 - Couplings → change here → also change/check there + what breaks. Priority: across language, process, codegen, config boundaries invisible in imports. Common change needing several non-adjacent edits → one line naming touch points.
 - Complex logic → state owner + invariant/ordering a change can break + authority path. Longer → narration; cut.
 - Pitfalls → verified traps; misleading code (looks dead but live; pattern not to copy); tests/mocks proving less than they appear → + verify-by: exact command + test path/glob that does cover it; none found → line says so.
-- Commands (root) → setup, fast dev loop, check/lint, test + single-test pattern; exact, copyable; cwd if not repo root; destructive → impact. Everyday loop only: rare/alternate commands (extra runners, daemons, CI-only, smoke/e2e variants) → nested file of subtree they serve, or drop.
+- Commands (root) → setup, fast dev loop, check/lint, test + single-test pattern; exact, copyable; cwd if not repo root; destructive → impact. One line per test tier incl. slow/E2E, plus one-time prerequisite; variants within a tier (modes, reporters, filters), daemons, CI-only → nested file of subtree they serve, or drop.
 
 ## Exclude
 - Trees; file/class/function/symbol/dependency inventories; stack summaries.
 - Numbers: counts, line numbers, timings; versions only when required to run.
 - Code narration, walkthroughs, snippets.
-- Anything obvious from file names, entry point or neighbouring code.
+- Anything obvious from file names, entry point or neighbouring code (incl. pattern uniform across every neighbour file).
 - README/docs content → point to path.
 - Generic advice; rules a linter/formatter enforces → name the check.
+- Defects to fix (dead/unused code, stale config, broken paths) → open questions, not lines.
 - Speculation. Negative/absence claims ("nothing enforces X", "X unused") unless every plausible enforcer/consumer checked → line names what was checked.
 
 ## Line test
-Keep only if all: new agent would plausibly get it wrong or waste time without it; survives ordinary refactors; not already said in same ancestor chain.
+Keep only if all: new agent would plausibly get it wrong or waste time without it; common work in the file's scope hits it and failure is silent or costly (loud failures, rare one-off procedures like adding X once → drop; root scope = work across most of repo or a whole tier, one feature's internals → nested file only if common in that subtree, else drop); survives ordinary refactors; not already said in same ancestor chain.
 
 ## Placement
 Harnesses load root + ancestors of cwd at start; nested file only when agent touches a file in that dir's subtree; never siblings; search never loads.
@@ -46,7 +47,8 @@ Harnesses load root + ancestors of cwd at start; nested file only when agent tou
 - Root: one-line purpose; sections only with content (typical: Commands, Architecture, Conventions, Pitfalls).
 - Root Commands: few lines; one line per task = command(s) + few-word note. Caveat beyond few words → Pitfalls/Conventions/nested file, not inline; only trap making command silently wrong (stale output, wrong documented form) stays as short note.
 - Nested: bullets; `##` only when grouping helps; no title/scope boilerplate.
-- One fact per bullet: claim → consequence → authority path. Terse.
+- One fact per bullet: claim → consequence → authority path. Terse: ≤30 words hard; Line test per clause, clause failing alone → cut; one authority path + ≤1 symbol; multi-edit coupling → touch points only. Drop whole secondary detail (extra paths, config values, ports), never path fragments.
+- Root ≲800 words, ≲7 KB (path-dense text; read every session). Over → rank lines by how often work hits them × silent-failure cost; cut lowest. Never pad to cap.
 
 ## Root Maintenance block
 Root always ends with this block verbatim; every scope (root only, root + nested, lite); never in nested files.

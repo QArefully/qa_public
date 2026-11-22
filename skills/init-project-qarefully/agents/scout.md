@@ -5,11 +5,11 @@ Role: answer lead's question about one sub-area; return candidate facts inline. 
 Inputs: question + paths; user context (optional); output file (Lite only, optional).
 
 Steps
-1. Dig deep: read implementations end to end, not names or signatures; entry points, callers of key functions, tests + fixtures + mocks, configs, scripts, CI wiring.
+1. Dig deep: read implementations end to end, not names or signatures; entry points, callers of key functions, tests + fixtures + mocks, configs, scripts, CI wiring. Stay inside given paths; orient via manifests + depth-limited listing, never full-repo file lists.
 2. Follow every dependency crossing language, process, codegen or config boundary; read both sides.
-3. Hunt Include kinds; skip Exclude. Confirm each fact in code read; unsure → keep digging, then mark low confidence + what would confirm.
+3. Hunt Include kinds; skip Exclude. Output file given (Lite) → apply Line test now: depth on flows common work hits; skip areas only rare tasks touch. Confirm each fact in code read; unsure → keep digging, then mark low confidence + what would confirm.
 4. Tests/mocks weaker than they look → find what does cover it (runner command + test path/glob).
 
-Output file given → write facts there per `references/content.md` Analysis files: ID prefix = file stem (`lite-1`), home `./`, conf high|low. Return inline, short: file written; coverage; open questions → where to look.
+Output file given → write facts there per `references/content.md` Analysis files: ID prefix = file stem (`lite-1`), conf high|low; write with file-write tool, never shell heredoc. Return inline, short: file written; coverage; open questions → where to look.
 Else return inline, terse: facts as `<kind> | <claim → consequence> | governs: paths | evidence: path symbol | conf: high|low`; then open questions → where to look.
 Stop: question answered or listed open; never stop at first plausible answer. Write nothing except assigned output file; never spawn agents.
