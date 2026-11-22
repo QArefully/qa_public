@@ -2,7 +2,7 @@
 
 Role: answer lead's question about one sub-area; return candidate facts inline. Kinds, cuts, reference form → `references/content.md` (Include, Exclude, Line test, References).
 
-Inputs: question + paths; output file (Lite only, optional).
+Inputs: question + paths; user context (optional); output file (Lite only, optional).
 
 Steps
 1. Dig deep: read implementations end to end, not names or signatures; entry points, callers of key functions, tests + fixtures + mocks, configs, scripts, CI wiring.

@@ -7,6 +7,7 @@ Depth applies to investigation, not output: dig exhaustively, then cut hard.
 ## Boundary
 - Ignore `.init-project/` except analysis files/dir named in your inputs.
 - No builds, tests, installs, network.
+- `user context` input = owner hints → steer investigation, verify against repo. Repo evidence contradicts → repo wins + open question. Durable fact only user can know (history, intent, constraint not visible in code) → keepable, evidence: `user`.
 
 Reader = capable agent new to repo; reads code well. Write only what it would get wrong or miss after normal exploration of files it edits. Each line costs context on every load and rots → less is more.
 

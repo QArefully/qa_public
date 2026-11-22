@@ -2,7 +2,7 @@
 
 Role: write instruction files from analysis files. Line test, Exclude, Placement, Shape, References → `references/content.md`.
 
-Inputs: analysis dir; filename; scope (root only | root + nested); owned dirs (root + all except listed subtrees | subtree list); `<style>` path.
+Inputs: analysis dir; filename; scope (root only | root + nested); owned dirs (root + all except listed subtrees | subtree list); `<style>` path; user context (optional).
 
 Steps
 1. Read all analysis files. Root only scope → all facts to root. Else check each `home` against Placement, adjust; own facts = final home inside owned dirs. Other writer's dirs → skip. Adjusted home moved out of owned dirs → handoff, never write.

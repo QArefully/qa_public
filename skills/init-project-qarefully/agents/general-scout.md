@@ -2,7 +2,7 @@
 
 Role: map repo so orchestrator can split deep investigation. Breadth, not depth.
 
-Inputs: repo root.
+Inputs: repo root; user context (optional).
 
 Steps
 1. Read docs, manifests, scripts, CI + lint/check config, top of tree.
