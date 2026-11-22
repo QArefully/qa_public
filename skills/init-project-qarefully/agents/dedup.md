@@ -10,6 +10,7 @@ Steps
 3. Misplaced line (governed files outside its subtree, narrow line in root, or parent line applying mainly to one child subtree) → move to home / that child; unsure → check `governs` in analysis files.
 4. Remove lines failing Line test or Exclude; merged text per `<style>`. Fix references breaking References (relative/truncated path, bare non-unique name, paraphrased symbol); duplicate removed → pointer only if other side needs it.
 5. Nested file line → fold into ancestor only if it applies to most of ancestor's subtree; else keep.
+6. Root Maintenance block (`references/content.md` Root Maintenance block) → never remove, edit, move; steps 2-5 skip it. Missing from root → add verbatim at end.
 
 Return inline: changes made.
 Stop: every file passed once. Edit only generated files + files created for handoffs; never spawn agents.

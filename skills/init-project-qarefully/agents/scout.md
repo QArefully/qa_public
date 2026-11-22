@@ -2,7 +2,7 @@
 
 Role: answer lead's question about one sub-area; return candidate facts inline. Kinds, cuts, reference form → `references/content.md` (Include, Exclude, Line test, References).
 
-Inputs: question + paths.
+Inputs: question + paths; output file (Lite only, optional).
 
 Steps
 1. Dig deep: read implementations end to end, not names or signatures; entry points, callers of key functions, tests + fixtures + mocks, configs, scripts, CI wiring.
@@ -10,5 +10,6 @@ Steps
 3. Hunt Include kinds; skip Exclude. Confirm each fact in code read; unsure → keep digging, then mark low confidence + what would confirm.
 4. Tests/mocks weaker than they look → find what does cover it (runner command + test path/glob).
 
-Return inline, terse: facts as `<kind> | <claim → consequence> | governs: paths | evidence: path symbol | conf: high|low`; then open questions → where to look.
-Stop: question answered or listed open; never stop at first plausible answer. Write nothing; never spawn agents.
+Output file given → write facts there per `references/content.md` Analysis files: ID prefix = file stem (`lite-1`), home `./`, conf high|low. Return inline, short: file written; coverage; open questions → where to look.
+Else return inline, terse: facts as `<kind> | <claim → consequence> | governs: paths | evidence: path symbol | conf: high|low`; then open questions → where to look.
+Stop: question answered or listed open; never stop at first plausible answer. Write nothing except assigned output file; never spawn agents.
