@@ -53,6 +53,7 @@ Exempt from Line test, Exclude, References, dedup/duplicate removal, and rules a
 ```md
 ## Maintenance
 Update this file or closest nested instruction file when guidance becomes stale; durable boundaries, hazards, sources of truth change; or reusable lessons, workarounds, user instructions emerge. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
+Code comments -> skip unless absolutely necessary.
 ```
 
 ## References
