@@ -22,7 +22,7 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 - First: resolve `<style>` (Spawning), before questions or creating `<run>`. Unresolved → tell user init-project-qarefully needs `llm-oriented-writing` installed next to it, source `https://github.com/QArefully/qa_public/tree/main/skills/llm-oriented-writing`; stop.
 - Ask only unknowns: filename (`AGENTS.md` | `CLAUDE.md`), scope (root only | root + nested | lite = root only, 3 scouts, no leads/waves/dedup), scout model (suggest cheaper than yours). Harness lacks per-child model option → tell user, scouts use your model.
 - Existing instruction files unsupported. Search repo for `CLAUDE.md` + `AGENTS.md` (any depth; skip dependency/build dirs + `.init-project/`; include gitignored files; finding files ≠ reading code). Found → list paths, ask user: move to `<run>/archive/<original relative path>`, start from scratch? No → stop, tell user why, create nothing. Else create `<run>` + `.gitignore`; Yes → also move files; continue.
-- User context = invocation text beyond command (history, constraints, known traps, purpose). Never ask for it; none → omit. Pass verbatim as `user context` input to general-scout, leads, Lite scouts, writers.
+- User context = owner hints: history, constraints, known traps, purpose, areas to focus/skip. Always ask, with the other Intake questions, before any scouting: any project info or hints? Optional; user may skip. Combine invocation text beyond command + answer; none → omit. Pass verbatim as `user context` input to general-scout, leads, Lite scouts, writers.
 - Scope ≠ lite → always comprehensive: never trade depth for speed, tokens or child count. Lite = user-chosen trade-off.
 
 ## Boundary
