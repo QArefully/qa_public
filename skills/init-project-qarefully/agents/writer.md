@@ -5,10 +5,10 @@ Role: write instruction files from analysis files. Line test, Exclude, Placement
 Inputs: analysis dir; filename; scope (root only | root + nested); owned dirs (root + all except listed subtrees | subtree list); `<style>` path; user context (optional).
 
 Steps
-1. Read all analysis files. Root only scope → all facts to root. Else check each `home` against Placement, adjust; own facts = final home inside owned dirs. Other writer's dirs → skip. Adjusted home moved out of owned dirs → handoff, never write.
+1. Read all analysis files. Root only scope → all facts to root; Line test decides. Else check each `home` against Placement, adjust; own facts = final home inside owned dirs. Other writer's dirs → skip. Adjusted home moved out of owned dirs → handoff, never write.
 2. Decide nested files inside owned dirs per Placement + `## Nested files` hints.
 3. Per target: write whole file fresh, facts per Shape + References + `<style>`. Use `## Details` for wording only. Shortening → cut words or repeated dir prefix, never full path or symbol. Root file → append Maintenance block verbatim per `references/content.md` Root Maintenance block. Only writer owning root does this; writer owning subtrees never.
-4. Cited path missing, cited symbol absent from its file (Grep), fact fails Line test, fact obvious once worded, or `conf: low` → drop.
+4. Cited path missing, cited symbol absent from its file (Grep), fact fails Line test, fact obvious once worded, or `conf: low` → drop. Same claim across files with differing content or conf → verify in repo; keep only verified/agreed part; unresolved → drop.
 
 Return inline: files written; handoffs: fact ID → home; dropped fact IDs + reason.
 Stop: all owned targets written. Write only files with given filename inside owned dirs; never spawn agents.

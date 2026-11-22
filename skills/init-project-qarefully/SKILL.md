@@ -26,7 +26,7 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 - Scope ≠ lite → always comprehensive: never trade depth for speed, tokens or child count. Lite = user-chosen trade-off.
 
 ## Boundary
-- `<run>` = `.init-project/<run-id>/`; `<run-id>` = UTC timestamp. Holds `.gitignore` = `*` + `archive/` (you, Intake) + `analysis/<lead-id>.md` (leads) or `analysis/lite-<n>.md` (Lite scouts).
+- `<run>` = `.init-project/<run-id>/`; `<run-id>` = UTC `YYYYMMDDTHHMMSSZ`. Holds `.gitignore` (content `*`) + `archive/` (only if files moved) (you, Intake) + `analysis/<lead-id>.md` (leads) or `analysis/lite-<n>.md` (Lite scouts).
 - Children change only files with selected filename + analysis files assigned to them. Only exception: you move archived files at Intake.
 - Child-side rules (ignore `.init-project/`, no builds/tests/installs/network) → `references/content.md` Boundary.
 
@@ -34,9 +34,9 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 Scope lite → skip steps 1-5 (below). Archive gate + `<run>` creation as Intake.
 - 3 scouts in parallel, scout model, role `scout`, each whole repo, fixed angles:
   - `lite-1`: commands + test loop + tooling/CI/lint checks
-  - `lite-2`: architecture + couplings + complex logic
+  - `lite-2`: architecture + couplings + cross-feature invariants
   - `lite-3`: conventions + unusual solutions + pitfalls
-- Input per scout: angle as question, repo root as paths, output file `<run>/analysis/lite-<n>.md`.
+- Input per scout: angle as question, repo root as paths, output file `<run>/analysis/lite-<n>.md`. Angles exclusive by what fact claims, not kind label: another angle's topic restated → skip.
 - Then 1 writer: scope root only, owns all. Input: `<run>/analysis/` path, filename. No dedup.
 - Report per `## 6. Report`.
 
