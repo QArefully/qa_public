@@ -26,8 +26,8 @@ For current schemas, consult frontmatter-based or sidecar-based host documentati
 ## Custom-agent discovery
 
 - Skill-local `agents/` metadata does not automatically register subagents. Prefer portable briefs in `references/` unless installed custom role materially improves workflow.
-- Installation paths and formats differ: project `.claude/agents/*.md` uses Markdown with YAML frontmatter; project `.codex/agents/*.toml` uses TOML. Personal installation paths and plugin packaging have separate scope rules.
+- Installation homes: Claude Code -> `.claude/` (skills `.claude/skills/`, custom agents `.claude/agents/*.md`, Markdown with YAML frontmatter); AGENTS.md-based harnesses -> `.agents/` (skills `.agents/skills/`). Personal installation paths and plugin packaging have separate scope rules.
 - Verify target version and supported fields before generating definitions. Keep installation within requested scope; explain required installation/reload steps. Avoid hardcoded model names unless user selected them.
 - Confirm registered role exists before dispatch. Otherwise use available general agent with relevant brief, or follow skill's local fallback.
 
-Check target harness documentation for Markdown, TOML, or other agent registration formats.
+Check target harness documentation for agent registration formats.
