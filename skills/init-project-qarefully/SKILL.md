@@ -19,14 +19,24 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 - Add only task-specific inputs; never restate role instructions.
 
 ## Intake
-- Ask only unknowns: filename (`AGENTS.md` | `CLAUDE.md`), scope (root only | root + nested), scout model (suggest cheaper than yours). Harness lacks per-child model option → tell user, scouts use your model.
+- Ask only unknowns: filename (`AGENTS.md` | `CLAUDE.md`), scope (root only | root + nested | lite = root only, 3 scouts, no leads/waves/dedup), scout model (suggest cheaper than yours). Harness lacks per-child model option → tell user, scouts use your model.
 - Existing instruction files unsupported. Search repo for `CLAUDE.md` + `AGENTS.md` (any depth; skip dependency/build dirs + `.init-project/`; include gitignored files; finding files ≠ reading code). Found → list paths, ask user: move to `<run>/archive/<original relative path>`, start from scratch? No → stop, tell user why, create nothing. Else create `<run>` + `.gitignore`; Yes → also move files; continue.
-- Always comprehensive: never trade depth for speed, tokens or child count.
+- Scope ≠ lite → always comprehensive: never trade depth for speed, tokens or child count. Lite = user-chosen trade-off.
 
 ## Boundary
-- `<run>` = `.init-project/<run-id>/`; `<run-id>` = UTC timestamp. Holds `.gitignore` = `*` + `archive/` (you, Intake) + `analysis/<lead-id>.md` (leads).
+- `<run>` = `.init-project/<run-id>/`; `<run-id>` = UTC timestamp. Holds `.gitignore` = `*` + `archive/` (you, Intake) + `analysis/<lead-id>.md` (leads) or `analysis/lite-<n>.md` (Lite scouts).
 - Children change only files with selected filename + analysis files assigned to them. Only exception: you move archived files at Intake.
 - Child-side rules (ignore `.init-project/`, no builds/tests/installs/network) → `references/content.md` Boundary.
+
+## Lite
+Scope lite → skip steps 1-5 (below). Archive gate + `<run>` creation as Intake.
+- 3 scouts in parallel, scout model, role `scout`, each whole repo, fixed angles:
+  - `lite-1`: commands + test loop + tooling/CI/lint checks
+  - `lite-2`: architecture + couplings + complex logic
+  - `lite-3`: conventions + unusual solutions + pitfalls
+- Input per scout: angle as question, repo root as paths, output file `<run>/analysis/lite-<n>.md`.
+- Then 1 writer: scope root only, owns all. Input: `<run>/analysis/` path, filename. No dedup.
+- Report per `## 6. Report`.
 
 ## 1. Map
 1 general scout. Returns inline: domains → paths → complexity/size → why; repo-wide topics.
@@ -50,4 +60,4 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 1 dedup agent. Input: generated file paths + handoffs from all writer returns, `<run>/analysis/` path.
 
 ## 6. Report
-Files written, open questions from lead returns, run folder, archive location (if files archived).
+Files written, open questions from lead (Lite: scout) returns, run folder, archive location (if files archived).

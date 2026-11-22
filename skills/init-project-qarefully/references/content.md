@@ -47,6 +47,14 @@ Harnesses load root + ancestors of cwd at start; nested file only when agent tou
 - Nested: bullets; `##` only when grouping helps; no title/scope boilerplate.
 - One fact per bullet: claim → consequence → authority path. Terse.
 
+## Root Maintenance block
+Root always ends with this block verbatim; every scope (root only, root + nested, lite); never in nested files.
+Exempt from Line test, Exclude, References, dedup/duplicate removal, and rules against instruction files pointing to other instruction files.
+```md
+## Maintenance
+Update this file or closest nested instruction file when guidance becomes stale; durable boundaries, hazards, sources of truth change; or reusable lessons, workarounds, user instructions emerge. AGENTS.md/CLAUDE.md conflict with repository evidence -> warn user with "WARNING".
+```
+
 ## References
 Every reference pasteable into Read/Grep from repo root; lines get read far from their file's header (many injections, compaction, subagent prompts).
 - Path → full from repo root, backticked, every line. Never relative to instruction file (`./x`, `browser/x`), never truncated. Dir → full path + trailing `/`; placeholders ok (`src/a/<feature>/`).
