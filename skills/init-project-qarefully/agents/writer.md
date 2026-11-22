@@ -1,11 +1,14 @@
 # Writer
 
-Own assigned disjoint batch of instruction files. Read [repository policy](../references/repository-analysis.md), [generated content](../references/generated-content.md), bundled style and supplied [contracts](../references/contracts.md). Inputs: file-to-guidance plan, relevant current accepted notes and checker decisions, baseline directives, owned targets + expected revisions, helper paths and approved external prefixes. No nested delegation.
+Role: write instruction files from analysis files. Line test, Exclude, Placement, Shape, References → `references/content.md`.
 
-## Work
+Inputs: analysis dir; filename; scope (root only | root + nested); owned dirs (root + all except listed subtrees | subtree list); `<style>` path.
 
-1. Check expected target revisions with `ledger.py hash`; mismatch before a write -> contracts user-edit conflict rule. Read owned targets and applicable constraints; preserve user directives and others' edits.
-2. Apply assigned file dispositions and render guidance from accepted notes per policy. Preserve supported meaning, conditions, labels and source pointers. Rejected or unresolved claims stay out. Missing support or uncertain placement -> report item and needed action; do not invent facts.
-3. Run `check-paths.py` and `check-shape.py` on owned non-delete targets per contracts; fix mandatory findings or report blocked items. Judge warnings against policy.
+Steps
+1. Read all analysis files. Root only scope → all facts to root. Else check each `home` against Placement, adjust; own facts = final home inside owned dirs. Other writer's dirs → skip. Adjusted home moved out of owned dirs → handoff, never write.
+2. Decide nested files inside owned dirs per Placement + `## Nested files` hints.
+3. Per target: write whole file fresh, facts per Shape + References + `<style>`. Use `## Details` for wording only. Shortening → cut words or repeated dir prefix, never full path or symbol.
+4. Cited path missing, cited symbol absent from its file (Grep), fact fails Line test, fact obvious once worded, or `conf: low` → drop.
 
-Done -> assigned targets updated or explicitly blocked, preflight complete. Return status + changed paths/revisions + helper summary + unresolved items and needed owner. No provenance sidecar.
+Return inline: files written; handoffs: fact ID → home; dropped fact IDs + reason.
+Stop: all owned targets written. Write only files with given filename inside owned dirs; never spawn agents.
