@@ -1,5 +1,5 @@
 ---
-name: init-project
+name: init-project-qarefully
 description: Generate root + nested AGENTS.md or CLAUDE.md giving new agents non-obvious project knowledge - architecture, conventions, pitfalls, unusual solutions, couplings, complex-logic hints
 disable-model-invocation: true
 ---
@@ -10,7 +10,7 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 
 ## Spawning
 - Roles → `<skill>/agents/<role>.md`: general-scout, lead, scout, writer, dedup. `<skill>` = dir holding this SKILL.md.
-- `<style>` = `<skill>/../llm-oriented-writing/SKILL.md`; missing → installed `llm-oriented-writing` skill's SKILL.md; neither → ask user for path, never proceed without it.
+- `<style>` = `<skill>/../llm-oriented-writing/SKILL.md`; missing → installed `llm-oriented-writing` skill's SKILL.md; neither → stop per Intake.
 - Child prompt = `Read <skill>/agents/<role>.md and <skill>/references/content.md; follow them.` + only inputs its role file lists. Concrete file/dir paths, never bare `<run>`. Leads only → also `<skill>` path (build scout prompts).
 - Writer, dedup only → prompt also says `Read <style>; follow it.` + `<style>` path. Other roles never get `<style>`.
 - Models: scout → scout model from Intake; general-scout, lead, writer, dedup → inherit your model.
@@ -19,6 +19,7 @@ You = orchestrator: dispatch, route, decide waves. Never read repo code or `<run
 - Add only task-specific inputs; never restate role instructions.
 
 ## Intake
+- First: resolve `<style>` (Spawning), before questions or creating `<run>`. Unresolved → tell user init-project-qarefully needs `llm-oriented-writing` installed next to it, source `https://github.com/QArefully/qa_public/tree/main/skills/llm-oriented-writing`; stop.
 - Ask only unknowns: filename (`AGENTS.md` | `CLAUDE.md`), scope (root only | root + nested | lite = root only, 3 scouts, no leads/waves/dedup), scout model (suggest cheaper than yours). Harness lacks per-child model option → tell user, scouts use your model.
 - Existing instruction files unsupported. Search repo for `CLAUDE.md` + `AGENTS.md` (any depth; skip dependency/build dirs + `.init-project/`; include gitignored files; finding files ≠ reading code). Found → list paths, ask user: move to `<run>/archive/<original relative path>`, start from scratch? No → stop, tell user why, create nothing. Else create `<run>` + `.gitignore`; Yes → also move files; continue.
 - Scope ≠ lite → always comprehensive: never trade depth for speed, tokens or child count. Lite = user-chosen trade-off.
